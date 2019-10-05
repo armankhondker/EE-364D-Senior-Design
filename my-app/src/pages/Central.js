@@ -7,9 +7,12 @@ class Central extends Component {
 		return (
 			<div className="Splash">
 				<body onClick={this.redirect} className="Central-body">
-					<h1>Welcome to the Matching central for the RGK CONNECT program! </h1>
+					<h1 align="center">Welcome to the Matching Hub for the RGK CONNECT program! </h1>
 					<br></br>
-					<h2>Click here</h2>
+                    <p align="center">This web application is for UT graduate students, community organizations with promising projects, and the RGK CONNECT staff.</p>
+                    <br></br>
+					<h3 align="center">Click here</h3>
+                  
 				</body>
 			</div>
 		);

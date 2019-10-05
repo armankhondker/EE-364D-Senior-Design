@@ -5,7 +5,7 @@ class HomeLinks extends Component {
     render() {
         return (
         <div>
-            <h2>Options:</h2>
+            <h2>Options</h2>
             <ul>
                 <li>
                     <a 

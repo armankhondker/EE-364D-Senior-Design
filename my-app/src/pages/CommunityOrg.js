@@ -3,7 +3,7 @@ class CommunityOrg extends Component {
     render() {
 		return (
 			<div>
-				<p> "Student page" </p>
+				<p> "Community Organization page" </p>
 			</div>
 			
 		);
