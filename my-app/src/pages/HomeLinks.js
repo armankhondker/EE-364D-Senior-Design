@@ -34,6 +34,15 @@ class HomeLinks extends Component {
                         Admins
                     </a>
                 </li>
+                <li>
+                    <a 
+                        className="About"
+                        href="about"
+                        rel="noopener noreferrer"
+                    >
+                        About
+                    </a>
+                </li>
                
             </ul>
         </div>
