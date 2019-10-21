@@ -53,6 +53,8 @@ for org in orgToStudents:
             profq.append(student)
         else:
             unq.append(student)
+    #Sorts within buckets by whichever category is more important
+    #Will need to change this to be more detailed
     if (tech >= prof):
         qualified.sort(key=lambda student: float(student['Technical']), reverse=True)
         profq.sort(key=lambda student: float(student['Technical']), reverse=True)
