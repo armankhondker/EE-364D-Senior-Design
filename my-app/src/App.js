@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import {BrowserRouter, Route} from 'react-router-dom';
+import Student from './pages/Student.js';
+import Admin from './pages/Admin.js';
+import HomeLinks from './pages/HomeLinks.js'
+import Central from './pages/Central.js'
+import CommunityOrg from './pages/CommunityOrg.js'
+import About from './pages/About'
 
-function App() {
+class App extends Component {
+  render(){
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+    <Route exact={true} path='/' render={() => (<Central />)}/>  
+    <Route exact={true} path='/home' render={() => (<HomeLinks />)}/>
+    <Route exact={true} path='/student' render={() => (<Student />)}/>
+    <Route exact={true} path='/admin' render={() => (<Admin />)}/>
+    <Route exact={true} path='/community' render={() => (<CommunityOrg />)}/>
+    <Route exact={true} path='/about' render={() => (<About />)}/>
+    </BrowserRouter>
   );
+    }
 }
 
 export default App;
