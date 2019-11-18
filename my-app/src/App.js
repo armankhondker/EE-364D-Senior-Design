@@ -9,6 +9,7 @@ import Central from './pages/Central.js'
 import CommunityOrg from './pages/CommunityOrg.js'
 import About from './pages/About'
 import StickNavbar from "./pages/StickyNavbar";
+import StudentForm from './pages/StudentForm';
 
 class App extends Component {
   render(){
@@ -21,6 +22,7 @@ class App extends Component {
     <Route exact={true} path='/admin' render={() => (<Admin />)}/>
     <Route exact={true} path='/community' render={() => (<CommunityOrg />)}/>
     <Route exact={true} path='/about' render={() => (<About />)}/>
+    <Route exact={true} path='/studentform' render={() => (<StudentForm />)}/>
     </BrowserRouter>
   );
     }
