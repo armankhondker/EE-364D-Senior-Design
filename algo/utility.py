@@ -1,4 +1,4 @@
-def engageMatch(student, org):
+def engageStudentMatch(student, org):
     # print("Student: " + student['Name'] + " " + str(student['engaged']))
     # print(" Org: " + org['Org/Project'])
     orgRank = -1
@@ -27,6 +27,39 @@ def engageMatch(student, org):
             student['match'] = org['Org/Project']
             org['engaged'] = True
             org['match'] = student['Name']
+            return True, 0
+        else:
+            return False, 0
+
+def engageOrgMatch(student, org):
+    # print("Student: " + student['Name'] + " " + str(student['engaged']))
+    # print(" Org: " + org['Org/Project'])
+    studentRank = -1
+    i = 0
+    for proj in org['sortedStudents']:
+        if (proj == org):
+            studentRank = i
+            break
+        i += 1
+    # print("orgRank: " + str(orgRank))
+    if (org['engaged'] == False):
+        org['engaged'] = True
+        org['studentRank'] = studentRank
+        org['match'] = student['Name']
+        student['engaged'] = True
+        student['match'] = org['Org/Project']
+        return True, 1
+    else:
+        oldRank = org['studentRank']
+        if (oldRank > studentRank):
+            oldStudent = org['sortedStudents'][oldRank]
+            oldStudent['engaged'] = False
+            oldStudent['match'] = ""
+            org['engaged'] = True
+            org['studentRank'] = studentRank
+            org['match'] = student['Name']
+            student['engaged'] = True
+            student['match'] = org['Org/Project']
             return True, 0
         else:
             return False, 0

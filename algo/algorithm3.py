@@ -13,34 +13,22 @@ orgs = list(db.organizations.project_rankings.find({}))
 orgToStudents = []
 studentToOrgs = []
 
-#Assign students that are interested in org
+#Initialize Dict
 for org in orgs:
-    p1 = org['Primary Project Type']
-    p2 = org['Secondary Project Type']
-    p1.replace(" ", "")
-    p2.replace(" ", "")
     tmp = []
     org['engaged'] = False
     org['index'] = 0
     for student in students:
-        interests = student['Buckets of interest']
-        if ((p1 in interests and p1 != "") or (p2 in interests and p2 != "")):
-            tmp.append(student)
+        tmp.append(student)
     orgToStudents.append({'org' : org, 'students': tmp})
 
-#Assign orgs that student is interested in
+#Initialize Dict
 for student in students:
-    interests = student['Buckets of interest']
     tmp = []
     student['engaged'] = False
+    student['index'] = 0
     for org in orgs:
-        p1 = org['Primary Project Type']
-        p2 = org['Secondary Project Type']
-        p1.replace(" ", "")
-        p2.replace(" ", "")
-        interests = student['Buckets of interest']
-        if ((p1 in interests and p1 != "") or (p2 in interests and p2 != "")):
-            tmp.append(org)
+        tmp.append(org)
     studentToOrgs.append({'student' : student, 'orgs': tmp})
 
 #Bucket students into qualified groups for each org

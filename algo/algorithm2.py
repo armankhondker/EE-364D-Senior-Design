@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from utility import engageStudentMatch
+from utility import engageStudentMatch, engageOrgMatch
 import warnings
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
@@ -13,47 +13,35 @@ orgs = list(db.organizations.project_rankings.find({}))
 orgToStudents = []
 studentToOrgs = []
 
-#Assign students that are interested in org
+#Initialize Dict
 for org in orgs:
-    p1 = org['Primary Project Type']
-    p2 = org['Secondary Project Type']
-    p1.replace(" ", "")
-    p2.replace(" ", "")
     tmp = []
     org['engaged'] = False
     org['index'] = 0
     for student in students:
-        interests = student['Buckets of interest']
-        if ((p1 in interests and p1 != "") or (p2 in interests and p2 != "")):
-            tmp.append(student)
+        tmp.append(student)
     orgToStudents.append({'org' : org, 'students': tmp})
 
-#Assign orgs that student is interested in
+#Initialize Dict
 for student in students:
-    interests = student['Buckets of interest']
     tmp = []
     student['engaged'] = False
+    student['index'] = 0
     for org in orgs:
-        p1 = org['Primary Project Type']
-        p2 = org['Secondary Project Type']
-        p1.replace(" ", "")
-        p2.replace(" ", "")
-        interests = student['Buckets of interest']
-        if ((p1 in interests and p1 != "") or (p2 in interests and p2 != "")):
-            tmp.append(org)
+        tmp.append(org)
     studentToOrgs.append({'student' : student, 'orgs': tmp})
 
 #Bucket students into qualified groups for each org
-for org in orgToStudents:
-    tech = org['org']
-    prof = org['org']
-    tech = float(tech['Technical '])
-    prof = float(prof['Professional'])
+for dict in orgToStudents:
+    org = dict['org']
+    tech = float(org['Technical '])
+    prof = float(org['Professional'])
+    students = dict['students']
     qualified = []
     profq = []
     techq = []
     unq = []
-    for student in org['students']:
+    for student in students:
         st = float(student['Technical'])
         sp = float(student['Professional'])
         if (st >= tech and sp >= prof):
@@ -106,37 +94,40 @@ for dict in studentToOrgs:
         profq.sort(key=lambda org: float(org['Technical ']), reverse=True)
         techq.sort(key=lambda org: float(org['Technical ']), reverse=True)
         unq.sort(key=lambda org: float(org['Technical ']), reverse=True)
-        student['sortedOrgs'] = qualified + techq + profq + unq
+        dict['sortedOrgs'] = qualified + techq + profq + unq
     else:
         qualified.sort(key=lambda org: float(org['Professional']), reverse=True)
         profq.sort(key=lambda org: float(org['Professional']), reverse=True)
         techq.sort(key=lambda org: float(org['Professional']), reverse=True)
         unq.sort(key=lambda org: float(org['Professional']), reverse=True)
-        student['sortedOrgs'] = qualified + techq + profq + unq
+        dict['sortedOrgs'] = qualified + techq + profq + unq
 
 numEngaged = 0
 numOrgs = len(orgToStudents)
+numStudents = len(studentToOrgs)
 index = 0
-while(numEngaged < numOrgs):
-    for dict in orgToStudents:
-        org = dict['org']
-        if (org['engaged'] == True):
+j=0
+while(numEngaged < numOrgs or j < numStudents):
+    for dict in studentToOrgs:
+        student = dict['student']
+        if (student['engaged'] == True):
             continue
-        list = dict['sortedStudents']
-        i = org['index']
+        list = dict['sortedOrgs']
+        i = student['index']
         while(True):
             if (i >= len(list)):
-                org['match'] = "NO MATCH FOUND -- NEED TO FIX"
+                student['match'] = "NO MATCH FOUND -- NEED TO FIX"
                 numEngaged +=1
                 break
-            student = list[i]
-            result, numAdded = engageStudentMatch(student, org)
+            org = list[i]
+            result, numAdded = engageOrgMatch(student, org)
             numEngaged += numAdded
             if (result):
-                org['index'] = i+1
+                student['index'] = i+1
                 break
             else:
                 i += 1
+        j += 1
 
 qualified=0
 averageTechScoreAboveOrg = 0
@@ -147,17 +138,19 @@ averageProfScore = 0
 print("Length of orgs: " + str(len(orgToStudents)))
 print("Number of students: " + str(len(students)))
 print("##################################################")
-for x in orgToStudents:
-    org = x['org']
-    index = org['index']
+for x in studentToOrgs:
+    student = x['student']
+    if (student['engaged'] == False):
+        continue
+    index = student['index']
+    orgs = x['sortedOrgs']
+    org = orgs[index-1]
     tech = org['Technical ']
     prof = org['Professional']
-    students = x['sortedStudents']
-    st = students[index-1]
     realMatches = db.students.results_matching.find({"project_org" : str(org['Org/Project'])})
     # realMatch = list()
-    stech = st['Technical']
-    sprof = st['Professional']
+    stech = student['Technical']
+    sprof = student['Professional']
     st = float(stech)
     ot = float(tech)
     sp = float(sprof)
@@ -169,7 +162,7 @@ for x in orgToStudents:
     averageTechScoreAboveOrg += (st - ot)
     averageProfScoreAboveOrg += (sp - op)
     print("Org: " + org['Org/Project'] + " | Org tech: " + tech + " | Org Prof: " + prof)
-    print("Ranked Match Index: " + str(index))
+    print("Student's Index: " + str(index))
     print("Matched by algo with: ")
     print("Name: " + org['match'] + " | Student tech: " + stech + " | Student prof: " + sprof)
     print("Matched by connect with: ")
