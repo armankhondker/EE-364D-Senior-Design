@@ -24,7 +24,6 @@ function displayInfo(match) {
 			<p>Availability Time: {match.student_availability_time} </p>
 			<p>Work Factors: {match.student_work_factors} </p>
 			<p>Interest Buckets: {match.student_interest_buckets}</p>
-			<p>Other: {match.student_other}</p>
 		</div>
 	} else {
 		studentComponent = <div>
@@ -32,14 +31,29 @@ function displayInfo(match) {
 		</div>
 	}
 
-	if(match.resume_technical !== undefined) {
+	if(match.project_technical !== undefined) {
+		projectComponent = <div>
+			<p>Name: {match.project_org}</p>
+			<p>Primary Category: {match.project_primary}</p>
+			<p>Second Category: {match.project_secondary}</p>
+			<p>Technical: {match.project_technical}</p>
+			<p>Professional: {match.project_professional}</p>
+			<p>Quadrant: {match.project_quadrant} </p>
+		</div>
+	} else{
+		projectComponent = <div>
+			<p>Name: {match.project_org}</p>
+
+		</div>
 
 	}
 
-	// return studentComponent;
+
 	return <div>
 		<h3>Student</h3>
 		{studentComponent}
+		<h3>Project</h3>
+		{projectComponent}
 	</div>;
 }
 
@@ -86,6 +100,13 @@ class Admin extends Component {
 					result.student_technical = student.technical;
 					result.student_professional = student.professional;
 					result.student_resume_id = student.resume_id;
+					result.student_quadrant = student.quadrant;
+					result.student_availability_duration = student.availability_duration;
+					result.student_availability_time = student.availability_time;
+					result.student_work_factors = student.work_factors;
+					result.student_interest_buckets = student.interest_buckets;
+					//result.student_other = student.other;
+
 				}
 			})
 
@@ -95,6 +116,11 @@ class Admin extends Component {
 					// result.project_org = project;
 					result.project_technical = project.technical;
 					result.project_professional = project.professional;
+					result.project_primary = project.primary;
+					result.project_secondary = project.secondary;
+					result.project_quadrant = project.quadrant;
+
+
 				}
 			})
 		})
