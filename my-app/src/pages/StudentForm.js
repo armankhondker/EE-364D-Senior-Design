@@ -1,12 +1,18 @@
 import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 import React, { Component } from 'react';
 import Col from 'react-bootstrap/Form';
+import '../App.css';
 
 
 class StudentForm extends Component {
 
 	render() {
 		return (
+		    <div className="form">
+                <br/>
+                <br/>
+                <br/>
             <Form>
 
            <Form.Group controlId="nameInput">
@@ -663,8 +669,12 @@ class StudentForm extends Component {
                 <Form.Label>Do you have other relevant skills that may be helpful for us to know about (i.e. other languages spoken, coding, analytical software, professional skills, etc.)? - List them here!</Form.Label>
                 <Form.Control type="profList"/>
                 </Form.Group>
-            
+            <Button variant="primary" type="submit">
+                Submit
+            </Button>
             </Form>
+                <br/>
+            </div>
  
         );
             }
