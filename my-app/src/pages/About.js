@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import '.././App.css';
+
 class About extends Component {  
     render() {
 		return (
-			<div align="center">
+			<div className="App" align="center">
 				<h1>About rgkconnectmatching.com</h1>
                 <h2>Our Development Team:</h2>
 				<p>Arman Khondker</p>
