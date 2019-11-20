@@ -24,3 +24,11 @@
   color: #09d3ac;
 }
 
+
+.prof_pic {
+  width: 200px;
+  display: inherit;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
+}
