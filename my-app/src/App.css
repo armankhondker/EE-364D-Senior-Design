@@ -29,3 +29,7 @@
   max-width: 80vw;
   margin-left: 10vw;
 }
+
+p {
+  line-height: 0.5px;
+}
