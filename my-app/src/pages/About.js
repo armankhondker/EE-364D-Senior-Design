@@ -13,11 +13,11 @@ class About extends Component {
 				<h1>filler</h1>
 
 				<h1>Purpose</h1>
-				<p>RGK Connect Matching is a web application to display the matchings between students and organizations for the LBJ School Connect Program. </p>
+				<p className="paragraphleft">RGK Connect Matching is a web application to display the matchings between students and organizations for the LBJ School Connect Program. </p>
 
                 <h1>Our Development Team</h1>
 				<ul>
-				<p><b>Arman Khondker</b></p> 
+				<p className="paragraphleft"><b>Arman Khondker</b></p> 
 				{ <img className="prof_pic" src={Arman} alt="Arman" /> }
 				<br></br>
                Bio: A senior Computer Engineering student with technical cores in Software Engineering and Academic enrichmnent
@@ -28,7 +28,7 @@ class About extends Component {
                <br></br>
 					</ul>
 			
-               <ul><p><b>Desiree Tang</b></p> 
+               <ul><p className="paragraphleft"><b>Desiree Tang</b></p> 
 			   { <img className="prof_pic" src={Desiree} alt="Desiree" /> }
 			   <br></br>
                Bio: A senior Computer Engineering student with technical cores in Software Engineering and Academic enrichmnent
@@ -38,7 +38,20 @@ class About extends Component {
 			   Responsibilites: Project Lead
                <br></br>
 			   </ul>
-			   <ul><p><b>Punit Patel</b></p>
+
+
+				<ul> <p className="paragraphleft"><b>Josh Papermaster</b></p>
+				{ <img className="prof_pic" src={Josh} alt="Josh" /> }
+				<br></br>
+               Bio: A senior Computer Engineering student with technical cores in Software Engineering and Academic enrichmnent
+               <br></br>
+               Major: Electrical and Computer Engineering
+               <br></br>
+			   Responsibilites: Algorithm Development Lead
+               <br></br>
+				</ul>
+				
+			   <ul><p className="paragraphleft"><b>Punit Patel</b></p>
 				{ <img className="prof_pic" src={Punit} alt="Punit" /> } 
 				<br></br>
                Bio: A senior Computer Engineering student with technical cores in Software Engineering and Academic enrichmnent
@@ -49,25 +62,14 @@ class About extends Component {
                <br></br>
 				</ul>
 
-				<ul> <p><b>Josh Papermaster</b></p>
-				{ <img className="prof_pic" src={Josh} alt="Josh" /> }
-				<br></br>
-               Bio: A senior Computer Engineering student with technical cores in Software Engineering and Academic enrichmnent
-               <br></br>
-               Major: Electrical and Computer Engineering
-               <br></br>
-			   Responsibilites: Algorithm Lead
-               <br></br>
-				</ul>
-
-             <ul> <p><b>Thienson Ho</b></p>
+             <ul> <p className="paragraphleft"><b>Thienson Ho</b></p>
 				{ <img className="prof_pic" src={ThienSon} alt="ThienSon" /> }
 				<br></br>
                Bio: A senior Computer Engineering student with technical cores in Software Engineering and Academic enrichmnent
                <br></br>
                Major: Electrical and Computer Engineering
                <br></br>
-			   Responsibilites: Back End Lead
+			   Responsibilites: Back End Development Lead
                <br></br>
 				</ul>
 			</div>

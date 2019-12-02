@@ -16,14 +16,18 @@
     border-top: 3px solid;
   }
 
-  p {
+  p{
       font-size: 18px;
-      text-align: left;
   }
+
   h1 {
     font-weight: bolder;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
   
+  }
+  .paragraphleft{
+      text-align: left;
+
   }
   
   ul {
