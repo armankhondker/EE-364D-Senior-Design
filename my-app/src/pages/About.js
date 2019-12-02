@@ -13,7 +13,7 @@ class About extends Component {
 				<h1>filler</h1>
 
 				<h1>Purpose</h1>
-				<p>RGK Connect Matching is a web application to display the matchings between students and organizations for the LBJ School Connect Program. </p>
+				<p className="paragraphleft">RGK Connect Matching is a web application to display the matchings between students and organizations for the LBJ School Connect Program. </p>
 
                 <h1>Our Development Team</h1>
 				<ul>
