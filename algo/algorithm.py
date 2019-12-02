@@ -147,6 +147,8 @@ averageProfScore = 0
 print("Length of orgs: " + str(len(orgToStudents)))
 print("Number of students: " + str(len(students)))
 print("##################################################")
+collection = db.students.algo_results
+collection.drop()
 for x in orgToStudents:
     org = x['org']
     index = org['index']
@@ -173,6 +175,14 @@ for x in orgToStudents:
     print("Matched by algo with: ")
     print("Name: " + org['match'] + " | Student tech: " + stech + " | Student prof: " + sprof)
     print("Matched by connect with: ")
+    obj = {}
+    obj['org'] = org['Org/Project']
+    obj['orgTechScore'] = tech
+    obj['orgProfScore'] = prof
+    obj['match'] = org['match']
+    obj['matchTechScore'] = stech
+    obj['matchProfScore'] = sprof
+    collection.insert_one(obj)
     for y in realMatches:
         match = y['student']
         studentData = db.students.student_data.find({'Name' : match})
