@@ -39,7 +39,6 @@ class About extends Component {
                <br></br>
 			   </ul>
 
-
 				<ul> <p className="paragraphleft"><b>Josh Papermaster</b></p>
 				{ <img className="prof_pic" src={Josh} alt="Josh" /> }
 				<br></br>
@@ -50,7 +49,7 @@ class About extends Component {
 			   Responsibilites: Algorithm Development Lead
                <br></br>
 				</ul>
-				
+
 			   <ul><p className="paragraphleft"><b>Punit Patel</b></p>
 				{ <img className="prof_pic" src={Punit} alt="Punit" /> } 
 				<br></br>
