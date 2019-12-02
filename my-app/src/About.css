@@ -1,0 +1,27 @@
+.About {
+    text-align: left;
+    background-color: #3D9970;
+    height: 100vh;
+  }
+
+  .prof_pic {
+    width: 200px;
+    display: inherit;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+  }
+
+  ul:first-of-type {
+    border-top: 3px solid;
+  }
+
+  p {
+      text-align: left;
+  }
+  
+  ul {
+    border-bottom: 3px solid;
+    padding: 10px;
+    text-align: left;
+  }

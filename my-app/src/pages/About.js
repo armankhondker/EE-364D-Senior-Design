@@ -4,28 +4,38 @@ import Josh from '../assets/Josh_Profile_Pic.jpg'
 import Punit from '../assets/Punit_Profile_Pic.jpg'
 import ThienSon from '../assets/ThienSon_Profile_Pic.jpg';
 import Desiree from '../assets/Desiree_Profile_Pic.jpeg'
-import '.././App.css';
+import '.././About.css';
 
-class About extends Component {   s
+class About extends Component {  
     render() {
 		return (
-			<div className="App" align="center">
-				<h1>About rgkconnectmatching.com</h1>
+			<div className="About">
+				<p>About rgkconnectmatching.com</p>
+				<p>filler</p>
+
                 <h2>Our Development Team:</h2>
 				<ul>
-				<p>Arman Khondker</p> 
+				<p><b>Arman Khondker</b></p> 
 				{ <img className="prof_pic" src={Arman} alt="Arman" /> }
+				<br></br>
+               Bio: A senior Computer Engineering student with technical cores in Software Engineering and Academic enrichmnent
+               <br></br>
+               Major: Electrical and Computer Engineering
+               <br></br>
+			   Responsibilites: Front End Development Lead, Natural Language Processing of Resumes
+               <br></br>
 					</ul>
-               <ul> <p>Desiree Tang </p> 
+			
+               <ul><p><b>Desiree Tang</b></p> 
 			   { <img className="prof_pic" src={Desiree} alt="Desiree" /> }
 			   </ul>
-			   <ul><p>Punit Patel</p>
+			   <ul><p><b>Punit Patel</b></p>
 				{ <img className="prof_pic" src={Punit} alt="Punit" /> } 
 				</ul>
-				<ul> <p>Josh Papermaster</p>
+				<ul> <p><b>Josh Papermaster</b></p>
 				{ <img className="prof_pic" src={Josh} alt="Josh" /> }
 				</ul>
-                <ul> <p>Thienson Ho</p>
+                <ul> <p><b>Thienson Ho</b></p>
 				{ <img className="prof_pic" src={ThienSon} alt="ThienSon" /> }
 				</ul>
 			</div>

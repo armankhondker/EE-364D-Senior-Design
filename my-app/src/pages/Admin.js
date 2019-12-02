@@ -28,7 +28,8 @@ class Admin extends Component {
 		if(this.state.results !== null) hasMounted = true;
 		return (
 			<div align="center" className="App">
-				<h1>Admin Page</h1>
+				<p>Admin Page</p>
+				<p>filler</p>
 				<p> Only those with administration access to the RGK CONNECT Program can login here. </p>
 				<Form>
 					<Form.Group as={Row} controlId="formPlaintextPassword">

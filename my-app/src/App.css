@@ -1,7 +1,6 @@
 .App {
   text-align: center;
   background-color: #3D9970;
-
   height: 100vh;
 }
 
@@ -24,17 +23,21 @@
   color: #09d3ac;
 }
 
-
-.prof_pic {
-  width: 200px;
-  display: inherit;
-  justify-content: center;
-  text-align: center;
-  padding: 10px;
-}
-
 .form {
   min-width: 80vw;
   max-width: 80vw;
   margin-left: 10vw;
+}
+a{
+  font-size: 20px;
+  font-weight: bold;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+}
+ul{
+  text-align: center;
+  list-style-position: inside;
+}
+
+h2{
+  text-align: center;
 }
