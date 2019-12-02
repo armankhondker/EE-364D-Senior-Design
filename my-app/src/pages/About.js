@@ -20,7 +20,7 @@ class About extends Component {
 				<p className="paragraphleft"><b>Arman Khondker</b></p> 
 				{ <img className="prof_pic" src={Arman} alt="Arman" /> }
 				<br></br>
-               Bio: A senior Computer Engineering student with technical cores in Software Engineering and Academic enrichmnent
+               Bio: A senior Computer Engineering student with technical cores in Software Engineering and Academic enrichment
                <br></br>
                Major: Electrical and Computer Engineering
                <br></br>
@@ -31,7 +31,7 @@ class About extends Component {
                <ul><p className="paragraphleft"><b>Desiree Tang</b></p> 
 			   { <img className="prof_pic" src={Desiree} alt="Desiree" /> }
 			   <br></br>
-               Bio: A senior Computer Engineering student with technical cores in Software Engineering and Academic enrichmnent
+               Bio: A senior Computer Engineering student with technical cores in Software Engineering and Academic enrichment
                <br></br>
                Major: Electrical and Computer Engineering
                <br></br>
@@ -42,7 +42,7 @@ class About extends Component {
 				<ul> <p className="paragraphleft"><b>Josh Papermaster</b></p>
 				{ <img className="prof_pic" src={Josh} alt="Josh" /> }
 				<br></br>
-               Bio: A senior Computer Engineering student with technical cores in Software Engineering and Academic enrichmnent
+               Bio: A senior Computer Engineering student with technical cores in Software Engineering and Academic enrichment
                <br></br>
                Major: Electrical and Computer Engineering
                <br></br>
@@ -53,7 +53,7 @@ class About extends Component {
 			   <ul><p className="paragraphleft"><b>Punit Patel</b></p>
 				{ <img className="prof_pic" src={Punit} alt="Punit" /> } 
 				<br></br>
-               Bio: A senior Computer Engineering student with technical cores in Software Engineering and Academic enrichmnent
+               Bio: A senior Computer Engineering student with technical cores in Software Engineering and Academic enrichment
                <br></br>
                Major: Electrical and Computer Engineering
                <br></br>
@@ -64,7 +64,7 @@ class About extends Component {
              <ul> <p className="paragraphleft"><b>Thienson Ho</b></p>
 				{ <img className="prof_pic" src={ThienSon} alt="ThienSon" /> }
 				<br></br>
-               Bio: A senior Computer Engineering student with technical cores in Software Engineering and Academic enrichmnent
+               Bio: A senior Computer Engineering student with technical cores in Software Engineering and Academic enrichment
                <br></br>
                Major: Electrical and Computer Engineering
                <br></br>
