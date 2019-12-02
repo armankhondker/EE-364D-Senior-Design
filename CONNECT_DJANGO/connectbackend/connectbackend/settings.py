@@ -25,7 +25,7 @@ SECRET_KEY = 'dh02wb90ap@^i*jp-db92*3e8vn%@)sibkd^qv(g1h5n$0^l)$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com', 'localhost', ]
+ALLOWED_HOSTS = ['django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com', 'localhost', '127.0.0.1']
 
 #ALLOWED_HOSTS = ['*']
 
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'djongo',
     'students',
     'results',
+    'organizations',
     'rest_framework',
     'corsheaders',
 ]
@@ -77,7 +78,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'connectbackend.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 #mongodb+srv://rgkadmin:<password>@cluster0-54uuh.mongodb.net/test?retryWrites=true&w=majority
@@ -88,7 +88,7 @@ DATABASES = {
         'HOST': 'mongodb+srv://rgkadmin:H13seniordesign@cluster0-54uuh.mongodb.net/test?retryWrites=true&w=majority',
         'USER': 'rgkadmin',
         'PASSWORD': 'H13seniordesign',
-    }
+    },
 }
 
 

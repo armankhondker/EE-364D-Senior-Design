@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
+import '.././App.css';
 
 class HomeLinks extends Component {
 
     render() {
         return (
-        <div>
-            <h2>Options</h2>
+        <div className="App">
+            <p>cant see</p>
+            <p>cant see</p>
+            <h2></h2>
+            <h1></h1>
+         
             <ul>
                 <li>
                     <a 
@@ -17,20 +22,12 @@ class HomeLinks extends Component {
                     </a>
                 </li>
                 <li>
-                    <a 
-                        className="community"
-                        href="community"
-                        rel="noopener noreferrer"
-                    >
-                        Community Organizations
+                    <a className="community" href="community" rel="noopener noreferrer">
+                    Community Organizations
                     </a>
                 </li>
                 <li>
-                    <a 
-                        className="Admin"
-                        href="admin"
-                        rel="noopener noreferrer"
-                    >
+                    <a className="Admin" href="admin" rel="noopener noreferrer">
                         Admins
                     </a>
                 </li>
