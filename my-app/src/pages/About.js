@@ -10,10 +10,12 @@ class About extends Component {
     render() {
 		return (
 			<div className="About">
-				<p>About rgkconnectmatching.com</p>
-				<p>filler</p>
+				<h1>filler</h1>
 
-                <h2> Our Development Team:</h2>
+				<h1>Purpose</h1>
+				<p>RGK Connect Matching is a web application to display the matchings between students and organizations for the LBJ School Connect Program. </p>
+
+                <h1>Our Development Team</h1>
 				<ul>
 				<p><b>Arman Khondker</b></p> 
 				{ <img className="prof_pic" src={Arman} alt="Arman" /> }

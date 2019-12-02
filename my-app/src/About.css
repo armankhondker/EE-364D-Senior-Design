@@ -1,7 +1,7 @@
 .About {
     text-align: left;
     background-color: #3D9970;
-    height: 265vh;
+    height: 300vh;
   }
 
   .prof_pic {
@@ -17,13 +17,22 @@
   }
 
   p {
+      font-size: 18px;
       text-align: left;
+  }
+  h1 {
+    font-weight: bolder;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+  
   }
   
   ul {
     border-bottom: 3px solid;
     padding: 10px;
     text-align: left;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
   }
   h2 {
     text-align: left;
