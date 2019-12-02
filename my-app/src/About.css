@@ -1,7 +1,7 @@
 .About {
     text-align: left;
     background-color: #3D9970;
-    height: 100vh;
+    height: 265vh;
   }
 
   .prof_pic {
@@ -23,5 +23,8 @@
   ul {
     border-bottom: 3px solid;
     padding: 10px;
+    text-align: left;
+  }
+  h2 {
     text-align: left;
   }
