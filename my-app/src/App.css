@@ -1,7 +1,6 @@
 .App {
   text-align: center;
   background-color: #3D9970;
-
   height: 100vh;
 }
 
@@ -30,6 +29,20 @@
   margin-left: 10vw;
 }
 
+a{
+  font-size: 20px;
+  font-weight: bold;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+}
+ul{
+  text-align: center;
+  list-style-position: inside;
+}
 p {
+  text-align: center;
   line-height: 0.5px;
+}
+
+h2{
+  text-align: center;
 }

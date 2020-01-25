@@ -5,8 +5,9 @@ class Student extends Component {
     render() {
 		return (
 			<div className = "App" align="center">
-				<h1>Students Page</h1>
-				<p> Please fill out the following survey if you are interested in working on a project in the RGK CONNECT Program. </p>
+				<p>Students Page</p>
+				<p>filler</p>
+				<p> <b>Please fill out the following survey if you are interested in working on a project in the RGK CONNECT Program. </b> </p>
 				<a href="/studentform">Student Survey</a>
 
 			</div>
