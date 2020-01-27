@@ -28,10 +28,11 @@
   max-width: 80vw;
   margin-left: 10vw;
 }
+
 a{
   font-size: 20px;
   font-weight: bold;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 ul{
   text-align: center;
@@ -39,6 +40,7 @@ ul{
 }
 p {
   text-align: center;
+  line-height: 0.5px;
 }
 
 h2{
