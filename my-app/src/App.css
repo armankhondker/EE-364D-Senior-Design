@@ -28,6 +28,7 @@
   max-width: 80vw;
   margin-left: 10vw;
 }
+
 a{
   font-size: 20px;
   font-weight: bold;
@@ -39,8 +40,10 @@ ul{
 }
 p {
   text-align: center;
+  line-height: 0.5px;
 }
 
 h2{
   text-align: center;
 }
+
