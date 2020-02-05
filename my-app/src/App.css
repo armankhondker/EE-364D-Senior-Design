@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: #3D9970;
+  background-color:#8080804a;
   height: 100vh;
 }
 
@@ -46,4 +46,11 @@ p {
 h2{
   text-align: center;
 }
+
+.background-nav 
+{
+  background-color:#9e4800;
+}
+
+
 
