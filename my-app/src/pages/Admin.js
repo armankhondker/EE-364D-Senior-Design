@@ -141,10 +141,6 @@ class Admin extends Component {
 		return (
 			<div align="center" className="App">
 
-
-				<p>Admin Page</p>
-				<p> <b> Only those with administration access to the RGK CONNECT Program can login here.  </b></p>
-
 				<Form>
 					<h1>Login Page</h1>
 					<Form.Group as={Row} controlId="formPlaintextPassword">
