@@ -2,6 +2,8 @@
   text-align: center;
   background-color:#8080804a;
   height: 100vh;
+  top: 62px; 
+  position: relative; 
 }
 
 .App-logo {
@@ -50,6 +52,7 @@ h2{
 .background-nav 
 {
   background-color:#9e4800;
+
 }
 
 
