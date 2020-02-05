@@ -48,8 +48,6 @@ function displayInfo(match) {
 		</div>
 
 	}
-
-
 	return <div>
 		<h3>Student</h3>
 		{studentComponent}

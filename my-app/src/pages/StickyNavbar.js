@@ -5,7 +5,7 @@ import '.././App.css';
 
 function StickNavbar() {
     return(
-        <Navbar bg="dark" variant="dark" fixed="top">
+        <Navbar className="background-nav" variant="dark" fixed="top">
             <Navbar.Brand href="/">RGK Connect Matching</Navbar.Brand>
             <Nav className="mr-auto">
                 <Nav.Link href="Student">Student</Nav.Link>
