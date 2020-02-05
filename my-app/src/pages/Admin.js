@@ -140,12 +140,6 @@ class Admin extends Component {
 
 		return (
 			<div align="center" className="App">
-<<<<<<< HEAD
-=======
-				<p>Admin Page</p>
-				<p> <b> Only those with administration access to the RGK CONNECT Program can login here.  </b></p>
-
->>>>>>> 6e5135dd4bd4d07df5e3c0ba3914dac5a131ef89
 				<Form>
 					<h1>Login Page</h1>
 					<Form.Group as={Row} controlId="formPlaintextPassword">
@@ -167,7 +161,6 @@ class Admin extends Component {
 				</Form>
 
 				<p></p>
-				<Button className="CreateAccount" variant="light">Create Account</Button>
 				   <p></p>
 				<Button className="LoginButton" variant="danger">Login</Button>
 				<br/>
