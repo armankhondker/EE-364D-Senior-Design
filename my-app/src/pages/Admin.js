@@ -7,6 +7,7 @@ import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import Button from "react-bootstrap/Button"
 import axios from 'axios';
 import Popup from "reactjs-popup";
+import Dropdown from "react-bootstrap/Dropdown";
 // import JSON from 'defiant.js';
 
 function displayInfo(match) {
@@ -125,10 +126,7 @@ class Admin extends Component {
 
 		this.setState({loaded: true})
 
-		//this.setState({ loaded: "true" })
 	}
-
-
 
 	render() {
 		let hasMounted = false;
@@ -142,6 +140,12 @@ class Admin extends Component {
 
 		return (
 			<div align="center" className="App">
+<<<<<<< HEAD
+=======
+				<p>Admin Page</p>
+				<p> <b> Only those with administration access to the RGK CONNECT Program can login here.  </b></p>
+
+>>>>>>> 6e5135dd4bd4d07df5e3c0ba3914dac5a131ef89
 				<Form>
 					<h1>Login Page</h1>
 					<Form.Group as={Row} controlId="formPlaintextPassword">
@@ -168,6 +172,46 @@ class Admin extends Component {
 				<Button className="LoginButton" variant="danger">Login</Button>
 				<br/>
 				<br/>
+
+				<p>Pre-Match Selection Option</p>
+
+				<table>
+				{hasMounted ? (
+					this.state.students.map((val) => {
+						return(
+							<div>
+								<tr>
+									<td><Button>{val.name}</Button></td>
+									<td>
+										<Dropdown>
+											<Dropdown.Toggle variant="success" id="dropdown-basic">Projects</Dropdown.Toggle>
+											<Dropdown.Menu>
+												<Dropdown.Item href="#/action-1">Auto</Dropdown.Item>
+												{hasMounted ? (
+													this.state.projects.map((proj) => {
+														return(
+															<Dropdown.Item href="#/action-1">{proj.name}</Dropdown.Item>
+														)
+													})) : (
+														<p>No data</p>
+														)
+												}
+											</Dropdown.Menu>
+										</Dropdown>
+									</td>
+								</tr>
+							</div>
+						);
+				})) : (
+					<p>No data</p>
+					)
+				}
+
+				</table>
+
+
+
+
 				{hasMounted ? (
 					this.state.results.map((value, index) => {
 						return (
@@ -182,12 +226,13 @@ class Admin extends Component {
 									</div>
 								</Popup>
 							</div>
-							// <p key={index}><strong>{value.student}</strong> -> {value.project_org}</p>
+
 						);
 					})) : (
 						<p>No data</p>
 					)
 				}
+
 			</div>
 			
 		);
