@@ -7,6 +7,7 @@ import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import Button from "react-bootstrap/Button"
 import axios from 'axios';
 import Popup from "reactjs-popup";
+import Dropdown from "react-bootstrap/Dropdown";
 // import JSON from 'defiant.js';
 
 function displayInfo(match) {
@@ -47,8 +48,6 @@ function displayInfo(match) {
 		</div>
 
 	}
-
-
 	return <div>
 		<h3>Student</h3>
 		{studentComponent}
@@ -127,10 +126,7 @@ class Admin extends Component {
 
 		this.setState({loaded: true})
 
-		//this.setState({ loaded: "true" })
 	}
-
-
 
 	render() {
 		let hasMounted = false;
@@ -144,10 +140,9 @@ class Admin extends Component {
 
 		return (
 			<div align="center" className="App">
-				<p>Admin Page</p>
-				<p>filler</p>
-				<p> <b> Only those with administration access to the RGK CONNECT Program can login here.  </b></p>
+
 				<Form>
+					<h1>Login Page</h1>
 					<Form.Group as={Row} controlId="formPlaintextPassword">
 						<Form.Label column sm="5">
 						Username
@@ -167,11 +162,50 @@ class Admin extends Component {
 				</Form>
 
 				<p></p>
-				<Button className="CreateAccount" variant="light">Create Account</Button>
 				   <p></p>
 				<Button className="LoginButton" variant="danger">Login</Button>
 				<br/>
 				<br/>
+
+				<p>Pre-Match Selection Option</p>
+
+				<table style={{width:"50%", margin: "auto"}}>
+				{hasMounted ? (
+					this.state.students.map((val) => {
+						return(
+							<div>
+								<tr>
+									<td ><Button style={{width: "200px"}}>{val.name}</Button></td>
+									<td>
+										<Dropdown>
+											<Dropdown.Toggle variant="success" id="dropdown-basic">Projects</Dropdown.Toggle>
+											<Dropdown.Menu>
+												<Dropdown.Item href="#/action-1">Auto</Dropdown.Item>
+												{hasMounted ? (
+													this.state.projects.map((proj) => {
+														return(
+															<Dropdown.Item href="#/action-1">{proj.name}</Dropdown.Item>
+														)
+													})) : (
+														<p>No data</p>
+														)
+												}
+											</Dropdown.Menu>
+										</Dropdown>
+									</td>
+								</tr>
+							</div>
+						);
+				})) : (
+					<p>No data</p>
+					)
+				}
+
+				</table>
+
+
+
+
 				{hasMounted ? (
 					this.state.results.map((value, index) => {
 						return (
@@ -186,12 +220,13 @@ class Admin extends Component {
 									</div>
 								</Popup>
 							</div>
-							// <p key={index}><strong>{value.student}</strong> -> {value.project_org}</p>
+
 						);
 					})) : (
 						<p>No data</p>
 					)
 				}
+
 			</div>
 			
 		);

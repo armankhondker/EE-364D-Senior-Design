@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Form';
 import '../App.css';
 
 
-class StudentForm extends Component {
+class CommunityForm extends Component {
 
 	render() {
 		return (

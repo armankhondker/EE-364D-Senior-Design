@@ -1,26 +1,24 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import Logo from '../assets/RGB_formal_RGK.png'
+
+
 
 class Central extends Component {
 
 	render() {
 		return (
-			<div className="App">
-				<body onClick={this.redirect} className="App">
-					<h1 align="center">Welcome to the Matching Hub for the RGK CONNECT program! </h1>
+			<div>
+				<body className="App">
 					<br></br>
-					<h1 align="center">Welcome to the Matching Hub for the RGK CONNECT program! </h1>
+				 <img  className="logo" src={Logo} alt="Logo" />
 					<br></br>
-                    <p align="center"><b> This web application is for UT graduate students, community organizations with promising projects, and the RGK CONNECT staff.</b></p>
+					<br></br>
                     <br></br>
-					<h3 align="center">Click here</h3>
+
 				</body>
 			</div>
 		);
-	}
-	redirect = () => {
-		let path = '/home'
-		this.props.history.push(path);
 	}
 }
 
