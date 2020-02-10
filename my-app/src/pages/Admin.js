@@ -140,6 +140,7 @@ class Admin extends Component {
 
 		return (
 			<div align="center" className="App">
+
 				<Form>
 					<h1>Login Page</h1>
 					<Form.Group as={Row} controlId="formPlaintextPassword">
@@ -168,13 +169,13 @@ class Admin extends Component {
 
 				<p>Pre-Match Selection Option</p>
 
-				<table>
+				<table style={{width:"50%", margin: "auto"}}>
 				{hasMounted ? (
 					this.state.students.map((val) => {
 						return(
 							<div>
 								<tr>
-									<td><Button>{val.name}</Button></td>
+									<td ><Button style={{width: "200px"}}>{val.name}</Button></td>
 									<td>
 										<Dropdown>
 											<Dropdown.Toggle variant="success" id="dropdown-basic">Projects</Dropdown.Toggle>

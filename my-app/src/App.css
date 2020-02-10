@@ -56,8 +56,13 @@ h2{
 
 }
 .logo {
-  width: 800px;
+  width: 600px;
   height: auto;
+}
+
+.prematch
+{
+  text-align: center;
 }
 
 
