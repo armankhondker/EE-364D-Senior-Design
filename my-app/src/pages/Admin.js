@@ -3,12 +3,10 @@ import '.././App.css';
 import Form from "react-bootstrap/Form";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import Button from "react-bootstrap/Button"
 import axios from 'axios';
 import Popup from "reactjs-popup";
 import Dropdown from "react-bootstrap/Dropdown";
-// import JSON from 'defiant.js';
 
 function displayInfo(match) {
 	let studentComponent;
@@ -65,8 +63,6 @@ class Admin extends Component {
 			projects: null,
 			loaded: false,
 		}
-
-		// this.displayInfo = this.displayInfo.bind(this);
 	}
 
 	async componentDidMount() {
@@ -95,7 +91,6 @@ class Admin extends Component {
 			let studentName = result.student;
 			students.forEach((student, index) => {
 				if(student.name === studentName) {
-					// result.student = student;
 					result.student_technical = student.technical;
 					result.student_professional = student.professional;
 					result.student_resume_id = student.resume_id;
@@ -104,22 +99,17 @@ class Admin extends Component {
 					result.student_availability_time = student.availability_time;
 					result.student_work_factors = student.work_factors;
 					result.student_interest_buckets = student.interest_buckets;
-					//result.student_other = student.other;
-
 				}
 			})
 
 			let projectName = result.project_org;
 			projects.forEach((project, index) => {
 				if(project.name === projectName) {
-					// result.project_org = project;
 					result.project_technical = project.technical;
 					result.project_professional = project.professional;
 					result.project_primary = project.primary;
 					result.project_secondary = project.secondary;
 					result.project_quadrant = project.quadrant;
-
-
 				}
 			})
 		})
@@ -133,10 +123,25 @@ class Admin extends Component {
 		let { results, students, projects, loaded } = this.state;
 		if(results !== null && students !== null && projects !== null) {
 			hasMounted = true;
-			// const defiant = require('defiant.js');
-			// const search = defiant.search(students, '//*[name="Morgan Lubenow"]');
-			// console.log(search);
 		}
+
+		let dropDownMenu2 = <Dropdown>
+			<Dropdown.Toggle variant="success" id="dropdown-basic">
+				Auto
+			</Dropdown.Toggle>
+
+			<Dropdown.Menu style={{'max-height': '350px', 'overflow-y': 'auto'}}>
+				{hasMounted ? (
+					this.state.projects.map((proj, index) => {
+						return(
+							<Dropdown.Item href={`#/action-${index}`}>{proj.name}</Dropdown.Item>
+						)
+					})) : (
+					<p>Loading</p>
+				)
+				}
+			</Dropdown.Menu>
+		</Dropdown>
 
 		return (
 			<div align="center" className="App">
@@ -173,38 +178,23 @@ class Admin extends Component {
 				{hasMounted ? (
 					this.state.students.map((val) => {
 						return(
-							<div>
+							<div align="center">
 								<tr>
 									<td ><Button style={{width: "200px"}}>{val.name}</Button></td>
 									<td>
 										<Dropdown>
-											<Dropdown.Toggle variant="success" id="dropdown-basic">Projects</Dropdown.Toggle>
-											<Dropdown.Menu>
-												<Dropdown.Item href="#/action-1">Auto</Dropdown.Item>
-												{hasMounted ? (
-													this.state.projects.map((proj) => {
-														return(
-															<Dropdown.Item href="#/action-1">{proj.name}</Dropdown.Item>
-														)
-													})) : (
-														<p>No data</p>
-														)
-												}
-											</Dropdown.Menu>
+											{dropDownMenu2}
 										</Dropdown>
+
 									</td>
 								</tr>
 							</div>
 						);
 				})) : (
-					<p>No data</p>
+					<p>Loading</p>
 					)
 				}
-
 				</table>
-
-
-
 
 				{hasMounted ? (
 					this.state.results.map((value, index) => {
@@ -223,7 +213,7 @@ class Admin extends Component {
 
 						);
 					})) : (
-						<p>No data</p>
+						<p>Loading</p>
 					)
 				}
 
