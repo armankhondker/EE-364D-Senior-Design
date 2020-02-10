@@ -125,24 +125,6 @@ class Admin extends Component {
 			hasMounted = true;
 		}
 
-		let dropDownMenu2 = <Dropdown>
-			<Dropdown.Toggle variant="success" id="dropdown-basic">
-				Auto
-			</Dropdown.Toggle>
-
-			<Dropdown.Menu style={{'max-height': '350px', 'overflow-y': 'auto'}}>
-				{hasMounted ? (
-					this.state.projects.map((proj, index) => {
-						return(
-							<Dropdown.Item href={`#/action-${index}`}>{proj.name}</Dropdown.Item>
-						)
-					})) : (
-					<p>Loading</p>
-				)
-				}
-			</Dropdown.Menu>
-		</Dropdown>
-
 		return (
 			<div align="center" className="App">
 
@@ -171,51 +153,6 @@ class Admin extends Component {
 				<Button className="LoginButton" variant="danger">Login</Button>
 				<br/>
 				<br/>
-
-				<p>Pre-Match Selection Option</p>
-
-				<table style={{width:"50%", margin: "auto"}}>
-				{hasMounted ? (
-					this.state.students.map((val) => {
-						return(
-							<div align="center">
-								<tr>
-									<td ><Button style={{width: "200px"}}>{val.name}</Button></td>
-									<td>
-										<Dropdown>
-											{dropDownMenu2}
-										</Dropdown>
-
-									</td>
-								</tr>
-							</div>
-						);
-				})) : (
-					<p>Loading</p>
-					)
-				}
-				</table>
-
-				{hasMounted ? (
-					this.state.results.map((value, index) => {
-						return (
-							<div>
-								<Popup modal
-									   closeOnDocumentClick
-									   // onOpen={displayInfo(value)}
-									   trigger={<button>{value.student} -> {value.project_org}</button>}>
-									<div>
-										{/*{value.student} and {value.project_org}*/}
-										{displayInfo(value)}
-									</div>
-								</Popup>
-							</div>
-
-						);
-					})) : (
-						<p>Loading</p>
-					)
-				}
 
 			</div>
 			

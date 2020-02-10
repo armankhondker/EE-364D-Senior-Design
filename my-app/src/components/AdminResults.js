@@ -1,5 +1,6 @@
-import {Component} from "react";
+import React, {Component} from "react";
 import axios from "axios";
+import Popup from "reactjs-popup";
 
 class AdminResults extends Component {
 
@@ -15,7 +16,30 @@ class AdminResults extends Component {
 
     render(){
         return(
-            <Button>AdminResults</Button>
+            <div>
+                <Button>AdminResults</Button>
+                {hasMounted ? (
+                    this.state.results.map((value, index) => {
+                        return (
+                            <div>
+                                <Popup modal
+                                       closeOnDocumentClick
+                                       trigger={<button>{value.student} -> {value.project_org}</button>}>
+                                    <div>
+                                        {displayInfo(value)}
+                                    </div>
+                                </Popup>
+                            </div>
+
+                        );
+                    })) : (
+                    <p>Loading</p>
+                )
+                }
+            </div>
+
+
+
         );
     }
 }
