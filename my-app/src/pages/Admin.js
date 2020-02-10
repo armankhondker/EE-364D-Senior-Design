@@ -5,8 +5,13 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from "react-bootstrap/Button"
 import axios from 'axios';
+import Tab from 'react-bootstrap/Tab';
 import Popup from "reactjs-popup";
 import Dropdown from "react-bootstrap/Dropdown";
+import Nav from "react-bootstrap/Nav";
+import AdminHome from "../components/AdminHome";
+import AdminStudents from "../components/AdminStudents";
+import AdminProjects from "../components/AdminProjects";
 
 function displayInfo(match) {
 	let studentComponent;
@@ -153,6 +158,49 @@ class Admin extends Component {
 				<Button className="LoginButton" variant="danger">Login</Button>
 				<br/>
 				<br/>
+
+				<Tab.Container id="left-tabs-example" defaultActiveKey="first">
+					<Row>
+						<Col sm={3}>
+							<Nav variant="pills" className="flex-column">
+								<Nav.Item>
+									<Nav.Link eventKey="first">Home</Nav.Link>
+								</Nav.Item>
+								<Nav.Item>
+									<Nav.Link eventKey="second">Students</Nav.Link>
+								</Nav.Item>
+								<Nav.Item>
+									<Nav.Link eventKey="third">Projects</Nav.Link>
+								</Nav.Item>
+								<Nav.Item>
+									<Nav.Link eventKey="fourth">Match</Nav.Link>
+								</Nav.Item>
+								<Nav.Item>
+									<Nav.Link eventKey="fifth">Results</Nav.Link>
+								</Nav.Item>
+							</Nav>
+						</Col>
+						<Col sm={9}>
+							<Tab.Content>
+								<Tab.Pane eventKey="first">
+									<AdminHome/>
+								</Tab.Pane>
+								<Tab.Pane eventKey="second">
+								<AdminStudents/>
+								</Tab.Pane>
+								<Tab.Pane eventKey="third">
+									<AdminProjects/>
+								</Tab.Pane>
+								<Tab.Pane eventKey="fourth">
+									under construction
+								</Tab.Pane>
+								<Tab.Pane eventKey="fifth">
+									under construction
+								</Tab.Pane>
+							</Tab.Content>
+						</Col>
+					</Row>
+				</Tab.Container>
 
 			</div>
 			
