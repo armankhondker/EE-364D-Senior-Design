@@ -10,8 +10,9 @@ class About extends Component {
     render() {
 		return (
 			<div className="About">
-				<h1>filler</h1>
-
+				<br></br>
+				<br></br>
+				<br></br>
 				<h1>Purpose</h1>
 				<p className="paragraphleft">RGK Connect Matching is a web application to display the matchings between students and organizations for the LBJ School Connect Program. </p>
 

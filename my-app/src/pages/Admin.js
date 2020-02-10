@@ -142,6 +142,7 @@ class Admin extends Component {
 			<div align="center" className="App">
 
 				<Form>
+					<br></br>
 					<h1>Login Page</h1>
 					<Form.Group as={Row} controlId="formPlaintextPassword">
 						<Form.Label column sm="5">
