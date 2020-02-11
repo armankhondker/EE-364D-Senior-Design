@@ -6,13 +6,11 @@ from rest_framework.response import Response
 from rest_framework import status
 
 
-def get(request, format=None):
-    matches = Matching.objects.all()
-    serializer = MatchingSerializer(matches, many=True)
-    return Response(serializer.data)
-
-
 class MatchResults(APIView):
     """
     List all matches or create a new matching
     """
+    def get(self, request, *args, **kwargs):
+        matches = Matching.objects.all()
+        serializer = MatchingSerializer(matches, many=True)
+        return Response(serializer.data)
