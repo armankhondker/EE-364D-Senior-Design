@@ -9,13 +9,20 @@ class AdminMatch extends Component {
     }
 
     render(){
+
+        let hasMounted = false;
+        let {students, projects } = this.props;
+        if(students !== null && projects !== null) {
+            hasMounted = true;
+        }
+
         return(
             <div>
                 <p>Pre-Match Selection Option</p>
 
                 <table style={{width:"50%", margin: "auto"}}>
                     {hasMounted ? (
-                        this.state.students.map((val) => {
+                        this.props.students.map((val) => {
                             return(
                                 <div align="center">
                                     <tr>
@@ -29,7 +36,7 @@ class AdminMatch extends Component {
 
                                                     <Dropdown.Menu style={{'max-height': '350px', 'overflow-y': 'auto'}}>
                                                         {hasMounted ? (
-                                                            this.state.projects.map((proj, index) => {
+                                                            this.props.projects.map((proj, index) => {
                                                                 return(
                                                                     <Dropdown.Item href={`#/action-${index}`}>{proj.name}</Dropdown.Item>
                                                                 )
@@ -40,7 +47,6 @@ class AdminMatch extends Component {
                                                     </Dropdown.Menu>
                                                 </Dropdown>
                                             </Dropdown>
-
                                         </td>
                                     </tr>
                                 </div>
@@ -51,7 +57,6 @@ class AdminMatch extends Component {
                     }
                 </table>
 
-                <Button>AdminMatch</Button>
             </div>
 
         );
