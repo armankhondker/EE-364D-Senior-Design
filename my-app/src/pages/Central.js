@@ -18,9 +18,10 @@ class Central extends Component {
 					<br></br>
 					<br></br>
 					<div>
-						<ImgButton image = {Admin} label = "Admin" path ="admin"></ImgButton>
+					    <ImgButton image = {Student} label ="Students" path="student"></ImgButton>
 						<ImgButton image = {Org} label= "Community" path="community"></ImgButton>
-						<ImgButton image = {Student} label ="Students" path="student"></ImgButton>
+						<ImgButton image = {Admin} label = "Admin" path ="admin"></ImgButton>
+			
 					</div>
 					<br></br>
 
