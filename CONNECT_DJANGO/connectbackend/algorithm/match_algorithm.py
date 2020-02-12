@@ -9,9 +9,12 @@ def run():
     client = MongoClient(
         "mongodb+srv://rgkadmin:H13seniordesign@cluster0-54uuh.mongodb.net/test?retryWrites=true&w=majority")
     db = client
-    students = list(db.students.student_data.find({}))
+    s = db.students.student_data.find({})
+    o = db.organizations.project_rankings.find({})
+    students = list(s)
+    orgs = list(o)
+    print('List works')
 
-    orgs = list(db.organizations.project_rankings.find({}))
     orgToStudents = []
     studentToOrgs = []
     # Assign students that are interested in org
@@ -123,14 +126,14 @@ def run():
             org = dict['org']
             if org['engaged'] == True:
                 continue
-            list = dict['sortedStudents']
+            student_list = dict['sortedStudents']
             i = org['index']
             while (True):
-                if i >= len(list):
+                if i >= len(student_list):
                     org['match'] = "NO MATCH FOUND -- NEED TO FIX"
                     numEngaged += 1
                     break
-                student = list[i]
+                student = student_list[i]
                 result, numAdded = engageStudentMatch(student, org)
                 numEngaged += numAdded
                 if result:
@@ -207,3 +210,4 @@ def run():
     print("Average Prof Score of matched student: " + str(averageProfScore))
     print("Average Tech Score - Org Score: " + str(averageTechScoreAboveOrg))
     print("Average Prof Score - Org Score: " + str(averageProfScoreAboveOrg))
+
