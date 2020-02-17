@@ -76,6 +76,13 @@ class Admin extends Component {
 	}
 
 	render() {
+		let hasMounted = false;
+		let {students, projects} = this.state;
+
+		if(students !== null && projects !== null) {
+			hasMounted = true;
+		}
+
 		return (
 			<div align="center" className="App">
 
@@ -106,48 +113,51 @@ class Admin extends Component {
 				<br/>
 				<br/>
 
-				<Tab.Container id="left-tabs-example" defaultActiveKey="first">
-					<Row>
-						<Col sm={3}>
-							<Nav variant="pills" className="flex-column">
-								<Nav.Item>
-									<Nav.Link eventKey="first">Home</Nav.Link>
-								</Nav.Item>
-								<Nav.Item>
-									<Nav.Link eventKey="second">Students</Nav.Link>
-								</Nav.Item>
-								<Nav.Item>
-									<Nav.Link eventKey="third">Projects</Nav.Link>
-								</Nav.Item>
-								<Nav.Item>
-									<Nav.Link eventKey="fourth">Match</Nav.Link>
-								</Nav.Item>
-								<Nav.Item>
-									<Nav.Link eventKey="fifth">Results</Nav.Link>
-								</Nav.Item>
-							</Nav>
-						</Col>
-						<Col sm={9}>
-							<Tab.Content>
-								<Tab.Pane eventKey="first">
-									<AdminHome/>
-								</Tab.Pane>
-								<Tab.Pane eventKey="second">
-								<AdminStudents/>
-								</Tab.Pane>
-								<Tab.Pane eventKey="third">
-									<AdminProjects/>
-								</Tab.Pane>
-								<Tab.Pane eventKey="fourth">
-									<AdminMatch students={this.state.students} projects={this.state.projects}/>
-								</Tab.Pane>
-								<Tab.Pane eventKey="fifth">
-									<AdminResults students={this.state.students} projects={this.state.projects} results={this.state.results}  />
-								</Tab.Pane>
-							</Tab.Content>
-						</Col>
-					</Row>
-				</Tab.Container>
+				{hasMounted ?
+					(<Tab.Container id="left-tabs-example" defaultActiveKey="first">
+						<Row>
+							<Col sm={3}>
+								<Nav variant="pills" className="flex-column">
+									<Nav.Item>
+										<Nav.Link eventKey="first">Home</Nav.Link>
+									</Nav.Item>
+									<Nav.Item>
+										<Nav.Link eventKey="second">Students</Nav.Link>
+									</Nav.Item>
+									<Nav.Item>
+										<Nav.Link eventKey="third">Projects</Nav.Link>
+									</Nav.Item>
+									<Nav.Item>
+										<Nav.Link eventKey="fourth">Match</Nav.Link>
+									</Nav.Item>
+									<Nav.Item>
+										<Nav.Link eventKey="fifth">Results</Nav.Link>
+									</Nav.Item>
+								</Nav>
+							</Col>
+							<Col sm={9}>
+								<Tab.Content>
+									<Tab.Pane eventKey="first">
+										<AdminHome/>
+									</Tab.Pane>
+									<Tab.Pane eventKey="second">
+										<AdminStudents/>
+									</Tab.Pane>
+									<Tab.Pane eventKey="third">
+										<AdminProjects/>
+									</Tab.Pane>
+									<Tab.Pane eventKey="fourth">
+										<AdminMatch students={this.state.students} projects={this.state.projects}/>
+									</Tab.Pane>
+									<Tab.Pane eventKey="fifth">
+										<AdminResults students={this.state.students} projects={this.state.projects} results={this.state.results}  />
+									</Tab.Pane>
+								</Tab.Content>
+							</Col>
+						</Row>
+					</Tab.Container>
+				) : <p>Loading</p>
+				}
 
 			</div>
 			
