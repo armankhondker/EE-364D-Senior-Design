@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
+import '.././App.css';
+
 class CommunityOrg extends Component {  
     render() {
 		return (
-			<div align="center">
+			<div className="App" align="center">
+				<br></br>
 				<h1>Community Organizations Page</h1>
-				<p> Please fill out the following survey if your community organization has a project they would like to have matched. </p>
-				<a href="https://utexas.qualtrics.com/jfe/form/SV_blz2b1nizqI3Ctf">Project Survey</a>
-
+				<br></br>
+				<p> <b> Please fill out the following survey if your community organization has a project they would like to have matched. </b> </p>
+				<a href="/communityform">Organization Survey</a>
 			</div>
 			
 		);

@@ -56,7 +56,6 @@ class StudentForm extends Component {
                 </div>
             ))}
             </Form>
-*/
 
             
             <Form>
