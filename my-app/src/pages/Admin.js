@@ -78,31 +78,6 @@ class Admin extends Component {
 	render() {
 		return (
 			<div align="center" className="App">
-
-				<Form>
-					<br></br>
-					<h1>Login Page</h1>
-					<Form.Group as={Row} controlId="formPlaintextPassword">
-						<Form.Label column sm="5">
-						Username
-						</Form.Label>
-						<Col sm="15">
-						<Form.Control type="username" placeholder="Username" />
-						</Col>
-					</Form.Group>
-					<Form.Group as={Row} controlId="formPlaintextPassword">
-						<Form.Label column sm="5">
-						Password
-						</Form.Label>
-						<Col sm="15">
-						<Form.Control type="password" placeholder="Password" />
-						</Col>
-					</Form.Group>
-				</Form>
-
-				<p></p>
-				   <p></p>
-				<Button className="LoginButton" variant="danger">Login</Button>
 				<br/>
 				<br/>
 
