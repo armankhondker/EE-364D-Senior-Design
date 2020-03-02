@@ -17,7 +17,7 @@ class AdminMatch extends Component {
             projects: props.projects,
             projectSelection : []
         }
-        console.log(this.props);
+      //  console.log(this.props);
         console.log("State: " + this.state.projects)
     }
 
@@ -29,7 +29,9 @@ class AdminMatch extends Component {
         this.setState(
             {projectSelection: [...this.state.projectSelection,evtKey]}
         )
-        console.log(evtKey);
+        // console.log(evtKey);
+
+       // let result = this.state.projectSelection.find(element => element.index === index)
 
         // student 1 picks project 1 but wants to change to project 2, it should delete the old entry and replace it
         // student 2 picks project 3 but project 3 is already selected by student 4 - avoid this by removing from selection list
@@ -52,7 +54,7 @@ class AdminMatch extends Component {
         let hasMounted = false;
         let {students, projects} = this.props;
 
-        if(students !== null && projects !== null) {
+        if(students !== null && this.state.projects !== null) {
             hasMounted = true;
         }
 
@@ -76,7 +78,7 @@ class AdminMatch extends Component {
 
                                                     <Dropdown.Menu style={{'max-height': '350px', 'overflow-y': 'auto'}} >
                                                         {hasMounted ? (
-                                                            this.props.projects.map((proj, index) => {
+                                                            this.state.projects.map((proj, index) => {
                                                                 return(
                                                                     <Dropdown.Item
                                                                         eventKey={proj.name}
