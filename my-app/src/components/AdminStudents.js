@@ -22,7 +22,7 @@ class AdminStudents extends Component {
 
         return(
             <div>
-                <p>Click on a project to edit student survey information</p>
+                <p>Click on a student to edit student survey information</p>
                 <table style={{width:"50%", margin: "auto"}}>
                     {hasMounted ? (
                         this.state.students.map((student) => {
