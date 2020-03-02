@@ -141,7 +141,7 @@ class Admin extends Component {
 										<AdminHome/>
 									</Tab.Pane>
 									<Tab.Pane eventKey="second">
-										<AdminStudents/>
+										<AdminStudents students={this.state.students}/>
 									</Tab.Pane>
 									<Tab.Pane eventKey="third">
 										<AdminProjects projects={this.state.projects}/>

@@ -23,15 +23,21 @@ class AdminProjects extends Component {
         return(
             <div>
                 <p>Click on a project to edit project survey information</p>
+                <table style={{width:"50%", margin: "auto"}}>
                 {hasMounted ? (
                     this.state.projects.map((proj) => {
                         return(
-                            <Button>{proj.name}</Button>
+                            <tr>
+                                <Button>{proj.name}</Button>
+                            </tr>
+
                         );
                     })) : (
                         <p>Loading</p>
                 )
                 }
+
+                    </table>
             </div>
         )
     }
