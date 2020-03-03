@@ -28,6 +28,9 @@ class AdminMatch extends Component {
         console.log("SELECTED PROJECTS:");
         console.log(this.state.projectSelection);
 
+        console.log("PROJECT LIST TO PICK FROM: ");
+        console.log(this.state.projectListToPickFrom);
+
     }
 
     handleSelect (evtKey) {
@@ -50,20 +53,20 @@ class AdminMatch extends Component {
             this.setState({projectSelection: [...this.state.projectSelection,evtKey]});
         }
 
-        // student 1 picks project 2 but project 2 is already selected by student 2 - avoid this by removing from selection list
-        /*
-        this.state.projectListToPickFrom.map((projectListItem) => {
-            //console.log(projectListItem);
-            if(projectListItem.name === evtKey.project){
-                let i = this.state.projectListToPickFrom.indexOf(projectListItem.name);
-               this.setState({projectListToPickFrom: this.state.projectListToPickFrom.splice(i,1)});
-            }
-           // console.log(this.state.projectListToPickFrom);
-        });
+        // student 1 picks project 2 but project 2 is already selected by student 2 - avoid this issue by removing
+        // from list of projects available to select
+        let foundProject = false;
+        let iProject;
+        let res = this.state.projectListToPickFrom.find(element => element.name === evtKey.project);
 
-        */
+        if(res != null){
+            foundProject = true;
+            iProject = this.state.projectListToPickFrom.indexOf(res);
+        }
 
-
+        if(foundProject){
+            this.state.projectListToPickFrom.splice(iProject,1);
+        }
     }
 
     findSelection(index) {
@@ -132,9 +135,7 @@ class AdminMatch extends Component {
                     )
                     }
                 </table>
-
             </div>
-
         );
     }
 }
