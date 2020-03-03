@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import Button from "react-bootstrap/Button"
 import Dropdown from "react-bootstrap/Dropdown";
+import {forEach} from "react-bootstrap/cjs/ElementChildren";
 
 class AdminMatch extends Component {
-    // state = {
-    //     projects: this.props.projects[0],
-    // }
 
     constructor(props) {
         super(props);
@@ -15,32 +13,61 @@ class AdminMatch extends Component {
 
         this.state = {
             projects: props.projects,
+            projectListToPickFrom: props.projects,
             projectSelection : []
         }
-      //  console.log(this.props);
-        console.log("State: " + this.state.projects)
     }
 
     componentDidMount() {
-        this.setState({ projects: this.props.projects });
+        this.setState(
+            { projects: this.props.projects,
+                projectListToPickFrom: this.props.projects});
+    }
+
+    componentDidUpdate(prevProps){
+        console.log("SELECTED PROJECTS:");
+        console.log(this.state.projectSelection);
+
     }
 
     handleSelect (evtKey) {
-        this.setState(
-            {projectSelection: [...this.state.projectSelection,evtKey]}
-        )
-        // console.log(evtKey);
+        let found = false;
+        let i;
 
-       // let result = this.state.projectSelection.find(element => element.index === index)
+        //  student 1 picks project 1 but wants to change to project 2 => deletes the old entry and replaces it
+        let result = this.state.projectSelection.find(element => element.index === evtKey.index);
+        if(result != null){
+            found = true;
+            i = this.state.projectSelection.indexOf(result);
+        }
 
-        // student 1 picks project 1 but wants to change to project 2, it should delete the old entry and replace it
-        // student 2 picks project 3 but project 3 is already selected by student 4 - avoid this by removing from selection list
+        if (found){
+            this.state.projectSelection.splice(i,1);
+            this.setState({projectSelection: [...this.state.projectSelection,evtKey]});
+        }
+        else{
+            // not found, adds to list of already selected projects
+            this.setState({projectSelection: [...this.state.projectSelection,evtKey]});
+        }
+
+        // student 1 picks project 2 but project 2 is already selected by student 2 - avoid this by removing from selection list
+        /*
+        this.state.projectListToPickFrom.map((projectListItem) => {
+            //console.log(projectListItem);
+            if(projectListItem.name === evtKey.project){
+                let i = this.state.projectListToPickFrom.indexOf(projectListItem.name);
+               this.setState({projectListToPickFrom: this.state.projectListToPickFrom.splice(i,1)});
+            }
+           // console.log(this.state.projectListToPickFrom);
+        });
+
+        */
+
 
     }
 
     findSelection(index) {
         let result = this.state.projectSelection.find(element => element.index === index);
-        console.log(result);
         if(result === undefined || result === null) {
             return 'Auto';
         }
@@ -52,9 +79,7 @@ class AdminMatch extends Component {
     render(){
 
         let hasMounted = false;
-        let {students, projects} = this.props;
-
-        if(students !== null && this.state.projects !== null) {
+        if(this.props.students !== null && this.state.projectListToPickFrom !== null) {
             hasMounted = true;
         }
 
@@ -78,7 +103,7 @@ class AdminMatch extends Component {
 
                                                     <Dropdown.Menu style={{'max-height': '350px', 'overflow-y': 'auto'}} >
                                                         {hasMounted ? (
-                                                            this.state.projects.map((proj, index) => {
+                                                            this.state.projectListToPickFrom.map((proj, index) => {
                                                                 return(
                                                                     <Dropdown.Item
                                                                         eventKey={proj.name}
