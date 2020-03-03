@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'organizations',
     'admins',
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
 ]
 
