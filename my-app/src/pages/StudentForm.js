@@ -347,6 +347,7 @@ class StudentForm extends Component {
             
             <Form.Group controlId="SectionTitle">
                 <Form.Label>How experienced are you in completing the following project tasks/deliverables: </Form.Label>
+                <Form.Label>1 = Not Experienced  2 = Slightly Familiar  3 = Familiar  4 = Experienced  5 = Extremely Experienced </Form.Label>
 
             </Form.Group>
             <Form.Group controlId="projectDeliverables">
