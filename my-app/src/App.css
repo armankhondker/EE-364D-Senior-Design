@@ -46,6 +46,44 @@ p {
   line-height: 0.5px;
 }
 
-h2{
+h2 {
   text-align: center;
+  font-family: 'Open Sans',sans-serif;
+  font-weight: 300;
+  font-size: 30px;
+  color: #333F48;
+  letter-spacing: 0;
+  line-height: 40px;
+}
+p {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.background-nav
+{
+  background-color:#9e4800;
+
+}
+.logo {
+  width: 600px;
+  height: auto;
+}
+
+.prematch
+{
+  text-align: center;
+}
+
+.rteindent4 {
+  margin-left: 160px;
+  margin-right: 160px;
+  text-align: left;
+}
+
+.login {
+
+    position: absolute;
+    right: 15px;
+
 }
