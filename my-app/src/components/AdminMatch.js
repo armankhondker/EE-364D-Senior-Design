@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Button from "react-bootstrap/Button"
 import Dropdown from "react-bootstrap/Dropdown";
+import ReactLoading from 'react-loading';
 import {forEach} from "react-bootstrap/cjs/ElementChildren";
+import axios from "axios";
 
 class AdminMatch extends Component {
 
@@ -10,11 +12,13 @@ class AdminMatch extends Component {
 
         this.handleSelect = this.handleSelect.bind(this);
         this.findSelection = this.findSelection.bind(this);
+        this.runMatchingAlgorithm = this.runMatchingAlgorithm.bind(this);
 
         this.state = {
             projects: props.projects,
             projectListToPickFrom: props.projects,
-            projectSelection : []
+            projectSelection : [],
+            isRunning: false
         }
     }
 
@@ -79,6 +83,16 @@ class AdminMatch extends Component {
         }
     }
 
+    async runMatchingAlgorithm() {
+        console.log("running");
+        this.setState({ isRunning: true });
+        await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/algo')
+            .then(res => {
+                console.log(res);
+                this.setState({ isRunning: false });
+            });
+    }
+
     render(){
 
         let hasMounted = false;
@@ -91,7 +105,7 @@ class AdminMatch extends Component {
                 <p>Pre-Match Selection Option</p>
 
                 <table style={{width:"50%", margin: "auto"}}>
-                    {hasMounted ? (
+                    {(hasMounted && !this.state.isRunning) ? (
                         this.props.students.map((val,ind) => {
                             return(
                                 <div align="center">
@@ -135,6 +149,18 @@ class AdminMatch extends Component {
                     )
                     }
                 </table>
+                <br/>
+                {!this.state.isRunning ? (
+                    <Button size="lg" onClick={this.runMatchingAlgorithm}>
+                        Run
+                    </Button>
+                ) : (
+                    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', flexDirection: 'column'}}>
+                        <ReactLoading type={"spinningBubbles"} color={'#9e4800'} height={200} width={200}/>
+                        <br/>
+                        <h4>   Running Matching Algorithm...</h4>
+                    </div>
+                )}
             </div>
         );
     }
