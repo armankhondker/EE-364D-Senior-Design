@@ -162,6 +162,7 @@ class AdminMatch extends Component {
                         </Button>
                     </div>
                 } else {
+                    //Running match
                     CurrentDisplay = <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', flexDirection: 'column'}}>
                         {Loading}
                         <br/>
@@ -170,72 +171,13 @@ class AdminMatch extends Component {
                 }
             }
         } else {
+           //Loading API data
            CurrentDisplay = Loading;
         }
-
-
-
 
         return(
             <div>
                 {CurrentDisplay}
-                {/*<table style={{width:"50%", margin: "auto"}}>*/}
-                {/*    {(hasMounted && !isRunning && !isDone) ? (*/}
-                {/*        this.props.students.map((val,ind) => {*/}
-                {/*            return(*/}
-                {/*                <div align="center">*/}
-                {/*                    <tr>*/}
-                {/*                        <td ><Button style={{width: "200px"}}>{val.name}</Button></td>*/}
-                {/*                        <td>*/}
-                {/*                            <Dropdown>*/}
-                {/*                                <Dropdown>*/}
-                {/*                                    <Dropdown.Toggle variant="success" id="dropdown-basic">*/}
-                {/*                                        {this.findSelection(ind)}*/}
-                {/*                                    </Dropdown.Toggle>*/}
-
-                {/*                                    <Dropdown.Menu style={{'max-height': '350px', 'overflow-y': 'auto'}} >*/}
-                {/*                                        {hasMounted ? (*/}
-                {/*                                            this.state.projectListToPickFrom.map((proj, index) => {*/}
-                {/*                                                return(*/}
-                {/*                                                    <Dropdown.Item*/}
-                {/*                                                        eventKey={proj.name}*/}
-                {/*                                                        href={`#/action-${index}`}*/}
-                {/*                                                        onSelect={()=>this.handleSelect({*/}
-                {/*                                                            student: val.name,*/}
-                {/*                                                            project: proj.name,*/}
-                {/*                                                            index: ind*/}
-                {/*                                                        })}>*/}
-                {/*                                                        {proj.name}*/}
-                {/*                                                    </Dropdown.Item>*/}
-                {/*                                                )*/}
-                {/*                                            })) : (*/}
-                {/*                                            <p>Loading</p>*/}
-                {/*                                        )*/}
-                {/*                                        }*/}
-                {/*                                    </Dropdown.Menu>*/}
-                {/*                                </Dropdown>*/}
-                {/*                            </Dropdown>*/}
-                {/*                        </td>*/}
-                {/*                    </tr>*/}
-                {/*                </div>*/}
-                {/*            );*/}
-                {/*        })) : (*/}
-                {/*        <p>Loading</p>*/}
-                {/*    )*/}
-                {/*    }*/}
-                {/*</table>*/}
-                {/*<br/>*/}
-                {/*{!isRunning ? (*/}
-                {/*    <Button size="lg" onClick={this.runMatchingAlgorithm}>*/}
-                {/*        Run*/}
-                {/*    </Button>*/}
-                {/*) : (*/}
-                {/*    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', flexDirection: 'column'}}>*/}
-                {/*        <ReactLoading type={"spinningBubbles"} color={'#9e4800'} height={200} width={200}/>*/}
-                {/*        <br/>*/}
-                {/*        <h4>   Running Matching Algorithm...</h4>*/}
-                {/*    </div>*/}
-                {/*)}*/}
             </div>
         );
     }
