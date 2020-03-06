@@ -9,7 +9,6 @@ class AdminMatch extends Component {
 
     constructor(props) {
         super(props);
-
         this.handleSelect = this.handleSelect.bind(this);
         this.findSelection = this.findSelection.bind(this);
         this.runMatchingAlgorithm = this.runMatchingAlgorithm.bind(this);
@@ -18,7 +17,8 @@ class AdminMatch extends Component {
             projects: props.projects,
             projectListToPickFrom: props.projects,
             projectSelection : [],
-            isRunning: false
+            isRunning: false,
+            isDone: false,
         }
     }
 
@@ -85,82 +85,157 @@ class AdminMatch extends Component {
 
     async runMatchingAlgorithm() {
         console.log("running");
+        window.scrollTo(0,0);
         this.setState({ isRunning: true });
-        await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/algo')
+        // await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/algo')
+        await axios.get('http://localhost:8000/api/algo')
             .then(res => {
                 console.log(res);
+                if(res.status === 200) {
+                   this.setState({ isDone: true });
+                }
                 this.setState({ isRunning: false });
             });
     }
 
     render(){
-
+        let {isRunning, isDone} = this.state;
         let hasMounted = false;
         if(this.props.students !== null && this.state.projectListToPickFrom !== null) {
             hasMounted = true;
         }
+        let Loading = <ReactLoading type={"spinningBubbles"} color={'#9e4800'} height={200} width={200}/>;
+        let CurrentDisplay = Loading;
+        if(hasMounted) {
+            if(isDone ) {
+                //DONE screen
+                CurrentDisplay = <h4>Matching <span style={{color: 'green'}}>successful</span>. View completed matches in the "Results" tab.</h4>
+            } else {
+                if(!isRunning) {
+                    //Not running and not DONE
+                    //Prematch
+                    CurrentDisplay = <div>
+                        <p>Pre-Match Selection Option</p>
+                        <table style={{width: "50%", margin: "auto"}}>
+                            {this.props.students.map((val, ind) => {
+                                return (
+                                    <div align="center">
+                                        <tr>
+                                            <td><Button style={{width: "200px"}}>{val.name}</Button></td>
+                                            <td>
+                                                <Dropdown>
+                                                    <Dropdown>
+                                                        <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                                            {this.findSelection(ind)}
+                                                        </Dropdown.Toggle>
+                                                        <Dropdown.Menu
+                                                            style={{'max-height': '350px', 'overflow-y': 'auto'}}>
+                                                            {this.state.projectListToPickFrom.map((proj, index) => {
+                                                                    return (
+                                                                        <Dropdown.Item
+                                                                            eventKey={proj.name}
+                                                                            href={`#/action-${index}`}
+                                                                            onSelect={() => this.handleSelect({
+                                                                                student: val.name,
+                                                                                project: proj.name,
+                                                                                index: ind
+                                                                            })}>
+                                                                            {proj.name}
+                                                                        </Dropdown.Item>
+                                                                    )
+                                                                }
+                                                            )
+                                                            }
+                                                        </Dropdown.Menu>
+                                                    </Dropdown>
+                                                </Dropdown>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                );
+                            })
+                            }
+                        </table>
+                        <br/>
+                        <Button size="lg" onClick={this.runMatchingAlgorithm}>
+                            Run
+                        </Button>
+                    </div>
+                } else {
+                    CurrentDisplay = <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', flexDirection: 'column'}}>
+                        {Loading}
+                        <br/>
+                        <h4>   Running Matching Algorithm...</h4>
+                    </div>;
+                }
+            }
+        } else {
+           CurrentDisplay = Loading;
+        }
+
+
+
 
         return(
             <div>
-                <p>Pre-Match Selection Option</p>
+                {CurrentDisplay}
+                {/*<table style={{width:"50%", margin: "auto"}}>*/}
+                {/*    {(hasMounted && !isRunning && !isDone) ? (*/}
+                {/*        this.props.students.map((val,ind) => {*/}
+                {/*            return(*/}
+                {/*                <div align="center">*/}
+                {/*                    <tr>*/}
+                {/*                        <td ><Button style={{width: "200px"}}>{val.name}</Button></td>*/}
+                {/*                        <td>*/}
+                {/*                            <Dropdown>*/}
+                {/*                                <Dropdown>*/}
+                {/*                                    <Dropdown.Toggle variant="success" id="dropdown-basic">*/}
+                {/*                                        {this.findSelection(ind)}*/}
+                {/*                                    </Dropdown.Toggle>*/}
 
-                <table style={{width:"50%", margin: "auto"}}>
-                    {(hasMounted && !this.state.isRunning) ? (
-                        this.props.students.map((val,ind) => {
-                            return(
-                                <div align="center">
-                                    <tr>
-                                        <td ><Button style={{width: "200px"}}>{val.name}</Button></td>
-                                        <td>
-                                            <Dropdown>
-                                                <Dropdown>
-                                                    <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                                        {this.findSelection(ind)}
-                                                    </Dropdown.Toggle>
-
-                                                    <Dropdown.Menu style={{'max-height': '350px', 'overflow-y': 'auto'}} >
-                                                        {hasMounted ? (
-                                                            this.state.projectListToPickFrom.map((proj, index) => {
-                                                                return(
-                                                                    <Dropdown.Item
-                                                                        eventKey={proj.name}
-                                                                        href={`#/action-${index}`}
-                                                                        onSelect={()=>this.handleSelect({
-                                                                            student: val.name,
-                                                                            project: proj.name,
-                                                                            index: ind
-                                                                        })}>
-                                                                        {proj.name}
-                                                                    </Dropdown.Item>
-                                                                )
-                                                            })) : (
-                                                            <p>Loading</p>
-                                                        )
-                                                        }
-                                                    </Dropdown.Menu>
-                                                </Dropdown>
-                                            </Dropdown>
-                                        </td>
-                                    </tr>
-                                </div>
-                            );
-                        })) : (
-                        <p>Loading</p>
-                    )
-                    }
-                </table>
-                <br/>
-                {!this.state.isRunning ? (
-                    <Button size="lg" onClick={this.runMatchingAlgorithm}>
-                        Run
-                    </Button>
-                ) : (
-                    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', flexDirection: 'column'}}>
-                        <ReactLoading type={"spinningBubbles"} color={'#9e4800'} height={200} width={200}/>
-                        <br/>
-                        <h4>   Running Matching Algorithm...</h4>
-                    </div>
-                )}
+                {/*                                    <Dropdown.Menu style={{'max-height': '350px', 'overflow-y': 'auto'}} >*/}
+                {/*                                        {hasMounted ? (*/}
+                {/*                                            this.state.projectListToPickFrom.map((proj, index) => {*/}
+                {/*                                                return(*/}
+                {/*                                                    <Dropdown.Item*/}
+                {/*                                                        eventKey={proj.name}*/}
+                {/*                                                        href={`#/action-${index}`}*/}
+                {/*                                                        onSelect={()=>this.handleSelect({*/}
+                {/*                                                            student: val.name,*/}
+                {/*                                                            project: proj.name,*/}
+                {/*                                                            index: ind*/}
+                {/*                                                        })}>*/}
+                {/*                                                        {proj.name}*/}
+                {/*                                                    </Dropdown.Item>*/}
+                {/*                                                )*/}
+                {/*                                            })) : (*/}
+                {/*                                            <p>Loading</p>*/}
+                {/*                                        )*/}
+                {/*                                        }*/}
+                {/*                                    </Dropdown.Menu>*/}
+                {/*                                </Dropdown>*/}
+                {/*                            </Dropdown>*/}
+                {/*                        </td>*/}
+                {/*                    </tr>*/}
+                {/*                </div>*/}
+                {/*            );*/}
+                {/*        })) : (*/}
+                {/*        <p>Loading</p>*/}
+                {/*    )*/}
+                {/*    }*/}
+                {/*</table>*/}
+                {/*<br/>*/}
+                {/*{!isRunning ? (*/}
+                {/*    <Button size="lg" onClick={this.runMatchingAlgorithm}>*/}
+                {/*        Run*/}
+                {/*    </Button>*/}
+                {/*) : (*/}
+                {/*    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', flexDirection: 'column'}}>*/}
+                {/*        <ReactLoading type={"spinningBubbles"} color={'#9e4800'} height={200} width={200}/>*/}
+                {/*        <br/>*/}
+                {/*        <h4>   Running Matching Algorithm...</h4>*/}
+                {/*    </div>*/}
+                {/*)}*/}
             </div>
         );
     }
