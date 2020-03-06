@@ -23,9 +23,10 @@ class AdminMatch extends Component {
     }
 
     componentDidMount() {
-        this.setState(
-            { projects: this.props.projects,
-                projectListToPickFrom: this.props.projects});
+        this.setState({
+            projects: this.props.projects,
+            projectListToPickFrom: this.props.projects
+        });
     }
 
     componentDidUpdate(prevProps){
@@ -77,8 +78,7 @@ class AdminMatch extends Component {
         let result = this.state.projectSelection.find(element => element.index === index);
         if(result === undefined || result === null) {
             return 'Auto';
-        }
-        else {
+        } else {
             return result.project;
         }
     }
@@ -131,21 +131,19 @@ class AdminMatch extends Component {
                                                         <Dropdown.Menu
                                                             style={{'max-height': '350px', 'overflow-y': 'auto'}}>
                                                             {this.state.projectListToPickFrom.map((proj, index) => {
-                                                                    return (
-                                                                        <Dropdown.Item
-                                                                            eventKey={proj.name}
-                                                                            href={`#/action-${index}`}
-                                                                            onSelect={() => this.handleSelect({
-                                                                                student: val.name,
-                                                                                project: proj.name,
-                                                                                index: ind
-                                                                            })}>
-                                                                            {proj.name}
-                                                                        </Dropdown.Item>
-                                                                    )
-                                                                }
-                                                            )
-                                                            }
+                                                                return (
+                                                                    <Dropdown.Item
+                                                                        eventKey={proj.name}
+                                                                        href={`#/action-${index}`}
+                                                                        onSelect={() => this.handleSelect({
+                                                                            student: val.name,
+                                                                            project: proj.name,
+                                                                            index: ind
+                                                                        })}>
+                                                                        {proj.name}
+                                                                    </Dropdown.Item>
+                                                                )
+                                                            })}
                                                         </Dropdown.Menu>
                                                     </Dropdown>
                                                 </Dropdown>
@@ -153,8 +151,7 @@ class AdminMatch extends Component {
                                         </tr>
                                     </div>
                                 );
-                            })
-                            }
+                            })}
                         </table>
                         <br/>
                         <Button size="lg" onClick={this.runMatchingAlgorithm}>
