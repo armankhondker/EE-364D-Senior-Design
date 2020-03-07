@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Button from "react-bootstrap/Button"
 import Dropdown from "react-bootstrap/Dropdown";
 import ReactLoading from 'react-loading';
-import {forEach} from "react-bootstrap/cjs/ElementChildren";
 import axios from "axios";
 
 class AdminMatch extends Component {
@@ -117,10 +116,10 @@ class AdminMatch extends Component {
                     CurrentDisplay = <div>
                         <p>Pre-Match Selection Option</p>
                         <table style={{width: "50%", margin: "auto"}}>
-                            {this.props.students.map((val, ind) => {
-                                return (
-                                    <div align="center">
-                                        <tr>
+                            <tbody>
+                                {this.props.students.map((val, ind) => {
+                                    return (
+                                        <tr key={ind}>
                                             <td><Button style={{width: "200px"}}>{val.name}</Button></td>
                                             <td>
                                                 <Dropdown>
@@ -139,7 +138,9 @@ class AdminMatch extends Component {
                                                                             student: val.name,
                                                                             project: proj.name,
                                                                             index: ind
-                                                                        })}>
+                                                                        })}
+                                                                        key={index}
+                                                                    >
                                                                         {proj.name}
                                                                     </Dropdown.Item>
                                                                 )
@@ -149,9 +150,9 @@ class AdminMatch extends Component {
                                                 </Dropdown>
                                             </td>
                                         </tr>
-                                    </div>
-                                );
-                            })}
+                                    );
+                                })}
+                            </tbody>
                         </table>
                         <br/>
                         <Button size="lg" onClick={this.runMatchingAlgorithm}>

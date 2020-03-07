@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import '.././App.css';
-import Form from "react-bootstrap/Form";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Button from "react-bootstrap/Button"
 import axios from 'axios';
 import Tab from 'react-bootstrap/Tab';
 import Nav from "react-bootstrap/Nav";

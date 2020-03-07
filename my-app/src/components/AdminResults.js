@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import Button from "react-bootstrap/Button"
-import axios from "axios";
 import Popup from "reactjs-popup";
 
 function displayInfo(match) {
@@ -70,9 +68,9 @@ class AdminResults extends Component {
         return(
             <div>
                 {hasMounted ? (
-                    this.props.results.map((value) => {
+                    this.props.results.map((value, index) => {
                         return (
-                            <div>
+                            <div key={index}>
                                 <Popup modal
                                        closeOnDocumentClick
                                        trigger={<button>{value.student} -> {value.project_org}</button>}>
