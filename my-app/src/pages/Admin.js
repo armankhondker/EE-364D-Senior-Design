@@ -12,6 +12,7 @@ import AdminStudents from "../components/AdminStudents";
 import AdminProjects from "../components/AdminProjects";
 import AdminMatch from "../components/AdminMatch";
 import AdminResults from "../components/AdminResults";
+import Login from "./Login";
 
 class Admin extends Component {
 	constructor(props) {
@@ -21,6 +22,8 @@ class Admin extends Component {
 			students: null,
 			projects: null,
 			loaded: false,
+			token: null,
+			isLoggedIn: false,
 		}
 	}
 
@@ -75,64 +78,99 @@ class Admin extends Component {
 		this.setState({loaded: true})
 	}
 
+	handleLogin = event => {
+		event.preventDefault();
+		console.log(event);
+	    let params = {
+	    	username: event.target[0].value,
+			password: event.target[1].value,
+		};
+		axios.post('http://localhost:8000/api-token-auth/', params)
+			.then(res => {
+				console.log(res);
+				if(res.status === 200) {
+					this.setState({
+						token: res.data,
+						isLoggedIn: true
+					})
+				} else {
+					window.alert("Incorrect Username and Password combination.");
+				}
+			});
+	}
+
+	handleLogout = event => {
+		event.preventDefault();
+		this.setState({isLoggedIn: false});
+	}
+
 	render() {
 		let hasMounted = false;
-		let {students, projects} = this.state;
-
+		let {students, projects, isLoggedIn} = this.state;
 		if(students !== null && projects !== null) {
 			hasMounted = true;
+		}
+		let CurrentDisplay;
+		if(!isLoggedIn) {
+			CurrentDisplay = <Login handleLogin={this.handleLogin.bind(this)}/>
+		} else {
+			if(hasMounted) {
+				CurrentDisplay =
+				<Tab.Container id="left-tabs-example" defaultActiveKey="first">
+					<Row>
+						<Col sm={3}>
+							<Nav variant="pills" className="flex-column">
+								<Nav.Item>
+									<Nav.Link eventKey="first">Home</Nav.Link>
+								</Nav.Item>
+								<Nav.Item>
+									<Nav.Link eventKey="second">Students</Nav.Link>
+								</Nav.Item>
+								<Nav.Item>
+									<Nav.Link eventKey="third">Projects</Nav.Link>
+								</Nav.Item>
+								<Nav.Item>
+									<Nav.Link eventKey="fourth">Match</Nav.Link>
+								</Nav.Item>
+								<Nav.Item>
+									<Nav.Link eventKey="fifth">Results</Nav.Link>
+								</Nav.Item>
+							</Nav>
+						</Col>
+						<Col sm={9}>
+							<Tab.Content>
+								<Tab.Pane eventKey="first">
+									<AdminHome handleLogout={this.handleLogout.bind(this)}/>
+								</Tab.Pane>
+								<Tab.Pane eventKey="second">
+									<AdminStudents students={this.state.students}/>
+								</Tab.Pane>
+								<Tab.Pane eventKey="third">
+									<AdminProjects projects={this.state.projects}/>
+								</Tab.Pane>
+								<Tab.Pane eventKey="fourth">
+									<AdminMatch students={this.state.students} projects={this.state.projects}/>
+								</Tab.Pane>
+								<Tab.Pane eventKey="fifth">
+									<AdminResults students={this.state.students} projects={this.state.projects} results={this.state.results}  />
+								</Tab.Pane>
+							</Tab.Content>
+						</Col>
+					</Row>
+				</Tab.Container>;
+			} else {
+				CurrentDisplay = <p>Loading</p>;
+			}
 		}
 
 		return (
 			<div align="center" className="App">
 				<br/>
 				<br/>
-
-				{hasMounted ?
-					(<Tab.Container id="left-tabs-example" defaultActiveKey="first">
-						<Row>
-							<Col sm={3}>
-								<Nav variant="pills" className="flex-column">
-									<Nav.Item>
-										<Nav.Link eventKey="first">Home</Nav.Link>
-									</Nav.Item>
-									<Nav.Item>
-										<Nav.Link eventKey="second">Students</Nav.Link>
-									</Nav.Item>
-									<Nav.Item>
-										<Nav.Link eventKey="third">Projects</Nav.Link>
-									</Nav.Item>
-									<Nav.Item>
-										<Nav.Link eventKey="fourth">Match</Nav.Link>
-									</Nav.Item>
-									<Nav.Item>
-										<Nav.Link eventKey="fifth">Results</Nav.Link>
-									</Nav.Item>
-								</Nav>
-							</Col>
-							<Col sm={9}>
-								<Tab.Content>
-									<Tab.Pane eventKey="first">
-										<AdminHome/>
-									</Tab.Pane>
-									<Tab.Pane eventKey="second">
-										<AdminStudents students={this.state.students}/>
-									</Tab.Pane>
-									<Tab.Pane eventKey="third">
-										<AdminProjects projects={this.state.projects}/>
-									</Tab.Pane>
-									<Tab.Pane eventKey="fourth">
-										<AdminMatch students={this.state.students} projects={this.state.projects}/>
-									</Tab.Pane>
-									<Tab.Pane eventKey="fifth">
-										<AdminResults students={this.state.students} projects={this.state.projects} results={this.state.results}  />
-									</Tab.Pane>
-								</Tab.Content>
-							</Col>
-						</Row>
-					</Tab.Container>
-				) : <p>Loading</p>
-				}
+				{CurrentDisplay}
+				{/*{hasMounted ?*/}
+				{/*) : <p>Loading</p>*/}
+				{/*}*/}
 
 			</div>
 			
