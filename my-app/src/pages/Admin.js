@@ -78,14 +78,14 @@ class Admin extends Component {
 		this.setState({loaded: true})
 	}
 
-	handleLogin = event => {
+	handleLogin = async (event) => {
 		event.preventDefault();
 		console.log(event);
 	    let params = {
 	    	username: event.target[0].value,
 			password: event.target[1].value,
 		};
-		axios.post('http://localhost:8000/api-token-auth/', params)
+		await axios.post('http://localhost:8000/api-token-auth/', params)
 			.then(res => {
 				console.log(res);
 				if(res.status === 200) {
@@ -93,9 +93,11 @@ class Admin extends Component {
 						token: res.data,
 						isLoggedIn: true
 					})
-				} else {
-					window.alert("Incorrect Username and Password combination.");
 				}
+			})
+			.catch(error => {
+				console.log(error);
+				window.alert("Incorrect Username and Password combination.");
 			});
 	}
 
@@ -168,15 +170,9 @@ class Admin extends Component {
 				<br/>
 				<br/>
 				{CurrentDisplay}
-				{/*{hasMounted ?*/}
-				{/*) : <p>Loading</p>*/}
-				{/*}*/}
-
 			</div>
-			
 		);
 	}
-
 }
 
 export default Admin;
