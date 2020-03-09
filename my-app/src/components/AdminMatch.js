@@ -86,8 +86,8 @@ class AdminMatch extends Component {
         console.log("running");
         window.scrollTo(0,0);
         this.setState({ isRunning: true });
-        // await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/algo')
-        await axios.get('http://localhost:8000/api/algo')
+        await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/algo')
+        // await axios.get('http://localhost:8000/api/algo')
             .then(res => {
                 console.log(res);
                 if(res.status === 200) {
