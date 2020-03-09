@@ -12,7 +12,6 @@ function StickNavbar() {
                 <Nav.Link href="Community">Organizations</Nav.Link>
                 <Nav.Link href="Admin">Admin</Nav.Link>
                 <Nav.Link href="About">About</Nav.Link>
-                <Nav.Link className="login" href="Login">Login</Nav.Link>
             </Nav>
         </Navbar>
     );
