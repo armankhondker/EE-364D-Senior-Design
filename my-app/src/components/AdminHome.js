@@ -9,7 +9,7 @@ class AdminHome extends Component {
 
     render(){
         return(
-            <Button>Log Out</Button>
+            <Button onClick={this.props.handleLogout}>Log Out</Button>
         );
     }
 }

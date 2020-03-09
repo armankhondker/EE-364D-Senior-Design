@@ -24,20 +24,22 @@ class AdminProjects extends Component {
             <div>
                 <p>Click on a project to edit project survey information</p>
                 <table style={{width:"50%", margin: "auto"}}>
-                {hasMounted ? (
-                    this.state.projects.map((proj) => {
-                        return(
-                            <tr>
-                                <Button>{proj.name}</Button>
-                            </tr>
-
-                        );
-                    })) : (
-                        <p>Loading</p>
-                )
-                }
-
-                    </table>
+                    <tbody>
+                        {hasMounted ? (
+                            this.state.projects.map((proj, index) => {
+                                return(
+                                    <tr key={index}>
+                                        <td>
+                                            <Button>{proj.name}</Button>
+                                        </td>
+                                    </tr>
+                                );
+                            })) : (
+                            <p>Loading</p>
+                        )
+                        }
+                    </tbody>
+                </table>
             </div>
         )
     }

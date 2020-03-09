@@ -14,7 +14,6 @@ class AdminStudents extends Component {
     }
 
     toggleWindowPortal(){
-        console.log("getting here");
         this.setState(state => ({
             ...state,
             showWindowPortal: !state.showWindowPortal,
@@ -35,19 +34,21 @@ class AdminStudents extends Component {
             <div>
                 <p>Click on a student to edit student survey information</p>
                 <table style={{width:"50%", margin: "auto"}}>
-                    {hasMounted ? (
-                        this.state.students.map((student) => {
-                            return(
-                                <tr>
-                                    <button onClick={this.toggleWindowPortal}>
-                                        {student.name}
-                                    </button>
-                                </tr>
-                            );
-                        })) : (
-                        <p>Loading</p>
-                    )
-                    }
+                    <tbody>
+                        {hasMounted ? (
+                            this.state.students.map((student, index) => {
+                                return(
+                                    <tr key={index}>
+                                        <td>
+                                            <Button onClick={this.toggleWindowPortal}>{student.name}</Button>
+                                        </td>
+                                    </tr>
+                                );
+                            })) : (
+                            <p>Loading</p>
+                        )
+                        }
+                    </tbody>
 
                 </table>
                 {this.state.showWindowPortal && (
