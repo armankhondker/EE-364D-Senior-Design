@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from "react-bootstrap/Button"
+import NewWindowPortal from "../components/NewWindowPortal.js";
 
 class AdminStudents extends Component {
 
@@ -7,7 +8,17 @@ class AdminStudents extends Component {
         super(props);
         this.state = {
             students: props.students,
+            studentClicked: false,
         }
+        this.toggleWindowPortal = this.toggleWindowPortal.bind(this);
+    }
+
+    toggleWindowPortal(){
+        console.log("getting here");
+        this.setState(state => ({
+            ...state,
+            showWindowPortal: !state.showWindowPortal,
+        }));
     }
 
     componentDidMount() {
@@ -28,9 +39,10 @@ class AdminStudents extends Component {
                         this.state.students.map((student) => {
                             return(
                                 <tr>
-                                    <Button>{student.name}</Button>
+                                    <button onClick={this.toggleWindowPortal}>
+                                        {student.name}
+                                    </button>
                                 </tr>
-
                             );
                         })) : (
                         <p>Loading</p>
@@ -38,6 +50,11 @@ class AdminStudents extends Component {
                     }
 
                 </table>
+                {this.state.showWindowPortal && (
+                    <NewWindowPortal>
+                        <h1>New Window for Editing Survey Responses</h1>
+                    </NewWindowPortal>
+                )}
             </div>
         )
     }
