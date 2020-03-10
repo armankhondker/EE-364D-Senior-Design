@@ -33,23 +33,23 @@ class StudentForm extends Component {
         if(!hasMounted) {
             CurrentDisplay =
                 <div>
-                    <br/><br/><br/><br/>
                     <LoadingAnimation/>;
                 </div>
         } else {
             CurrentDisplay =
                 <div className="form">
-                    <br/>
-                    <br/>
-                    <br/>
                     <Form>
                         <Form.Group controlId="nameInput">
-                            <Form.Label>Name</Form.Label>
-                            <Form.Control type="name" placeholder="First and Last Name"/>
+                            <Form.Label>First Name</Form.Label>
+                            <Form.Control type="text"/>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Last Name</Form.Label>
+                            <Form.Control type="text"/>
                         </Form.Group>
                         <Form.Group controlId="phoneInput">
                             <Form.Label>Phone #</Form.Label>
-                            <Form.Control type="phone" placeholder="5125558888"/>
+                            <Form.Control type="tel" placeholder="5125558888"/>
                         </Form.Group>
                         <Form.Group controlId="emailInput">
                             <Form.Label>Email</Form.Label>
@@ -57,7 +57,7 @@ class StudentForm extends Component {
                         </Form.Group>
                         <Form.Group controlId="linkedinInput">
                             <Form.Label>LinkedIn (preferred, but not required)</Form.Label>
-                            <Form.Control type="linkedin"/>
+                            <Form.Control type="text"/>
                         </Form.Group>
 
                         <Form.Label>Why are you interested in working on a project? (Check all that apply </Form.Label>
@@ -200,233 +200,38 @@ class StudentForm extends Component {
 
 
                         <Form.Label>Please Rate your Experience in the following Technical Skills: </Form.Label>
+                        {skills.map((skill, index) => {
+                            let formattedSkill = skill.name.replace(/\s+/g, '');
+                            return(
+                                <Form.Group key={index}>
+                                    <Form.Label>{skill.name}</Form.Label>
+                                    <RadioButton name={formattedSkill}/>
+                                </Form.Group>
+                            );
+                        })}
 
-                        <Form.Group controlId="techSkills">
-                            <Form.Label> HTML </Form.Label>
-                            <RadioButton name="HTML"/>
+
+
+                        <Form.Label>Please Rate your Experience in the following Professional Skills: </Form.Label>
+                        <Form.Group>
+                            <Form.Label>Communication</Form.Label>
+                                <RadioButton name="Communication"/>
                         </Form.Group>
-
-
-                        <Form.Group controlId="techSkills">
-                            <Form.Label> Python </Form.Label>
-                            <Form.Control as="select">
-                                <option></option>
-                                <option>1 - Not Experienced</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5 - Extremely Experienced</option>
-                            </Form.Control>
+                        <Form.Group>
+                            <Form.Label>Time Management</Form.Label>
+                            <RadioButton name="TimeManagement"/>
                         </Form.Group>
-
-
-                        <Form.Group controlId="techSkills">
-                            <Form.Label> Java </Form.Label>
-                            <Form.Control as="select">
-                                <option></option>
-                                <option>1 - Not Experienced</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5 - Extremely Experienced</option>
-                            </Form.Control>
+                        <Form.Group>
+                            <Form.Label>Decision Making</Form.Label>
+                            <RadioButton name="DecisionMaking"/>
                         </Form.Group>
-
-
-                        <Form.Group controlId="techSkills">
-                            <Form.Label> Tableau </Form.Label>
-                            <Form.Control as="select">
-                                <option></option>
-                                <option>1 - Not Experienced</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5 - Extremely Experienced</option>
-                            </Form.Control>
+                        <Form.Group>
+                            <Form.Label>Leadership</Form.Label>
+                            <RadioButton name="Leadership"/>
                         </Form.Group>
-
-
-                        <Form.Group controlId="techSkills">
-                            <Form.Label> Data Analysis </Form.Label>
-                            <Form.Control as="select">
-                                <option></option>
-                                <option>1 - Not Experienced</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5 - Extremely Experienced</option>
-                            </Form.Control>
-                        </Form.Group>
-
-                        <Form.Group controlId="techSkills">
-                            <Form.Label> Database Design </Form.Label>
-                            <Form.Control as="select">
-                                <option></option>
-                                <option>1 - Not Experienced</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5 - Extremely Experienced</option>
-                            </Form.Control>
-                        </Form.Group>
-
-
-                        <Form.Group controlId="techSkills">
-                            <Form.Label> Logic Modeling </Form.Label>
-                            <Form.Control as="select">
-                                <option></option>
-                                <option>1 - Not Experienced</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5 - Extremely Experienced</option>
-                            </Form.Control>
-                        </Form.Group>
-
-
-                        <Form.Group controlId="techSkills">
-                            <Form.Label> Outcomes Definition </Form.Label>
-                            <Form.Control as="select">
-                                <option></option>
-                                <option>1 - Not Experienced</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5 - Extremely Experienced</option>
-                            </Form.Control>
-                        </Form.Group>
-
-
-                        <Form.Group controlId="techSkills">
-                            <Form.Label> Measurement Strategy </Form.Label>
-                            <Form.Control as="select">
-                                <option></option>
-                                <option>1 - Not Experienced</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5 - Extremely Experienced</option>
-                            </Form.Control>
-                        </Form.Group>
-
-
-                        <Form.Group controlId="techSkills">
-                            <Form.Label> Data Visualization </Form.Label>
-                            <Form.Control as="select">
-                                <option></option>
-                                <option>1 - Not Experienced</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5 - Extremely Experienced</option>
-                            </Form.Control>
-                        </Form.Group>
-
-
-                        <Form.Group controlId="techSkills">
-                            <Form.Label> Data Collection/Adminstration </Form.Label>
-                            <Form.Control as="select">
-                                <option></option>
-                                <option>1 - Not Experienced</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5 - Extremely Experienced</option>
-                            </Form.Control>
-                        </Form.Group>
-
-
-                        <Form.Group controlId="techSkills">
-                            <Form.Label> Survey Design </Form.Label>
-                            <Form.Control as="select">
-                                <option></option>
-                                <option>1 - Not Experienced</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5 - Extremely Experienced</option>
-                            </Form.Control>
-                        </Form.Group>
-
-
-                        <Form.Group controlId="techSkills">
-                            <Form.Label> Microsoft Office Suite </Form.Label>
-                            <Form.Control as="select">
-                                <option></option>
-                                <option>1 - Not Experienced</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5 - Extremely Experienced</option>
-                            </Form.Control>
-                        </Form.Group>
-
-                        <Form.Group controlId="sectionTitle">
-                            <Form.Label>Please Rate your Experience in the following Professional Skills: </Form.Label>
-
-                        </Form.Group>
-                        <Form.Group controlId="profSkills">
-                            <Form.Label> Communication </Form.Label>
-                            <Form.Control as="select">
-                                <option></option>
-                                <option>1 - Not Experienced</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5 - Extremely Experienced</option>
-                            </Form.Control>
-                        </Form.Group>
-
-
-                        <Form.Group controlId="profSkills">
-                            <Form.Label> Time-Management </Form.Label>
-                            <Form.Control as="select">
-                                <option></option>
-                                <option>1 - Not Experienced</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5 - Extremely Experienced</option>
-                            </Form.Control>
-                        </Form.Group>
-
-
-                        <Form.Group controlId="profSkills">
-                            <Form.Label> Decision-Making </Form.Label>
-                            <Form.Control as="select">
-                                <option></option>
-                                <option>1 - Not Experienced</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5 - Extremely Experienced</option>
-                            </Form.Control>
-                        </Form.Group>
-
-
-                        <Form.Group controlId="profSkills">
-                            <Form.Label> Leadership </Form.Label>
-                            <Form.Control as="select">
-                                <option></option>
-                                <option>1 - Not Experienced</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5 - Extremely Experienced</option>
-                            </Form.Control>
-                        </Form.Group>
-
-
-                        <Form.Group controlId="profSkills">
-                            <Form.Label> Teamwork </Form.Label>
-                            <Form.Control as="select">
-                                <option></option>
-                                <option>1 - Not Experienced</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5 - Extremely Experienced</option>
-                            </Form.Control>
+                        <Form.Group>
+                            <Form.Label>Teamwork</Form.Label>
+                            <RadioButton name="Teamwork"/>
                         </Form.Group>
 
                         <Form.Group controlId="profSkills">
@@ -435,6 +240,7 @@ class StudentForm extends Component {
                                 them here!</Form.Label>
                             <Form.Control type="profList"/>
                         </Form.Group>
+
                         <Button variant="primary" type="submit">
                             Submit
                         </Button>
@@ -445,13 +251,14 @@ class StudentForm extends Component {
 
         return (
             <div>
+                <br/><br/><br/><br/>
                 {CurrentDisplay}
             </div>
         );
     }
 }
 
-            export default StudentForm;
+export default StudentForm;
         
  
  
