@@ -2,6 +2,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import React, { Component } from 'react';
 import Col from 'react-bootstrap/Form';
+import RadioButton from "../components/RadioButton";
 import '../App.css';
 
 
@@ -166,14 +167,7 @@ class StudentForm extends Component {
 
             <Form.Group controlId="techSkills">
                 <Form.Label> HTML </Form.Label>
-                <Form.Control as="select">
-                <option> </option>
-                <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5 - Extremely Experienced</option>
-                </Form.Control>
+                <RadioButton name="HTML"/>
             </Form.Group>
             
 
