@@ -14,7 +14,7 @@ RGK Connect Matching is a web application designed to display the matchings betw
 
 ## Technologies
 
-* Front-End: ReactJS 
+* Front-End: [React.js](https://reactjs.org)
 * Back-End: Python, Node.js, AWS
 
 
