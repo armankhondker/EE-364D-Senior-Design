@@ -6,8 +6,8 @@ RGK Connect Matching is a web application designed to display the matchings betw
 
 ## Development Team 
 
-Arman Khondker - Front End Development Lead
-Desiree Tang - Project Lead
-Josh Papermaster - Algorithm Development Lead
-Punit Patel - Report Lead
-Thienson Ho - Back End Development Lead
+* **Arman Khondker - Front End Development Lead
+* **Desiree Tang - Project Lead
+* **Josh Papermaster - Algorithm Development Lead
+* **Punit Patel - Report Lead
+* **Thienson Ho - Back End Development Lead
