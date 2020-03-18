@@ -20,6 +20,6 @@ CONNECT is a platform focused on connecting organizations in the community who h
 ## Technologies
 
 * Front-End: [React.js](https://reactjs.org)
-* Back-End: Python, Node.js, AWS
+* Back-End: Python, Node.js, AWS, MongoDB
 
 
