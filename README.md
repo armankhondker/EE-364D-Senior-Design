@@ -19,12 +19,6 @@ CONNECT is a platform focused on connecting organizations in the community who h
 
 ## Technologies
 
-* React: Front End Javascript Framework
-* Node.js: Back End Javascript Framework 
-* Github API: User stats dynamically pulled from Github.com
-* Amazon Web Services: Hosting of web applicaiton
-* Python: Backend webscrapping
-* MongoDB: Database to store our scrapping data
-* Namecheap: Purchase linedrivebetting domain
-
+* Front-End: [React.js](https://reactjs.org)
+* Back-End: Python, Node.js, AWS, MongoDB
 
