@@ -335,16 +335,17 @@ class StudentForm extends Component {
                 <Form.Label>How skilled are you with leading and managing a project from start to finish with little guidance from your client? </Form.Label>
                 <Form.Control as="select">
                 <option> </option>
-                <option>1 - Not Skilled at All </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5 - Extremely Skilled</option>
+                <option>1 - Not Experienced </option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
+                <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
 
             <Form.Group controlId="SectionTitle">
                 <Form.Label>How experienced are you in completing the following project tasks/deliverables: </Form.Label>
+                <Form.Label>1 = Not Experienced  2 = Slightly Familiar  3 = Familiar  4 = Experienced  5 = Extremely Experienced </Form.Label>
 
             </Form.Group>
             <Form.Group controlId="projectDeliverables">
@@ -352,9 +353,9 @@ class StudentForm extends Component {
                 <Form.Control as="select">
                 <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -365,9 +366,9 @@ class StudentForm extends Component {
                 <Form.Control as="select">
                 <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -377,9 +378,9 @@ class StudentForm extends Component {
                 <Form.Control as="select">
                 <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -389,9 +390,9 @@ class StudentForm extends Component {
                 <Form.Control as="select">
                 <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -399,11 +400,10 @@ class StudentForm extends Component {
             <Form.Group controlId="projectDeliverables">
                 <Form.Label>Data Mining, Statistical Analysis, Data Visualization, Report/Dashboard Development </Form.Label>
                 <Form.Control as="select">
-                <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -413,9 +413,9 @@ class StudentForm extends Component {
                 <Form.Control as="select">
                 <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -432,9 +432,9 @@ class StudentForm extends Component {
                 <Form.Control as="select">
                 <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -443,11 +443,10 @@ class StudentForm extends Component {
             <Form.Group controlId="techSkills">
                 <Form.Label> Python </Form.Label>
                 <Form.Control as="select">
-                <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -458,9 +457,9 @@ class StudentForm extends Component {
                 <Form.Control as="select">
                 <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -471,9 +470,9 @@ class StudentForm extends Component {
                 <Form.Control as="select">
                 <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -484,9 +483,9 @@ class StudentForm extends Component {
                 <Form.Control as="select">
                 <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -496,9 +495,9 @@ class StudentForm extends Component {
                 <Form.Control as="select">
                 <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -509,9 +508,9 @@ class StudentForm extends Component {
                 <Form.Control as="select">
                 <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -522,9 +521,9 @@ class StudentForm extends Component {
                 <Form.Control as="select">
                 <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -535,9 +534,9 @@ class StudentForm extends Component {
                 <Form.Control as="select">
                 <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -561,9 +560,9 @@ class StudentForm extends Component {
                 <Form.Control as="select">
                 <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -574,9 +573,9 @@ class StudentForm extends Component {
                 <Form.Control as="select">
                 <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -587,9 +586,9 @@ class StudentForm extends Component {
                 <Form.Control as="select">
                 <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -603,9 +602,9 @@ class StudentForm extends Component {
                 <Form.Control as="select">
                 <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -616,9 +615,9 @@ class StudentForm extends Component {
                 <Form.Control as="select">
                 <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -629,9 +628,9 @@ class StudentForm extends Component {
                 <Form.Control as="select">
                 <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -642,9 +641,9 @@ class StudentForm extends Component {
                 <Form.Control as="select">
                 <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
@@ -655,9 +654,9 @@ class StudentForm extends Component {
                 <Form.Control as="select">
                 <option> </option>
                 <option>1 - Not Experienced </option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option>2 - Slightly Familiar</option>
+                <option>3 - Familiar </option>
+                <option>4 - Experienced</option>
                 <option>5 - Extremely Experienced</option>
                 </Form.Control>
             </Form.Group>
