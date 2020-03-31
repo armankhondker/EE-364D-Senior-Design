@@ -7,6 +7,35 @@ import '../App.css';
 
 class StudentForm extends Component {
 
+	constructor(props) {
+		super(props);
+		this.state = {
+			phoneInput: "",
+			nameInput: "",
+			emailInput: "",
+			linkedinInput: "",
+			interestInput: "",
+			projectCategories: "",
+			timeCommit: ""
+		}
+		 this.handlePhone = this.handlePhone.bind(this);
+		 this.handleName = this.handleName.bind(this);
+	}
+
+	handlePhone(e) {
+		var num = e.target.value;
+		this.setState(state => ({
+      phoneInput: num
+    }));
+	}
+
+	handleName(e) {
+		var name = e.target.value;
+		this.setState(state => ({
+      nameInput: name
+    }));
+	}
+
 	render() {
 		return (
 		    <div className="form">
@@ -14,45 +43,44 @@ class StudentForm extends Component {
                 <br/>
                 <br/>
            <Form.Group controlId="nameInput">
-                <Form.Label>Name</Form.Label>
-                <Form.Control type="name" placeholder="First and Last Name"/>
-                </Form.Group>
+	            <Form.Label>Name</Form.Label>
+	            <Form.Control type="name" placeholder="First and Last Name" value={this.state.nameInput} onChange={this.handleName}/>
+            </Form.Group>
 
-                <Form.Group controlId="phoneInput">
-                <Form.Label>Phone #</Form.Label>
-                <Form.Control type="phone" placeholder="5125558888"/>
-                </Form.Group>
+            <Form.Group controlId="phoneInput">
+              <Form.Label>Phone #</Form.Label>
+              <Form.Control type="phone" placeholder="5129994444" value={this.state.phoneInput} onChange={this.handlePhone}/>
+            </Form.Group>
 
             <Form.Group controlId="emailInput">
-                <Form.Label>Email</Form.Label>
-                <Form.Control type="email" placeholder="example@utexas.edu"/>
-                </Form.Group>
+	            <Form.Label>Email</Form.Label>
+	            <Form.Control type="email" placeholder="example@utexas.edu" value={this.state.phoneInput} onChange={this.handlePhone}/>
+            </Form.Group>
 
-                <Form.Group controlId="linkedinInput">
-                <Form.Label>LinkedIn (preferred, but not required)</Form.Label>
-                <Form.Control type="linkedin"/>
-                </Form.Group>
+            <Form.Group controlId="linkedinInput">
+              <Form.Label>LinkedIn (preferred, but not required)</Form.Label>
+              <Form.Control type="linkedin" value={this.state.phoneInput} onChange={this.handlePhone}/>
+            </Form.Group>
 
             <Form>
-
-            <Form.Group controlId="interestInput">
-                <Form.Label>Why are you interested in working on a project? (Check all that apply </Form.Label>
-                </Form.Group>
-            {['checkbox'].map(type => (
-                <div key={`default-${type}`} className="mb-3">
-                <Form.Check
-                    type={type}
-                    id={`default-${type}`}
-                    label={`To gain real-real world experience`}
-                />
-                <Form.Check
-                    label={`To participate in a paid experience`}
-                />
-                    <Form.Check
-                    label={`To fulfill an academic requirement (i.e. capstone, thesis, dissertation)`}
-                />
-                </div>
-            ))}
+	            <Form.Group controlId="interestInput">
+	                <Form.Label>Why are you interested in working on a project? (Check all that apply </Form.Label>
+              </Form.Group>
+	            {['checkbox'].map(type => (
+	                <div key={`default-${type}`} className="mb-3">
+	                <Form.Check
+	                    type={type}
+	                    id={`default-${type}`}
+	                    label={`To gain real-real world experience`}
+	                />
+	                <Form.Check
+	                    label={`To participate in a paid experience`}
+	                />
+	                    <Form.Check
+	                    label={`To fulfill an academic requirement (i.e. capstone, thesis, dissertation)`}
+	                />
+	                </div>
+	            ))}
             </Form>
 
 
