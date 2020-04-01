@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import React, { Component } from 'react';
 import RadioButton from "../components/RadioButton";
 import LoadingAnimation from "../components/LoadingAnimation";
+import update from 'react-addons-update';
 import '../App.css';
 import axios from "axios";
 
@@ -13,15 +14,21 @@ class StudentForm extends Component {
         this.state = {
             skills: null,
 						phoneInput: "",
-						nameInput: "",
+						firstNameInput: "",
+						lastNameInput: "",
 						emailInput: "",
 						linkedinInput: "",
-						interestInput: "",
 						projectCategories: "",
 						timeCommit: "",
+						decisionData: [],
+						interestOptions:["Research", "Data Collection", "software Development", "Business Intelligence", "Data Analytics"],
+						interestInput: [],
         }
 				this.handlePhone = this.handlePhone.bind(this);
-	 		 	this.handleName = this.handleName.bind(this);
+	 		 	this.handleFirstName = this.handleFirstName.bind(this);
+				this.handleLastName = this.handleLastName.bind(this);
+				this.handleInterest = this.handleInterest.bind(this);
+				this.handleRadio = this.handleRadio.bind(this);
     }
 		handlePhone(e) {
 			var num = e.target.value;
@@ -30,18 +37,50 @@ class StudentForm extends Component {
 	    }));
 		}
 
-		handleName(e) {
+		handleFirstName(e) {
 			var name = e.target.value;
 			this.setState(state => ({
-	      nameInput: name
+	      firstNameInput: name
 	    }));
+		}
+
+		handleLastName(e) {
+			var name = e.target.value;
+			this.setState(state => ({
+	      lastNameInput: name
+	    }));
+		}
+
+		handleInterest(i, e) {
+			console.log(this.state.interestInput)
+			this.setState(update(this.state, {
+				interestInput: {
+					[i] : {
+						$set: e.target.checked
+					}
+				}
+			}));
+		}
+
+		handleRadio(i, e) {
+			this.setState(update(this.state, {
+				decisionData: {
+					[i] : {
+						$set: e
+					}
+				}
+			}));
 		}
 
     async componentDidMount() {
        await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/skills')
            .then(res => {
                console.log(res);
-               this.setState({ skills: res.data });
+               this.setState({
+								 skills: res.data,
+								 decisionData: new Array(res.data.length),
+								 interestInput: new Array(this.state.interestOptions.length)
+						   });
            })
            .catch(err => console.log(err));
     }
@@ -64,15 +103,15 @@ class StudentForm extends Component {
                     <Form>
                         <Form.Group controlId="nameInput">
                             <Form.Label>First Name</Form.Label>
-                            <Form.Control placeholder="First and Last Name" value={this.state.nameInput} onChange={this.handleName} type="text"/>
+                            <Form.Control value={this.state.firstNameInput} onChange={this.handleFirstName} type="text"/>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Last Name</Form.Label>
-                            <Form.Control type="text"/>
+                            <Form.Control value={this.state.lastNameInput} onChange={this.handleLastName} type="text"/>
                         </Form.Group>
                         <Form.Group controlId="phoneInput">
                             <Form.Label>Phone #</Form.Label>
-                            <Form.Control type="tel" placeholder="5125558888"/>
+                            <Form.Control type="tel" value={this.state.phoneInput} onChange={this.handlePhone} placeholder="5125558888"/>
                         </Form.Group>
                         <Form.Group controlId="emailInput">
                             <Form.Label>Email</Form.Label>
@@ -97,21 +136,13 @@ class StudentForm extends Component {
 
                         <Form.Label>Identify each of the project categories you are interested in. (Check all that
                             apply)</Form.Label>
-                        <Form.Group controlId="research">
-                            <Form.Check label="Research"/>
-                        </Form.Group>
-                        <Form.Group controlId="dataCollection">
-                            <Form.Check label="Data Collection"/>
-                        </Form.Group>
-                        <Form.Group controlId="softwareDevelopment">
-                            <Form.Check label="Software Development"/>
-                        </Form.Group>
-                        <Form.Group controlId="businessIntelligence">
-                            <Form.Check label="Business Intelligence"/>
-                        </Form.Group>
-                        <Form.Group controlId="dataAnalytics">
-                            <Form.Check label="Data Analytics"/>
-                        </Form.Group>
+														{this.state.interestOptions.map((option, index) => {
+		                            return(
+																	<Form.Group key={index}>
+																			<Form.Check label={option} onChange={this.handleInterest.bind(this, index)}/>
+																	</Form.Group>
+																)
+														})}
 
                         <Form.Group controlId="timeCommit">
                             <Form.Label>Realistically, how much time can you commit per week to working on a
@@ -228,7 +259,7 @@ class StudentForm extends Component {
                             return(
                                 <Form.Group key={index}>
                                     <Form.Label>{skill.name}</Form.Label>
-                                    <RadioButton name={formattedSkill}/>
+                                    <RadioButton name={formattedSkill} handleRadio={this.handleRadio.bind(this, index)}/>
                                 </Form.Group>
                             );
                         })}
