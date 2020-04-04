@@ -20,14 +20,28 @@ class StudentForm extends Component {
 						linkedinInput: "",
 						projectCategories: "",
 						timeCommit: "",
-						decisionData: [],
-						interestOptions:["Research", "Data Collection", "software Development", "Business Intelligence", "Data Analytics"],
+						intentionOptions: ["To gain real world experience", "To participate in a paid experience", "To fulfill an academic requirement (i.e. capstone, thesis, dissertation"],
+						interestOptions: ["Research", "Data Collection", "Software Development", "Business Intelligence", "Data Analytics"],
+						logisticQuestions: ["To comply with University rules and regulations, are you an international student?", "Do you currently receive any UT financial aid or fellowships?", "Do you have access to transportation?", "Do you need flexible work hours?", "Do you need the ability to work remotely?"],
+						degreeOptions: ["Master of Public Affair", "Master of Global Policy Studies", "DC Concentration (MPAFF/MGPS)", "Ph.D. in Public Policy", "Nonprofit Portfolio Program", "Public Health", "Educational Psychology", "Social Work", "Other"],
+						logisticData: [],
+						intentionData: [],
 						interestInput: [],
+						decisionData: [],
+						degreeData:[],
+						degreeOption: "",
+						degreeOtherInput: "",
         }
 				this.handlePhone = this.handlePhone.bind(this);
 	 		 	this.handleFirstName = this.handleFirstName.bind(this);
 				this.handleLastName = this.handleLastName.bind(this);
+				this.handleEmail = this.handleEmail.bind(this);
+				this.handleLinkedin = this.handleLinkedin.bind(this);
+				this.handleTimeCommit = this.handleTimeCommit.bind(this);
+				this.handleIntentions = this.handleIntentions.bind(this);
 				this.handleInterest = this.handleInterest.bind(this);
+				this.handleDegreeOption = this.handleDegreeOption.bind(this);
+				this.handleLogisticQuestions = this.handleLogisticQuestions.bind(this);
 				this.handleRadio = this.handleRadio.bind(this);
     }
 		handlePhone(e) {
@@ -44,6 +58,20 @@ class StudentForm extends Component {
 	    }));
 		}
 
+		handleEmail(e) {
+			var email = e.target.value;
+			this.setState(state => ({
+				emailInput: email
+			}));
+		}
+
+		handleLinkedin(e) {
+			var li = e.target.value;
+			this.setState(state => ({
+				linkedinInput: li
+			}));
+		}
+
 		handleLastName(e) {
 			var name = e.target.value;
 			this.setState(state => ({
@@ -51,12 +79,81 @@ class StudentForm extends Component {
 	    }));
 		}
 
+		handleTimeCommit(e) {
+			var tc = e.target.value
+			this.setState(state => ({
+	      timeCommit: tc
+	    }));
+		}
+
+		handleIntentions(i, e) {
+			this.setState(update(this.state, {
+				intentionData: {
+					[i] : {
+						$set: e.target.checked
+					}
+				}
+			}));
+		}
+
 		handleInterest(i, e) {
-			console.log(this.state.interestInput)
 			this.setState(update(this.state, {
 				interestInput: {
 					[i] : {
 						$set: e.target.checked
+					}
+				}
+			}));
+		}
+
+		handleDegreeOption(i, e) {
+			var formerCheck = -1;
+			if (e.target.checked) {
+				var k=0;
+				for (k; k<this.state.degreeData.length; k++) {
+					if (this.state.degreeData[k] === true && k != i)
+						formerCheck=k;
+				}
+			}
+			// Former check is the previously checked box index
+			if (formerCheck==-1) {
+				this.setState(update(this.state, {
+					degreeData: {
+						[i] : {
+							$set: e.target.checked
+						}
+					}
+				}));
+			}
+			// If a different box was checked, uncheck it
+			else {
+				this.setState(update(this.state, {
+					degreeData: {
+						[i] : {
+							$set: e.target.checked
+						},
+						[formerCheck] : {
+							$set: false
+						}
+					}
+				}));
+			}
+			// Also update actual degree option chosen
+			if (e.target.checked) {
+				this.setState(state => ({
+					degreeOption: this.state.degreeOptions[i]
+		    }));
+			}
+		}
+
+		handleLogisticQuestions(i, choice, e) {
+			var pick=false;
+			if (choice === 0)
+				pick = true;
+			this.setState(update(this.state, {
+				logisticData: {
+					[i] : {
+						$set: pick
 					}
 				}
 			}));
@@ -79,7 +176,10 @@ class StudentForm extends Component {
                this.setState({
 								 skills: res.data,
 								 decisionData: new Array(res.data.length),
-								 interestInput: new Array(this.state.interestOptions.length)
+								 intentionData: new Array(this.state.intentionOptions.length),
+								 interestInput: new Array(this.state.interestOptions.length),
+								 degreeData: new Array(this.state.degreeOptions.length),
+								 logisticData: new Array(this.state.logisticQuestions.length)
 						   });
            })
            .catch(err => console.log(err));
@@ -115,24 +215,21 @@ class StudentForm extends Component {
                         </Form.Group>
                         <Form.Group controlId="emailInput">
                             <Form.Label>Email</Form.Label>
-                            <Form.Control type="email" placeholder="example@utexas.edu"/>
+                            <Form.Control type="email" value={this.state.emailInput} onChange={this.handleEmail} placeholder="example@utexas.edu"/>
                         </Form.Group>
                         <Form.Group controlId="linkedinInput">
                             <Form.Label>LinkedIn (preferred, but not required)</Form.Label>
-                            <Form.Control type="text"/>
+                            <Form.Control type="text" value={this.state.linkedinInput} onChange={this.handleLinkedin}/>
                         </Form.Group>
 
-                        <Form.Label>Why are you interested in working on a project? (Check all that apply </Form.Label>
-                        <Form.Group controlId="realWorldExp">
-                            <Form.Check label="To gain real world experience"/>
-                        </Form.Group>
-                        <Form.Group controlId="paidExp">
-                            <Form.Check label="To participate in a paid experience"/>
-                        </Form.Group>
-                        <Form.Group controlId="academicReqExp">
-                            <Form.Check
-                                label="To fulfill an academic requirement (i.e. capstone, thesis, dissertation"/>
-                        </Form.Group>
+												<Form.Label>Why are you interested in working on a project? (Check all that apply </Form.Label>
+														{this.state.intentionOptions.map((option, index) => {
+		                            return(
+																	<Form.Group key={index}>
+																			<Form.Check label={option} onChange={this.handleIntentions.bind(this, index)}/>
+																	</Form.Group>
+																)
+														})}
 
                         <Form.Label>Identify each of the project categories you are interested in. (Check all that
                             apply)</Form.Label>
@@ -147,7 +244,7 @@ class StudentForm extends Component {
                         <Form.Group controlId="timeCommit">
                             <Form.Label>Realistically, how much time can you commit per week to working on a
                                 project? </Form.Label>
-                            <Form.Control as="select">
+                            <Form.Control as="select" onChange={this.handleTimeCommit}>
                                 <option></option>
                                 <option>Less than 5 Hours Per Week</option>
                                 <option>5-10 Hours Per Week</option>
@@ -156,44 +253,26 @@ class StudentForm extends Component {
                             </Form.Control>
                         </Form.Group>
 
-                        <Form.Group controlId="intlStudent">
-                            <Form.Label>To comply with University rules and regulations, are you an international
-                                student?</Form.Label>
-                            <Form.Check type="radio" label="Yes"/>
-                            <Form.Check type="radio" label="No"/>
-                        </Form.Group>
-                        <Form.Group controlId="finAid">
-                            <Form.Label>Do you currently receive any UT financial aid or fellowships?</Form.Label>
-                            <Form.Check type="radio" label="Yes"/>
-                            <Form.Check type="radio" label="No"/>
-                        </Form.Group>
-                        <Form.Group controlId="transport">
-                            <Form.Label>Do you have access to transportation?</Form.Label>
-                            <Form.Check type="radio" label="Yes"/>
-                            <Form.Check type="radio" label="No"/>
-                        </Form.Group>
-                        <Form.Group controlId="flexible">
-                            <Form.Label>Do you need flexible work hours?</Form.Label>
-                            <Form.Check type="radio" label="Yes"/>
-                            <Form.Check type="radio" label="No"/>
-                        </Form.Group>
-                        <Form.Group controlId="flexible">
-                            <Form.Label>Do you need the ability to work remotely?</Form.Label>
-                            <Form.Check type="radio" label="Yes"/>
-                            <Form.Check type="radio" label="No"/>
-                        </Form.Group>
+												{this.state.logisticQuestions.map((question, index) => {
+														return(
+															<Form.Group key={index}>
+																	<Form.Label>{question}</Form.Label>
+																	<Form.Check type="Radio" label="Yes" checked={this.state.logisticData[index]} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
+																	<Form.Check type="Radio" label="No" checked={!this.state.logisticData[index]} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
+															</Form.Group>
+														)
+												})}
+
 
                         <Form.Group controlId="degree">
-                            <Form.Label>Which degree program are you currently enrolled in? </Form.Label>
-                            <Form.Check type="radio" label="Master of Public Affair"/>
-                            <Form.Check type="radio" label="Master of Global Policy Studies"/>
-                            <Form.Check type="radio" label="DC Concentration (MPAFF/MGPS)"/>
-                            <Form.Check type="radio" label="Ph.D. in Public Policy"/>
-                            <Form.Check type="radio" label="Nonprofit Portfolio Program"/>
-                            <Form.Check type="radio" label="Public Health"/>
-                            <Form.Check type="radio" label="Educational Psychology"/>
-                            <Form.Check type="radio" label="Social Work"/>
-                            <Form.Check type="radio" label="Other"/>
+                            <Form.Label>Which degree program are you currently enrolled in?</Form.Label>
+														{this.state.degreeOptions.map((option, index) => {
+																return(
+																		<Form.Group key={index}>
+																			<Form.Check type="Radio" label={option} checked={this.state.degreeData[index]} onChange={this.handleDegreeOption.bind(this, index)}/>
+																		</Form.Group>
+																)
+														})}
                         </Form.Group>
 
                         <Form.Group controlId="CoursesTaken1">
@@ -295,7 +374,7 @@ class StudentForm extends Component {
                             <Form.Control type="profList"/>
                         </Form.Group>
 
-                        <Button variant="primary" type="submit">
+                        <Button variant="primary" type="button">
                             Submit
                         </Button>
                     </Form>
