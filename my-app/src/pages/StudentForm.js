@@ -1,5 +1,7 @@
 
 import Form from 'react-bootstrap/Form';
+import FormCheck from 'react-bootstrap/FormCheck'
+import FormFile from 'react-bootstrap/FormFile'
 import Button from 'react-bootstrap/Button';
 import React, { Component } from 'react';
 import RadioButton from "../components/RadioButton";
@@ -25,12 +27,19 @@ class StudentForm extends Component {
 						logisticQuestions: ["To comply with University rules and regulations, are you an international student?", "Do you currently receive any UT financial aid or fellowships?", "Do you have access to transportation?", "Do you need flexible work hours?", "Do you need the ability to work remotely?"],
 						degreeOptions: ["Master of Public Affair", "Master of Global Policy Studies", "DC Concentration (MPAFF/MGPS)", "Ph.D. in Public Policy", "Nonprofit Portfolio Program", "Public Health", "Educational Psychology", "Social Work", "Other"],
 						logisticData: [],
+						logisticFlags: [],
 						intentionData: [],
 						interestInput: [],
+						courseQuestions: ["Data Visualization, Statistics, and Econometrics for Policy Analysis, Using the Python Data Science Platform (PA 397C-60380)", "Data Analysis/Simulation in R (EDP 380C)", "Advanced Statistical Modeling (EDP 381D)"],
+						courseInputs: [],
 						decisionData: [],
 						degreeData:[],
 						degreeOption: "",
 						degreeOtherInput: "",
+						experienceQuestions:["Over the past 5 years, approximately how much experience have you had working or directly volunteering with nonprofit organizations?"],
+						experienceInputs: [],
+						guidanceSkill: "",
+						extraSkills: ""
         }
 				this.handlePhone = this.handlePhone.bind(this);
 	 		 	this.handleFirstName = this.handleFirstName.bind(this);
@@ -42,7 +51,11 @@ class StudentForm extends Component {
 				this.handleInterest = this.handleInterest.bind(this);
 				this.handleDegreeOption = this.handleDegreeOption.bind(this);
 				this.handleLogisticQuestions = this.handleLogisticQuestions.bind(this);
+				this.handleCourseInputs = this.handleCourseInputs.bind(this);
+				this.handleExperienceQuestions = this.handleExperienceQuestions.bind(this);
+				this.handleGuidanceQuestion = this.handleGuidanceQuestion.bind(this);
 				this.handleRadio = this.handleRadio.bind(this);
+				this.handleExtraSkills = this.handleExtraSkills.bind(this);
     }
 		handlePhone(e) {
 			var num = e.target.value;
@@ -111,12 +124,12 @@ class StudentForm extends Component {
 			if (e.target.checked) {
 				var k=0;
 				for (k; k<this.state.degreeData.length; k++) {
-					if (this.state.degreeData[k] === true && k != i)
+					if (this.state.degreeData[k] === true && k !== i)
 						formerCheck=k;
 				}
 			}
 			// Former check is the previously checked box index
-			if (formerCheck==-1) {
+			if (formerCheck === -1) {
 				this.setState(update(this.state, {
 					degreeData: {
 						[i] : {
@@ -155,7 +168,39 @@ class StudentForm extends Component {
 					[i] : {
 						$set: pick
 					}
+				},
+				logisticFlags: {
+					[i] : {
+						$set: true
+					}
 				}
+			}));
+		}
+
+		handleCourseInputs(i, e) {
+			this.setState(update(this.state, {
+				courseInputs: {
+					[i] : {
+						$set: e.target.checked
+					}
+				}
+			}));
+		}
+
+		handleExperienceQuestions(i, e) {
+			this.setState(update(this.state, {
+				experienceInputs: {
+					[i] : {
+						$set: e.target.value
+					}
+				}
+			}));
+		}
+
+		handleGuidanceQuestion(e) {
+			var guidanceValue = e.target.value
+			this.setState(state => ({
+				guidanceSkill: guidanceValue
 			}));
 		}
 
@@ -169,6 +214,13 @@ class StudentForm extends Component {
 			}));
 		}
 
+		handleExtraSkills(e) {
+			var writtenText = e.target.value
+			this.setState(state => ({
+				extraSkills: writtenText
+			}));
+		}
+
     async componentDidMount() {
        await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/skills')
            .then(res => {
@@ -179,7 +231,10 @@ class StudentForm extends Component {
 								 intentionData: new Array(this.state.intentionOptions.length),
 								 interestInput: new Array(this.state.interestOptions.length),
 								 degreeData: new Array(this.state.degreeOptions.length),
-								 logisticData: new Array(this.state.logisticQuestions.length)
+								 logisticData: new Array(this.state.logisticQuestions.length),
+								 logisticFlags: new Array(this.state.logisticQuestions.length),
+								 courseInputs: new Array(this.state.courseQuestions.length),
+								 experienceInputs: new Array(this.state.experienceQuestions.length)
 						   });
            })
            .catch(err => console.log(err));
@@ -221,6 +276,12 @@ class StudentForm extends Component {
                             <Form.Label>LinkedIn (preferred, but not required)</Form.Label>
                             <Form.Control type="text" value={this.state.linkedinInput} onChange={this.handleLinkedin}/>
                         </Form.Group>
+												<div className="mb-3">
+											    <Form.File id="resumeInput">
+											      <Form.File.Label>Regular file input</Form.File.Label>
+											      <Form.File.Input />
+											    </Form.File>
+											  </div>
 
 												<Form.Label>Why are you interested in working on a project? (Check all that apply </Form.Label>
 														{this.state.intentionOptions.map((option, index) => {
@@ -254,13 +315,24 @@ class StudentForm extends Component {
                         </Form.Group>
 
 												{this.state.logisticQuestions.map((question, index) => {
-														return(
+													if (this.state.logisticFlags[index]) {
+														return (
 															<Form.Group key={index}>
 																	<Form.Label>{question}</Form.Label>
 																	<Form.Check type="Radio" label="Yes" checked={this.state.logisticData[index]} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
 																	<Form.Check type="Radio" label="No" checked={!this.state.logisticData[index]} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
 															</Form.Group>
 														)
+													}
+													else {
+														return (
+															<Form.Group key={index}>
+																	<Form.Label>{question}</Form.Label>
+																	<Form.Check type="Radio" label="Yes" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
+																	<Form.Check type="Radio" label="No" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
+															</Form.Group>
+														)
+													}
 												})}
 
 
@@ -275,53 +347,46 @@ class StudentForm extends Component {
 														})}
                         </Form.Group>
 
-                        <Form.Group controlId="CoursesTaken1">
-                            <Form.Label>Identify each of the following courses you have taken/completed. </Form.Label>
-                            <Form.Check label="Consulting For Social Impact (PA 388L-60235"/>
-                            <Form.Check
-                                label="Program Evaluation for Nonprofit, Public, & Social Impact Initiatives (PA 397C-59534)"/>
-                            <Form.Check label="Nonprofit Management & Strategy (PA 388L - 60900)"/>
-                            <Form.Check label="Program Evaluation (SW N393T28)"/>
-                            <Form.Check label="Nonprofit Management (SW 393T18)"/>
-                            <Form.Check label="Program Evaluation: Models & Techniques (EDP 380D)"/>
-                            <Form.Check label="Measurement Theory (PHD 1130L)"/>
-                            <Form.Check label="Program Evaluation (PHWM 1120L)"/>
-                        </Form.Group>
-
-
-                        <Form.Group controlId="coursesTaken2">
-                            <Form.Label>Identify each of the following courses you have taken/completed. </Form.Label>
-                            <Form.Check label="Data Management & Research Life Cycle (PA 397C-60372)"/>
-                            <Form.Check
-                                label="Linked Open Data & Computational Social Science Methods (PA 397C-59530)"/>
-                            <Form.Check label="Data Visualization, Statistics, and Econometrics for Policy Analysis,
-                    Using the Python Data Science Platform (PA 397C-60380)"/>
-                            <Form.Check label="Statistical Analysis & Learning (PA 397C-60400)"/>
-                            <Form.Check label="Data Analysis/Simulation in R (EDP 380C)"/>
-                            <Form.Check label="Advanced Statistical Modeling (EDP 381D)"/>
-                            <Form.Check label="Introduction to Data Science (PHM 1975L)"/>
-                            <Form.Check label="Fundamentals of Data Analysis for Behavioral Science (PHD 1121L)"/>
-                            <Form.Check label="Advanced Quantitative Analysis for Behavioral Science (PHD 1121L)"/>
-                            <Form.Check label="Structural Equation Modeling (SW 388RII or EDP 380C)"/>
-                        </Form.Group>
+												<Form.Group controlId="CoursesTaken">
+													<Form.Label>Identify each of the following courses you have taken/completed. </Form.Label>
+														{this.state.courseQuestions.map((course, index) => {
+															if (index % 10 === 0 && index > 0) {
+																return (
+																		<div>
+																	 		<br></br>
+																			<Form.Label>Identify each of the following courses you have taken/completed. </Form.Label>
+																			<Form.Check label={course} onChange={this.handleCourseInputs.bind(this, index)}/>
+																		</div>
+															  )
+														 }
+														 else
+																return (
+ 																		<Form.Check label={course} onChange={this.handleCourseInputs.bind(this, index)}/>
+ 															 )
+														})}
+												</Form.Group>
 
                         <Form.Group controlId="experience">
-                            <Form.Label>Over the past 5 years, approximately how much experience have you had working or
-                                directly volunteering with nonprofit organizations? </Form.Label>
-                            <Form.Control as="select">
-                                <option></option>
-                                <option>No Experience</option>
-                                <option>Less than 6 months</option>
-                                <option>6-12 Months</option>
-                                <option>More than 1 year</option>
-                            </Form.Control>
-                        </Form.Group>
-
+													{this.state.experienceQuestions.map((question, index) => {
+															return(
+																<Form.Group key={index}>
+																	<Form.Label>{question}</Form.Label>
+																	<Form.Control as="select" onChange={this.handleExperienceQuestions.bind(this,index)}>
+																			<option></option>
+																			<option>No Experience</option>
+																			<option>Less than 6 months</option>
+																			<option>6-12 Months</option>
+																			<option>More than 1 year</option>
+																	</Form.Control>
+																</Form.Group>
+															)
+													})}
+												</Form.Group>
 
                         <Form.Group controlId="guidanceSkill">
                             <Form.Label>How skilled are you with leading and managing a project from start to finish
                                 with little guidance from your client? </Form.Label>
-                            <Form.Control as="select">
+                            <Form.Control as="select" onChange={this.handleGuidanceQuestion}>
                                 <option></option>
                                 <option>1 - Not Skilled at All</option>
                                 <option>2</option>
@@ -367,11 +432,11 @@ class StudentForm extends Component {
                             <RadioButton name="Teamwork"/>
                         </Form.Group>
 
-                        <Form.Group controlId="profSkills">
+                        <Form.Group controlId="ExtraSkills">
                             <Form.Label>Do you have other relevant skills that may be helpful for us to know about (i.e.
                                 other languages spoken, coding, analytical software, professional skills, etc.)? - List
                                 them here!</Form.Label>
-                            <Form.Control type="profList"/>
+                            <Form.Control type="profList" onChange={this.handleExtraSkills}/>
                         </Form.Group>
 
                         <Button variant="primary" type="button">
