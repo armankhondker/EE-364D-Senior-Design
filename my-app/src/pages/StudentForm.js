@@ -469,8 +469,8 @@ class StudentForm extends Component {
                         <Form.Label>Please rate your experience in the following technical skills using the scale below:</Form.Label>
 												<br/>
 												<div>1: No Experience </div>
-												<div>2: Slightly Experienced	</div>
-												<div>3: Can Learn	</div>
+												<div>2: Can Learn		</div>
+												<div>3: Slightly Experienced</div>
 												<div>4: Experienced	</div>
 												<div>5: Extremely Experienced </div>
 												<br/>
