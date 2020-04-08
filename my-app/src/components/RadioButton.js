@@ -5,7 +5,7 @@ import '../styling/custom.scss';
 function RadioButton(props) {
     return(
         <ButtonToolbar>
-            <ToggleButtonGroup type="radio" name={props.name}>
+            <ToggleButtonGroup type="radio" name={props.name} onChange={props.handleRadio}>
                 <ToggleButton value={1}>1</ToggleButton>
                 <ToggleButton value={2}>2</ToggleButton>
                 <ToggleButton value={3}>3</ToggleButton>
