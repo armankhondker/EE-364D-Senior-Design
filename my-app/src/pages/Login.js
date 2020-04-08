@@ -10,10 +10,7 @@ class Login extends Component {
     render() {
 		return (
 			<div className = "App" align="center">
-			
-            <Form>
-					<br></br>
-					<h1>Login Page</h1>
+				<Form onSubmit={this.props.handleLogin}>
 					<Form.Group as={Row} controlId="formPlaintextPassword">
 						<Form.Label column sm="5">
 						Username
@@ -30,13 +27,10 @@ class Login extends Component {
 						<Form.Control type="password" placeholder="Password" />
 						</Col>
 					</Form.Group>
+					<Button className="LoginButton" variant="danger" type="submit">
+						Login
+					</Button>
 				</Form>
-
-                <Button className="LoginButton" variant="danger">Login</Button>
-                <p></p>
-                <Button className="LoginButton" variant="danger">Logout</Button>
-
-
 			</div>
 		);
 	}
