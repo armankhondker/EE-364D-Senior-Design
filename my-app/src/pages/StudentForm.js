@@ -271,7 +271,6 @@ class StudentForm extends Component {
     }
 
 		handleSubmit() {
-			var {skills} = this.state;
 			var {phoneInput} = this.state;
 			var {firstNameInput} = this.state;
 			var {lastNameInput} = this.state;
@@ -299,6 +298,9 @@ class StudentForm extends Component {
 
 			var {guidanceSkill} = this.state;
 			var {extraSkills} = this.state;
+
+			var {skills} = this.state;
+			var {decisionData} = this.state;
 
 
 
