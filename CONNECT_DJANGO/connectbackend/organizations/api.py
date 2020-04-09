@@ -1,4 +1,5 @@
-from .models import Project, Skill
+from .models import Project, Skill, TechSkill, ProfSkill, TechCourse, ProfCourse, Intention, \
+    Degree, Interest, Logistic, Experience
 from rest_framework import viewsets, permissions
 from .serializers import ProjectSerializer, SkillSerializer, TechSkillSerializer, ProfSkillSerializer,\
     TechCourseSerializer, ProfCourseSerializer, IntentionSerializer, DegreeSerializer, InterestSerializer,\
@@ -22,7 +23,7 @@ class SkillViewSet(viewsets.ModelViewSet):
 
 
 class TechSkillViewSet(viewsets.ModelViewSet):
-    queryset = Skill.objects.all()
+    queryset = TechSkill.objects.all()
     permission_classes = [
         permissions.AllowAny
     ]
@@ -30,7 +31,7 @@ class TechSkillViewSet(viewsets.ModelViewSet):
 
 
 class ProfSkillViewSet(viewsets.ModelViewSet):
-    queryset = Skill.objects.all()
+    queryset = ProfSkill.objects.all()
     permission_classes = [
         permissions.AllowAny
     ]
@@ -38,7 +39,7 @@ class ProfSkillViewSet(viewsets.ModelViewSet):
 
 
 class TechCourseViewSet(viewsets.ModelViewSet):
-    queryset = Skill.objects.all()
+    queryset = TechCourse.objects.all()
     permission_classes = [
         permissions.AllowAny
     ]
@@ -46,7 +47,7 @@ class TechCourseViewSet(viewsets.ModelViewSet):
 
 
 class ProfCourseViewSet(viewsets.ModelViewSet):
-    queryset = Skill.objects.all()
+    queryset = ProfCourse.objects.all()
     permission_classes = [
         permissions.AllowAny
     ]
@@ -54,7 +55,7 @@ class ProfCourseViewSet(viewsets.ModelViewSet):
 
 
 class IntentionViewSet(viewsets.ModelViewSet):
-    queryset = Skill.objects.all()
+    queryset = Intention.objects.all()
     permission_classes = [
         permissions.AllowAny
     ]
@@ -62,7 +63,7 @@ class IntentionViewSet(viewsets.ModelViewSet):
 
 
 class DegreeViewSet(viewsets.ModelViewSet):
-    queryset = Skill.objects.all()
+    queryset = Degree.objects.all()
     permission_classes = [
         permissions.AllowAny
     ]
@@ -70,7 +71,7 @@ class DegreeViewSet(viewsets.ModelViewSet):
 
 
 class InterestViewSet(viewsets.ModelViewSet):
-    queryset = Skill.objects.all()
+    queryset = Interest.objects.all()
     permission_classes = [
         permissions.AllowAny
     ]
@@ -78,7 +79,7 @@ class InterestViewSet(viewsets.ModelViewSet):
 
 
 class LogisticViewSet(viewsets.ModelViewSet):
-    queryset = Skill.objects.all()
+    queryset = Logistic.objects.all()
     permission_classes = [
         permissions.AllowAny
     ]
@@ -86,7 +87,7 @@ class LogisticViewSet(viewsets.ModelViewSet):
 
 
 class ExperienceViewSet(viewsets.ModelViewSet):
-    queryset = Skill.objects.all()
+    queryset = Experience.objects.all()
     permission_classes = [
         permissions.AllowAny
     ]
