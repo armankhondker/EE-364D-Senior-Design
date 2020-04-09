@@ -12,6 +12,7 @@ django-rest-knox = "*"
 djongo = "*"
 dnspython = "*"
 django-cors-headers = "*"
+bcrypt = "*"
 
 [requires]
 python_version = "3.7"

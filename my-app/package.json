@@ -4,14 +4,18 @@
   "private": true,
   "dependencies": {
     "@popperjs/core": "^2.0.4",
-    "axios": "^0.19.0",
+    "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "defiant.js": "^2.2.6",
+    "node-sass": "^4.13.1",
     "react": "^16.10.1",
-    "react-bootstrap": "^1.0.0-beta.16",
+    "react-addons-update": "^15.6.2",
+    "react-bootstrap": "^1.0.0",
     "react-dom": "^16.10.1",
+    "react-new-window": "^0.1.2",
+    "react-loading": "^2.0.3",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "^3.3.0",
+    "react-scripts": "^3.4.0",
     "reactjs-popup": "^1.5.0",
     "ws": "^7.2.0"
   },
@@ -20,7 +24,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "aws s3 sync build/ s3://www.rgkconnectmatching.com --acl public-read"
   },
   "eslintConfig": {
     "extends": "react-app"
