@@ -498,4 +498,4 @@ class CommunityForm extends Component {
     }
 }
 
-export default StudentForm;
+export default CommunityForm;
