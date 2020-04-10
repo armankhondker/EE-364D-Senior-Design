@@ -14,29 +14,27 @@ class StudentForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-			phoneInput: "",
+			uploading: false,
 			firstNameInput: "",
 			lastNameInput: "",
 			eidInput: "",
+			phoneInput: "",
 			emailInput: "",
 			linkedinInput: "",
 			resumeInput: "",
-			uploading: false,
 			timeCommit: "",
 			intentionOptions: ["To gain real world experience", "To participate in a paid experience", "To fulfill an academic requirement (i.e. capstone, thesis, dissertation"],
+			intentionInputs: [],
 			interestOptions: ["Research", "Data Collection", "Software Development", "Business Intelligence", "Data Analytics"],
+			interestInputs: [],
 			logisticQuestions: ["To comply with University rules and regulations, are you an international student?", "Do you currently receive any UT financial aid or fellowships?", "Do you have access to transportation?", "Do you need flexible work hours?", "Do you need the ability to work remotely?"],
-			degreeOptions: ["Master of Public Affair", "Master of Global Policy Studies", "DC Concentration (MPAFF/MGPS)", "Ph.D. in Public Policy", "Nonprofit Portfolio Program", "Public Health", "Educational Psychology", "Social Work", "Other"],
 			logisticInputs: [],
 			logisticFlags: [],
-			intentionInputs: [],
-			interestInputs: [],
-			courseQuestions: ["Data Visualization, Statistics, and Econometrics for Policy Analysis, Using the Python Data Science Platform (PA 397C-60380)", "Data Analysis/Simulation in R (EDP 380C)", "Advanced Statistical Modeling (EDP 381D)"],
 			techCourseOptions: [],
 			techCourseInputs: [],
             profCourseOptions: [],
 			profCourseInputs: [],
-			decisionData: [],
+			degreeOptions: ["Master of Public Affair", "Master of Global Policy Studies", "DC Concentration (MPAFF/MGPS)", "Ph.D. in Public Policy", "Nonprofit Portfolio Program", "Public Health", "Educational Psychology", "Social Work", "Other"],
 			degreeInputs:[],
 			degreeInput: "",
 			degreeOtherInput: "",
@@ -318,9 +316,11 @@ class StudentForm extends Component {
 		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/logistics')
 			.then(res => {
 				console.log(res);
+				let defaultInputs = new Array(res.data.length);
+				defaultInputs.fill(false);
 				this.setState({
 					logisticQuestions: res.data,
-					logisticInputs: new Array(res.data.length),
+					logisticInputs: defaultInputs,
 				});
 			})
 			.catch(err => console.log(err));
@@ -388,37 +388,124 @@ class StudentForm extends Component {
 	}
 
 	handleSubmit() {
-		var {phoneInput} = this.state;
-		var {firstNameInput} = this.state;
-		var {lastNameInput} = this.state;
-		var {emailInput} = this.state;
-		var {linkedinInput} = this.state;
-		var {resumeInput} = this.state;
+		// var {phoneInput} = this.state;
+		// var {firstNameInput} = this.state;
+		// var {lastNameInput} = this.state;
+		// var {emailInput} = this.state;
+		// var {linkedinInput} = this.state;
+		// var {resumeInput} = this.state;
+		//
+		// var {intentionOptions} = this.state;
+		// var {intentionData} = this.state;
+		// var {interestOptions} = this.state;
+		// var {interestInputs} = this.state;
+		// var {timeCommit} = this.state;
+		//
+		// var {logisticQuestions} = this.state;
+		// var {logisticInputs} = this.state;
+		//
+		// var {degreeOptions} = this.state;
+		// var {degreeOtherInput} = this.state;
+		//
+		// var {courseQuestions} = this.state;
+		// var {courseInputs} = this.state;
+		//
+		// var {experienceQuestions} = this.state;
+		// var {experienceInputs} = this.state;
+		//
+		// var {extraSkills} = this.state;
+		//
+		// var {techSkills, profSkills} = this.state;
+		// var {decisionData} = this.state;
 
-		var {intentionOptions} = this.state;
-		var {intentionData} = this.state;
-		var {interestOptions} = this.state;
-		var {interestInputs} = this.state;
-		var {timeCommit} = this.state;
+		let {
+			firstNameInput, lastNameInput, eidInput, phoneInput, emailInput, linkedinInput, resumeInput, timeCommit,
+            intentionOptions, intentionInputs, interestOptions, interestInputs,  degreeOptions,
+			logisticInputs, logisticFlags, logisticQuestions,
+			courseQuestions, techCourseOptions, techCourseInputs, profCourseOptions, profCourseInputs,
+			degreeInputs, degreeInput, degreeOtherInput, experienceQuestions, experienceInputs, techSkillOptions,
+			techSkillInputs, profSkillOptions, profSkillInputs, extraSkills
+		} = this.state;
 
-		var {logisticQuestions} = this.state;
-		var {logisticInputs} = this.state;
+		let jsonIntentions = {};
+		let	jsonInterests = {};
+		let jsonLogistics = {};
+		let jsonTechCourses = {};
+		let jsonProfCourses = {};
+		let jsonExperiences = {};
+		let jsonTechSkills = {};
+		let jsonProfSkills = {};
 
-		var {degreeOptions} = this.state;
-		var {degreeOtherInput} = this.state;
+		//TODO finish JSON parsing
+		//TODO add post request
 
-		var {courseQuestions} = this.state;
-		var {courseInputs} = this.state;
+		for(let i = 0; i < intentionOptions.length; i ++) {
+			let input = intentionInputs[i];
+			if(input === null || input === undefined) input = false;
+			jsonIntentions[intentionOptions[i].name] = input;
+		}
 
-		var {experienceQuestions} = this.state;
-		var {experienceInputs} = this.state;
+		for(let i = 0; i < interestOptions.length; i ++) {
+			let input = interestInputs[i];
+			if(input === null || input === undefined) input = false;
+			jsonInterests[interestOptions[i].name] = input;
+		}
 
-		var {extraSkills} = this.state;
+		for(let i = 0; i < logisticQuestions.length; i ++) {
+			let input = logisticInputs[i];
+			jsonLogistics[logisticQuestions[i].name] = input;
+		}
 
-		var {techSkills, profSkills} = this.state;
-		var {decisionData} = this.state;
+		for(let i = 0; i < techCourseOptions.length; i ++) {
+			let input = techCourseInputs[i];
+			if(input === null) input = false;
+			jsonTechCourses[techCourseOptions[i].name] = input;
+		}
 
+		for(let i = 0; i < profCourseOptions.length; i ++) {
+			let input = profCourseInputs[i];
+			if(input === null) input = false;
+			jsonProfCourses[profCourseOptions[i].name] = input;
+		}
 
+		for(let i = 0; i < experienceQuestions.length; i ++) {
+			let input = experienceInputs[i];
+			jsonExperiences[experienceQuestions[i].name] = input;
+		}
+
+		for(let i = 0; i < techSkillOptions.length; i ++) {
+			let input = techSkillInputs[i];
+			jsonTechSkills[techSkillOptions[i].name] = input;
+		}
+
+		for(let i = 0; i < profSkillOptions.length; i ++) {
+			let input = profSkillInputs[i];
+			jsonProfSkills[profSkillOptions[i].name] = input;
+		}
+
+		//TODO figure out resume saving
+		let params = {
+			first_name: firstNameInput,
+			last_name: lastNameInput,
+			eid: eidInput,
+			phone: phoneInput,
+			email: emailInput,
+			linkedIn: linkedinInput,
+			resume_link: '',
+			intentions: jsonIntentions,
+			interests: jsonInterests,
+			time_commitment: timeCommit,
+			logistics: jsonLogistics,
+			degree: degreeInput,
+			tech_courses: jsonTechCourses,
+			prof_courses: jsonProfCourses,
+			experience: jsonExperiences,
+			tech_skills: jsonTechSkills,
+			prof_skills: jsonProfSkills,
+			other_skills: extraSkills
+		}
+
+		console.log(params);
 
 	}
 
@@ -654,12 +741,15 @@ class StudentForm extends Component {
                             <Form.Control type="profList" onChange={this.handleExtraSkills}/>
                         </Form.Group>
 
-                        <Button variant="primary" type="submit">
+                        <Button variant="primary" type="submit" onClick={this.handleSubmit}>
                             Submit
                         </Button>
-                    </Form>
-                    <br/>
-                </div>
+						<Button variant="primary" onClick={this.handleSubmit}>
+                            Test
+						</Button>
+					</Form>
+					<br/>
+				</div>
         }
 
         return (
