@@ -34,7 +34,7 @@ class StudentForm extends Component {
 			courseQuestions: ["Data Visualization, Statistics, and Econometrics for Policy Analysis, Using the Python Data Science Platform (PA 397C-60380)", "Data Analysis/Simulation in R (EDP 380C)", "Advanced Statistical Modeling (EDP 381D)"],
 			techCourseOptions: [],
 			techCourseInputs: [],
-            profCoursesOptions: [],
+            profCourseOptions: [],
 			profCourseInputs: [],
 			decisionData: [],
 			degreeInputs:[],
@@ -44,7 +44,7 @@ class StudentForm extends Component {
 			experienceInputs: [],
 			techSkillOptions: [],
 			techSkillInputs: [],
-			profSkillsOptions: [],
+			profSkillOptions: [],
 			profSkillInputs: [],
 			extraSkills: ""
         }
@@ -61,9 +61,10 @@ class StudentForm extends Component {
 		this.handleInterest = this.handleInterest.bind(this);
 		this.handleDegreeOption = this.handleDegreeOption.bind(this);
 		this.handleLogisticQuestions = this.handleLogisticQuestions.bind(this);
-		this.handleCourseInputs = this.handleCourseInputs.bind(this);
+		this.handleTechCourseInputs = this.handleTechCourseInputs.bind(this);
+		this.handleProfCourseInputs = this.handleProfCourseInputs.bind(this);
 		this.handleExperienceQuestions = this.handleExperienceQuestions.bind(this);
-		this.handleRadio = this.handleRadio.bind(this);
+		this.handleTechSkills = this.handleTechSkills.bind(this);
 		this.handleExtraSkills = this.handleExtraSkills.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -143,7 +144,7 @@ class StudentForm extends Component {
 
 	handleIntentions(i, e) {
 		this.setState(update(this.state, {
-			intentionData: {
+			intentionInputs: {
 				[i] : {
 					$set: e.target.checked
 				}
@@ -153,7 +154,7 @@ class StudentForm extends Component {
 
 	handleInterest(i, e) {
 		this.setState(update(this.state, {
-			interestInput: {
+			interestInputs: {
 				[i] : {
 					$set: e.target.checked
 				}
@@ -196,7 +197,7 @@ class StudentForm extends Component {
 		// Also update actual degree option chosen
 		if (e.target.checked) {
 			this.setState(state => ({
-				degreeOption: this.state.degreeOptions[i]
+				degreeOption: this.state.degreeOptions[i].name
 		}));
 		}
 	}
@@ -219,9 +220,19 @@ class StudentForm extends Component {
 		}));
 	}
 
-	handleCourseInputs(i, e) {
+	handleTechCourseInputs(i, e) {
 		this.setState(update(this.state, {
-			courseInputs: {
+			techCourseInputs: {
+				[i] : {
+					$set: e.target.checked
+				}
+			}
+		}));
+	}
+
+	handleProfCourseInputs(i, e) {
+		this.setState(update(this.state, {
+			profCourseInputs: {
 				[i] : {
 					$set: e.target.checked
 				}
@@ -239,9 +250,19 @@ class StudentForm extends Component {
 		}));
 	}
 
-	handleRadio(i, e) {
+	handleTechSkills(i, e) {
 		this.setState(update(this.state, {
-			decisionData: {
+			techSkillInputs: {
+				[i] : {
+					$set: e
+				}
+			}
+		}));
+	}
+
+	handleProfSkills(i, e) {
+		this.setState(update(this.state, {
+			profSkillInputs: {
 				[i] : {
 					$set: e
 				}
@@ -355,7 +376,7 @@ class StudentForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/prof-courses')
+		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/prof-skills')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -404,7 +425,7 @@ class StudentForm extends Component {
     render() {
         let hasMounted = false;
         let {techSkillOptions} = this.state;
-        if(techSkillOptions !== null) {
+        if(this.state.profSkillOptions !== null) {
             hasMounted = true;
         }
         let CurrentDisplay;
@@ -488,18 +509,18 @@ class StudentForm extends Component {
 							if (this.state.logisticFlags[index]) {
 								return (
 									<Form.Group key={index}>
-											<Form.Label>{question.name}</Form.Label>
-												<Form.Check type="Radio" label="Yes" checked={this.state.logisticInputs[index]} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
-												<Form.Check type="Radio" label="No" checked={!this.state.logisticInputs[index]} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
+										<Form.Label>{question.name}</Form.Label>
+										<Form.Check type="Radio" label="Yes" checked={this.state.logisticInputs[index]} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
+										<Form.Check type="Radio" label="No" checked={!this.state.logisticInputs[index]} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
 									</Form.Group>
 								)
 							}
 							else {
 								return (
 									<Form.Group key={index}>
-											<Form.Label>{question.name}</Form.Label>
-											<Form.Check type="Radio" label="Yes" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
-											<Form.Check type="Radio" label="No" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
+										<Form.Label>{question.name}</Form.Label>
+										<Form.Check type="Radio" label="Yes" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
+										<Form.Check type="Radio" label="No" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
 									</Form.Group>
 								)
 							}
@@ -507,44 +528,61 @@ class StudentForm extends Component {
 
                         <Form.Group controlId="degree">
                             <Form.Label>Which degree program are you currently enrolled in?</Form.Label>
-														{this.state.degreeOptions.map((option, index) => {
-																return(
-																		<Form.Group key={index}>
-																			<Form.Check type="Radio" label={option.name} checked={this.state.degreeInputs[index]} onChange={this.handleDegreeOption.bind(this, index)}/>
-																		</Form.Group>
-																)
-														})}
+								{this.state.degreeOptions.map((option, index) => {
+									return(
+										<Form.Group key={index}>
+											<Form.Check type="Radio" label={option.name} checked={this.state.degreeInputs[index]} onChange={this.handleDegreeOption.bind(this, index)}/>
+										</Form.Group>
+									)
+								})}
                         </Form.Group>
 						<Form.Group controlId="CoursesTaken">
 							<Form.Label>Identify each of the following technical courses you have taken/completed. </Form.Label>
 								{this.state.techCourseOptions.map((course, index) => {
 									if (index % 10 === 0 && index > 0) {
 										return (
-												<div>
-													<br></br>
-													<Form.Label>Identify each of the following courses you have taken/completed. </Form.Label>
-													<Form.Check label={course.name + " " + course.courseId} onChange={this.handleCourseInputs.bind(this, index)}/>
-												</div>
+											<div>
+												<br></br>
+												<Form.Label>Identify each of the following courses you have taken/completed. </Form.Label>
+												<Form.Check label={course.name + " " + course.courseId} onChange={this.handleTechCourseInputs.bind(this, index)}/>
+											</div>
 									  )
 								 }
 								 else
-										return (
-												<Form.Check label={course.name + ' ' + course.courseId} onChange={this.handleCourseInputs.bind(this, index)}/>
-									 )
+									return (
+										<Form.Check label={course.name + ' ' + course.courseId} onChange={this.handleTechCourseInputs.bind(this, index)}/>
+								 )
 								})}
 						</Form.Group>
-
-                        <Form.Group controlId="experience">
+						<Form.Group controlId="CoursesTaken">
+							<Form.Label>Identify each of the following professional courses you have taken/completed. </Form.Label>
+							{this.state.profCourseOptions.map((course, index) => {
+								if (index % 10 === 0 && index > 0) {
+									return (
+										<div>
+											<br></br>
+											<Form.Label>Identify each of the following courses you have taken/completed. </Form.Label>
+											<Form.Check label={course.name + " " + course.courseId} onChange={this.handleProfCourseInputs.bind(this, index)}/>
+										</div>
+									)
+								}
+								else
+									return (
+										<Form.Check label={course.name + ' ' + course.courseId} onChange={this.handleProfCourseInputs.bind(this, index)}/>
+									)
+							})}
+						</Form.Group>
+						<Form.Group controlId="experience">
 							{this.state.experienceQuestions.map((question, index) => {
 								return(
 									<Form.Group key={index}>
 										<Form.Label>{question.name}</Form.Label>
 										<Form.Control required as="select" onChange={this.handleExperienceQuestions.bind(this,index)}>
-												<option></option>
-												<option>No Experience</option>
-												<option>Less than 6 months</option>
-												<option>6-12 Months</option>
-												<option>More than 1 year</option>
+											<option></option>
+											<option>No Experience</option>
+											<option>Less than 6 months</option>
+											<option>6-12 Months</option>
+											<option>More than 1 year</option>
 										</Form.Control>
 									</Form.Group>
 								)
@@ -564,7 +602,7 @@ class StudentForm extends Component {
                             return(
                                 <Form.Group key={index}>
                                     <Form.Label>{skill.name}</Form.Label>
-                                    <RadioButton name={formattedSkill} handleRadio={this.handleRadio.bind(this, index)}/>
+                                    <RadioButton name={formattedSkill} handleRadio={this.handleTechSkills.bind(this, index)}/>
                                 </Form.Group>
                             );
                         })}
@@ -579,26 +617,35 @@ class StudentForm extends Component {
 						<div>4: Experienced	</div>
 						<div>5: Extremely Experienced </div>
 						<br/>
-                        <Form.Group>
-                            <Form.Label>Communication</Form.Label>
-                                <RadioButton name="Communication"/>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Time Management</Form.Label>
-                            <RadioButton name="TimeManagement"/>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Decision Making</Form.Label>
-                            <RadioButton name="DecisionMaking"/>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Leadership</Form.Label>
-                            <RadioButton name="Leadership"/>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Teamwork</Form.Label>
-                            <RadioButton name="Teamwork"/>
-                        </Form.Group>
+						{this.state.profSkillOptions.map((skill, index) => {
+							let formattedSkill = skill.name.replace(/\s+/g, '');
+							return(
+								<Form.Group key={index}>
+									<Form.Label>{skill.name}</Form.Label>
+									<RadioButton name={formattedSkill} handleRadio={this.handleProfSkills.bind(this, index)}/>
+								</Form.Group>
+							);
+						})}
+						{/*<Form.Group>*/}
+						{/*	<Form.Label>Communication</Form.Label>*/}
+						{/*	<RadioButton name="Communication"/>*/}
+						{/*</Form.Group>*/}
+                        {/*<Form.Group>*/}
+                        {/*    <Form.Label>Time Management</Form.Label>*/}
+                        {/*    <RadioButton name="TimeManagement"/>*/}
+                        {/*</Form.Group>*/}
+                        {/*<Form.Group>*/}
+                        {/*    <Form.Label>Decision Making</Form.Label>*/}
+                        {/*    <RadioButton name="DecisionMaking"/>*/}
+                        {/*</Form.Group>*/}
+                        {/*<Form.Group>*/}
+                        {/*    <Form.Label>Leadership</Form.Label>*/}
+                        {/*    <RadioButton name="Leadership"/>*/}
+                        {/*</Form.Group>*/}
+                        {/*<Form.Group>*/}
+                        {/*    <Form.Label>Teamwork</Form.Label>*/}
+                        {/*    <RadioButton name="Teamwork"/>*/}
+                        {/*</Form.Group>*/}
 
                         <Form.Group controlId="ExtraSkills">
                             <Form.Label>Do you have other relevant skills that may be helpful for us to know about (i.e.
