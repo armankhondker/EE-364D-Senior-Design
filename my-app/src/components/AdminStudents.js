@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from "react-bootstrap/Button"
+import NewWindowPortal from "../components/NewWindowPortal.js";
 
 class AdminStudents extends Component {
 
@@ -7,7 +8,23 @@ class AdminStudents extends Component {
         super(props);
         this.state = {
             students: props.students,
+            studentClicked: false,
         }
+        this.toggleWindowPortal = this.toggleWindowPortal.bind(this);
+    }
+
+    toggleWindowPortal(){
+        this.setState(state => ({
+            ...state,
+            showWindowPortal: !state.showWindowPortal,
+        }));
+    }
+
+    closeWindowPortal(){
+        this.setState(state => ({
+            ...state,
+            showWindowPortal: false,
+        }));
     }
 
     componentDidMount() {
@@ -30,7 +47,7 @@ class AdminStudents extends Component {
                                 return(
                                     <tr key={index}>
                                         <td>
-                                            <Button>{student.name}</Button>
+                                            <Button onClick={this.toggleWindowPortal}>{student.first_name}</Button>
                                         </td>
                                     </tr>
                                 );
@@ -39,7 +56,16 @@ class AdminStudents extends Component {
                         )
                         }
                     </tbody>
+
                 </table>
+                {this.state.showWindowPortal && (
+                    <NewWindowPortal>
+                        <h1>New Window for Editing Survey Responses</h1>
+                        <button onClick={() => this.setState({ showWindowPortal: false })} >
+                            Close me!
+                        </button>
+                    </NewWindowPortal>
+                )}
             </div>
         )
     }
