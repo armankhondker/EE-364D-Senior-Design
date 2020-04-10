@@ -1,5 +1,6 @@
 
 import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
 import FormCheck from 'react-bootstrap/FormCheck'
 import FormFile from 'react-bootstrap/FormFile'
 import Button from 'react-bootstrap/Button';
@@ -64,6 +65,7 @@ class StudentForm extends Component {
 		this.handleExperienceQuestions = this.handleExperienceQuestions.bind(this);
 		this.handleTechSkills = this.handleTechSkills.bind(this);
 		this.handleExtraSkills = this.handleExtraSkills.bind(this);
+		this.validateForm = this.validateForm.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -161,6 +163,7 @@ class StudentForm extends Component {
 	}
 
 	handleDegreeOption(i, e) {
+    	console.log(i);
 		var formerCheck = -1;
 		if (e.target.checked) {
 			var k=0;
@@ -198,6 +201,8 @@ class StudentForm extends Component {
 				degreeOption: this.state.degreeOptions[i].name
 		}));
 		}
+		console.log(e.target.checked);
+		console.log(this.state.degreeOptions[i].name);
 	}
 
 	handleLogisticQuestions(i, choice, e) {
@@ -293,7 +298,7 @@ class StudentForm extends Component {
 		// })
 		// .catch(err => console.log(err));
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/intentions')
+		 axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/intentions')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -303,7 +308,7 @@ class StudentForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/interests')
+		 axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/interests')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -313,19 +318,20 @@ class StudentForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/logistics')
+		 axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/logistics')
 			.then(res => {
 				console.log(res);
-				let defaultInputs = new Array(res.data.length);
-				defaultInputs.fill(false);
+				let flags = new Array(res.data.length);
+				flags.fill(null);
 				this.setState({
 					logisticQuestions: res.data,
-					logisticInputs: defaultInputs,
+					logisticInputs: new Array(res.data.length),
+                    logisticFlags: flags,
 				});
 			})
 			.catch(err => console.log(err));
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/degrees')
+		 axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/degrees')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -335,7 +341,7 @@ class StudentForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/experiences')
+		 axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/experiences')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -345,7 +351,7 @@ class StudentForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/tech-courses')
+		 axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/tech-courses')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -355,7 +361,7 @@ class StudentForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/prof-courses')
+		 axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/prof-courses')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -366,7 +372,7 @@ class StudentForm extends Component {
 			.catch(err => console.log(err));
 
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/tech-skills')
+		 axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/tech-skills')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -376,7 +382,7 @@ class StudentForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/prof-skills')
+		 axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/prof-skills')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -387,7 +393,46 @@ class StudentForm extends Component {
 			.catch(err => console.log(err));
 	}
 
-	handleSubmit() {
+	validateForm() {
+		let alertMessage = "";
+		let {logisticFlags, logisticQuestions, degreeOption, techSkillInputs, techSkillOptions, profSkillOptions,
+			profSkillInputs
+		} = this.state;
+
+		for(let i = 0; i < logisticQuestions.length; i++) {
+			if(logisticFlags[i] === null || logisticFlags[i] === undefined) {
+				alertMessage += `${logisticQuestions[i].name} \n`;
+			}
+		}
+
+		if(degreeOption === "" || degreeOption === undefined || degreeOption === null) {
+			alertMessage += 'Degree \n';
+		}
+
+		for(let i = 0; i < techSkillInputs.length; i++) {
+			let input = techSkillInputs[i];
+			if(input === null || input === undefined) {
+				alertMessage += `${techSkillOptions[i].name} \n`
+			}
+		}
+
+		for(let i = 0; i < profSkillInputs.length; i++) {
+			let input = profSkillInputs[i];
+			if(input === null || input === undefined) {
+				alertMessage += `${profSkillOptions[i].name} \n`
+			}
+		}
+
+		if(alertMessage !== "") {
+			window.alert("Please fill out the following: \n" + alertMessage);
+			return(false);
+		} else {
+			return(true);
+		}
+
+	}
+
+	async handleSubmit(e) {
 		// var {phoneInput} = this.state;
 		// var {firstNameInput} = this.state;
 		// var {lastNameInput} = this.state;
@@ -417,6 +462,7 @@ class StudentForm extends Component {
 		//
 		// var {techSkills, profSkills} = this.state;
 		// var {decisionData} = this.state;
+		// e.preventDefault();
 
 		let {
 			firstNameInput, lastNameInput, eidInput, phoneInput, emailInput, linkedinInput, resumeInput, timeCommit,
@@ -435,6 +481,12 @@ class StudentForm extends Component {
 		let jsonExperiences = {};
 		let jsonTechSkills = {};
 		let jsonProfSkills = {};
+
+		const isFormValid = await this.validateForm();
+		if(!isFormValid) {
+			e.preventDefault();
+			return;
+		}
 
 		//TODO finish JSON parsing
 		//TODO add post request
@@ -458,13 +510,13 @@ class StudentForm extends Component {
 
 		for(let i = 0; i < techCourseOptions.length; i ++) {
 			let input = techCourseInputs[i];
-			if(input === null) input = false;
+			if(input === null || input === undefined) input = false;
 			jsonTechCourses[techCourseOptions[i].name] = input;
 		}
 
 		for(let i = 0; i < profCourseOptions.length; i ++) {
 			let input = profCourseInputs[i];
-			if(input === null) input = false;
+			if(input === null || input === undefined) input = false;
 			jsonProfCourses[profCourseOptions[i].name] = input;
 		}
 
@@ -511,8 +563,12 @@ class StudentForm extends Component {
 
     render() {
         let hasMounted = false;
-        let {techSkillOptions} = this.state;
-        if(this.state.profSkillOptions !== null) {
+        let {intentionOptions, interestOptions, logisticQuestions, degreeOptions, experienceQuestions, techCourseOptions,
+			profCourseOptions, techSkillOptions, profSkillOptions} = this.state;
+        if(intentionOptions.length && interestOptions.length && logisticQuestions.length && degreeOptions.length &&
+			techCourseOptions.length && profCourseOptions.length && techSkillOptions.length &&
+			profSkillOptions.length
+		) {
             hasMounted = true;
         }
         let CurrentDisplay;
@@ -606,8 +662,8 @@ class StudentForm extends Component {
 								return (
 									<Form.Group key={index}>
 										<Form.Label>{question.name}</Form.Label>
-										<Form.Check type="Radio" label="Yes" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
-										<Form.Check type="Radio" label="No" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
+										<Form.Check type="Radio" label="Yes" onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
+										<Form.Check type="Radio" label="No" onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
 									</Form.Group>
 								)
 							}
