@@ -20,6 +20,13 @@ class AdminStudents extends Component {
         }));
     }
 
+    closeWindowPortal(){
+        this.setState(state => ({
+            ...state,
+            showWindowPortal: false,
+        }));
+    }
+
     componentDidMount() {
         this.setState({ students: this.props.students });
     }
@@ -40,7 +47,7 @@ class AdminStudents extends Component {
                                 return(
                                     <tr key={index}>
                                         <td>
-                                            <Button onClick={this.toggleWindowPortal}>{student.name}</Button>
+                                            <Button onClick={this.toggleWindowPortal}>{student.first_name}</Button>
                                         </td>
                                     </tr>
                                 );
@@ -54,6 +61,9 @@ class AdminStudents extends Component {
                 {this.state.showWindowPortal && (
                     <NewWindowPortal>
                         <h1>New Window for Editing Survey Responses</h1>
+                        <button onClick={() => this.setState({ showWindowPortal: false })} >
+                            Close me!
+                        </button>
                     </NewWindowPortal>
                 )}
             </div>

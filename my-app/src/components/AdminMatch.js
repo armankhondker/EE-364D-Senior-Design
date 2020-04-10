@@ -120,7 +120,7 @@ class AdminMatch extends Component {
                                 {this.props.students.map((val, ind) => {
                                     return (
                                         <tr key={ind}>
-                                            <td><Button style={{width: "200px"}}>{val.name}</Button></td>
+                                            <td><Button style={{width: "200px"}}>{val.eid}</Button></td>
                                             <td>
                                                 <Dropdown>
                                                     <Dropdown>
