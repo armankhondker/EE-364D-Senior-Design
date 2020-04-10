@@ -51,6 +51,7 @@ class StudentForm extends Component {
 				this.handlePhone = this.handlePhone.bind(this);
 	 		 	this.handleFirstName = this.handleFirstName.bind(this);
 				this.handleLastName = this.handleLastName.bind(this);
+				this.handleEID = this.handleEID.bind(this);
 				this.handleEmail = this.handleEmail.bind(this);
 				this.handleLinkedin = this.handleLinkedin.bind(this);
 				this.handleResumeUpload = this.handleResumeUpload.bind(this);
@@ -96,8 +97,14 @@ class StudentForm extends Component {
 		handleLastName(e) {
 			var name = e.target.value;
 			this.setState(state => ({
-	      lastNameInput: name
-	    }));
+			  lastNameInput: name
+			}));
+		}
+
+		handleEID(e) {
+    		this.setState(({
+				eidInput: e.target.value
+			}));
 		}
 
 		handleResumeUpload(e) {
@@ -418,8 +425,12 @@ class StudentForm extends Component {
                             <Form.Label>Last Name</Form.Label>
                             <Form.Control required value={this.state.lastNameInput} onChange={this.handleLastName} type="text"/>
                         </Form.Group>
-                        <Form.Group controlId="phoneInput">
-                            <Form.Label>Phone #</Form.Label>
+						<Form.Group>
+							<Form.Label>EID</Form.Label>
+							<Form.Control required value={this.state.eidInput} onChange={this.handleEID} type="text"/>
+						</Form.Group>
+						<Form.Group controlId="phoneInput">
+							<Form.Label>Phone #</Form.Label>
                             <Form.Control required type="tel" value={this.state.phoneInput} onChange={this.handlePhone} placeholder="5125558888"/>
                         </Form.Group>
                         <Form.Group controlId="emailInput">
@@ -444,7 +455,7 @@ class StudentForm extends Component {
 														{this.state.intentionOptions.map((option, index) => {
 		                            return(
 																	<Form.Group key={index}>
-																			<Form.Check label={option} onChange={this.handleIntentions.bind(this, index)}/>
+																			<Form.Check label={option.name} onChange={this.handleIntentions.bind(this, index)}/>
 																	</Form.Group>
 																)
 														})}
@@ -454,7 +465,7 @@ class StudentForm extends Component {
 														{this.state.interestOptions.map((option, index) => {
 		                            return(
 																	<Form.Group key={index}>
-																			<Form.Check label={option} onChange={this.handleInterest.bind(this, index)}/>
+																			<Form.Check label={option.name} onChange={this.handleInterest.bind(this, index)}/>
 																	</Form.Group>
 																)
 														})}
@@ -477,7 +488,7 @@ class StudentForm extends Component {
 													if (this.state.logisticFlags[index]) {
 														return (
 															<Form.Group key={index}>
-																	<Form.Label>{question}</Form.Label>
+																	<Form.Label>{question.name}</Form.Label>
 																		<Form.Check type="Radio" label="Yes" checked={this.state.logisticInputs[index]} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
 																		<Form.Check type="Radio" label="No" checked={!this.state.logisticInputs[index]} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
 															</Form.Group>
@@ -486,7 +497,7 @@ class StudentForm extends Component {
 													else {
 														return (
 															<Form.Group key={index}>
-																	<Form.Label>{question}</Form.Label>
+																	<Form.Label>{question.name}</Form.Label>
 																	<Form.Check type="Radio" label="Yes" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
 																	<Form.Check type="Radio" label="No" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
 															</Form.Group>
@@ -500,36 +511,35 @@ class StudentForm extends Component {
 														{this.state.degreeOptions.map((option, index) => {
 																return(
 																		<Form.Group key={index}>
-																			<Form.Check type="Radio" label={option} checked={this.state.degreeInputs[index]} onChange={this.handleDegreeOption.bind(this, index)}/>
+																			<Form.Check type="Radio" label={option.name} checked={this.state.degreeInputs[index]} onChange={this.handleDegreeOption.bind(this, index)}/>
 																		</Form.Group>
 																)
 														})}
                         </Form.Group>
-
-												<Form.Group controlId="CoursesTaken">
+						<Form.Group controlId="CoursesTaken">
+							<Form.Label>Identify each of the following technical courses you have taken/completed. </Form.Label>
+								{this.state.techCourseOptions.map((course, index) => {
+									if (index % 10 === 0 && index > 0) {
+										return (
+												<div>
+													<br></br>
 													<Form.Label>Identify each of the following courses you have taken/completed. </Form.Label>
-														{this.state.courseQuestions.map((course, index) => {
-															if (index % 10 === 0 && index > 0) {
-																return (
-																		<div>
-																	 		<br></br>
-																			<Form.Label>Identify each of the following courses you have taken/completed. </Form.Label>
-																			<Form.Check label={course} onChange={this.handleCourseInputs.bind(this, index)}/>
-																		</div>
-															  )
-														 }
-														 else
-																return (
- 																		<Form.Check label={course} onChange={this.handleCourseInputs.bind(this, index)}/>
- 															 )
-														})}
-												</Form.Group>
+													<Form.Check label={course.name + " " + course.courseId} onChange={this.handleCourseInputs.bind(this, index)}/>
+												</div>
+									  )
+								 }
+								 else
+										return (
+												<Form.Check label={course.name + ' ' + course.courseId} onChange={this.handleCourseInputs.bind(this, index)}/>
+									 )
+								})}
+						</Form.Group>
 
                         <Form.Group controlId="experience">
 													{this.state.experienceQuestions.map((question, index) => {
 															return(
 																<Form.Group key={index}>
-																	<Form.Label>{question}</Form.Label>
+																	<Form.Label>{question.name}</Form.Label>
 																	<Form.Control required as="select" onChange={this.handleExperienceQuestions.bind(this,index)}>
 																			<option></option>
 																			<option>No Experience</option>
