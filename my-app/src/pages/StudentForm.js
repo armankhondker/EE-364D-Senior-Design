@@ -693,7 +693,7 @@ class StudentForm extends Component {
 								 }
 								 else
 									return (
-										<Form.Check label={course.name + ' ' + course.courseId} onChange={this.handleTechCourseInputs.bind(this, index)}/>
+										<Form.Check key={index} label={course.name + ' ' + course.courseId} onChange={this.handleTechCourseInputs.bind(this, index)}/>
 								 )
 								})}
 						</Form.Group>
@@ -711,7 +711,7 @@ class StudentForm extends Component {
 								}
 								else
 									return (
-										<Form.Check label={course.name + ' ' + course.courseId} onChange={this.handleProfCourseInputs.bind(this, index)}/>
+										<Form.Check key={index} label={course.name + ' ' + course.courseId} onChange={this.handleProfCourseInputs.bind(this, index)}/>
 									)
 							})}
 						</Form.Group>
