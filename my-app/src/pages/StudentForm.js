@@ -14,33 +14,39 @@ class StudentForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            skills: null,
-						phoneInput: "",
-						firstNameInput: "",
-						lastNameInput: "",
-						emailInput: "",
-						linkedinInput: "",
-						resumeInput: "",
-						uploading: false,
-						timeCommit: "",
-						intentionOptions: ["To gain real world experience", "To participate in a paid experience", "To fulfill an academic requirement (i.e. capstone, thesis, dissertation"],
-						interestOptions: ["Research", "Data Collection", "Software Development", "Business Intelligence", "Data Analytics"],
-						logisticQuestions: ["To comply with University rules and regulations, are you an international student?", "Do you currently receive any UT financial aid or fellowships?", "Do you have access to transportation?", "Do you need flexible work hours?", "Do you need the ability to work remotely?"],
-						degreeOptions: ["Master of Public Affair", "Master of Global Policy Studies", "DC Concentration (MPAFF/MGPS)", "Ph.D. in Public Policy", "Nonprofit Portfolio Program", "Public Health", "Educational Psychology", "Social Work", "Other"],
-						logisticData: [],
-						logisticFlags: [],
-						intentionData: [],
-						interestInput: [],
-						courseQuestions: ["Data Visualization, Statistics, and Econometrics for Policy Analysis, Using the Python Data Science Platform (PA 397C-60380)", "Data Analysis/Simulation in R (EDP 380C)", "Advanced Statistical Modeling (EDP 381D)"],
-						courseInputs: [],
-						decisionData: [],
-						degreeData:[],
-						degreeOption: "",
-						degreeOtherInput: "",
-						experienceQuestions:["Over the past 5 years, approximately how much experience have you had working or directly volunteering with nonprofit organizations?"],
-						experienceInputs: [],
-						guidanceSkill: "",
-						extraSkills: ""
+			phoneInput: "",
+			firstNameInput: "",
+			lastNameInput: "",
+			eidInput: "",
+			emailInput: "",
+			linkedinInput: "",
+			resumeInput: "",
+			uploading: false,
+			timeCommit: "",
+			intentionOptions: ["To gain real world experience", "To participate in a paid experience", "To fulfill an academic requirement (i.e. capstone, thesis, dissertation"],
+			interestOptions: ["Research", "Data Collection", "Software Development", "Business Intelligence", "Data Analytics"],
+			logisticQuestions: ["To comply with University rules and regulations, are you an international student?", "Do you currently receive any UT financial aid or fellowships?", "Do you have access to transportation?", "Do you need flexible work hours?", "Do you need the ability to work remotely?"],
+			degreeOptions: ["Master of Public Affair", "Master of Global Policy Studies", "DC Concentration (MPAFF/MGPS)", "Ph.D. in Public Policy", "Nonprofit Portfolio Program", "Public Health", "Educational Psychology", "Social Work", "Other"],
+			logisticInputs: [],
+			logisticFlags: [],
+			intentionInputs: [],
+			interestInputs: [],
+			courseQuestions: ["Data Visualization, Statistics, and Econometrics for Policy Analysis, Using the Python Data Science Platform (PA 397C-60380)", "Data Analysis/Simulation in R (EDP 380C)", "Advanced Statistical Modeling (EDP 381D)"],
+			techCourseOptions: [],
+			techCourseInputs: [],
+            profCoursesOptions: [],
+			profCourseInputs: [],
+			decisionData: [],
+			degreeInputs:[],
+			degreeInput: "",
+			degreeOtherInput: "",
+			experienceQuestions:["Over the past 5 years, approximately how much experience have you had working or directly volunteering with nonprofit organizations?"],
+			experienceInputs: [],
+			techSkillOptions: [],
+			techSkillInputs: [],
+			profSkillsOptions: [],
+			profSkillInputs: [],
+			extraSkills: ""
         }
 				this.handlePhone = this.handlePhone.bind(this);
 	 		 	this.handleFirstName = this.handleFirstName.bind(this);
@@ -55,7 +61,6 @@ class StudentForm extends Component {
 				this.handleLogisticQuestions = this.handleLogisticQuestions.bind(this);
 				this.handleCourseInputs = this.handleCourseInputs.bind(this);
 				this.handleExperienceQuestions = this.handleExperienceQuestions.bind(this);
-				this.handleGuidanceQuestion = this.handleGuidanceQuestion.bind(this);
 				this.handleRadio = this.handleRadio.bind(this);
 				this.handleExtraSkills = this.handleExtraSkills.bind(this);
 				this.handleSubmit = this.handleSubmit.bind(this);
@@ -153,15 +158,15 @@ class StudentForm extends Component {
 			var formerCheck = -1;
 			if (e.target.checked) {
 				var k=0;
-				for (k; k<this.state.degreeData.length; k++) {
-					if (this.state.degreeData[k] === true && k !== i)
+				for (k; k<this.state.degreeInputs.length; k++) {
+					if (this.state.degreeInputs[k] === true && k !== i)
 						formerCheck=k;
 				}
 			}
 			// Former check is the previously checked box index
 			if (formerCheck === -1) {
 				this.setState(update(this.state, {
-					degreeData: {
+					degreeInputs: {
 						[i] : {
 							$set: e.target.checked
 						}
@@ -171,7 +176,7 @@ class StudentForm extends Component {
 			// If a different box was checked, uncheck it
 			else {
 				this.setState(update(this.state, {
-					degreeData: {
+					degreeInputs: {
 						[i] : {
 							$set: e.target.checked
 						},
@@ -194,7 +199,7 @@ class StudentForm extends Component {
 			if (choice === 0)
 				pick = true;
 			this.setState(update(this.state, {
-				logisticData: {
+				logisticInputs: {
 					[i] : {
 						$set: pick
 					}
@@ -227,13 +232,6 @@ class StudentForm extends Component {
 			}));
 		}
 
-		handleGuidanceQuestion(e) {
-			var guidanceValue = e.target.value
-			this.setState(state => ({
-				guidanceSkill: guidanceValue
-			}));
-		}
-
 		handleRadio(i, e) {
 			this.setState(update(this.state, {
 				decisionData: {
@@ -252,27 +250,118 @@ class StudentForm extends Component {
 		}
 
     async componentDidMount() {
-       await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/skills')
-           .then(res => {
-               console.log(res);
-               this.setState({
-								 skills: res.data,
-								 decisionData: new Array(res.data.length),
-								 intentionData: new Array(this.state.intentionOptions.length),
-								 interestInput: new Array(this.state.interestOptions.length),
-								 degreeData: new Array(this.state.degreeOptions.length),
-								 logisticData: new Array(this.state.logisticQuestions.length),
-								 logisticFlags: new Array(this.state.logisticQuestions.length),
-								 courseInputs: new Array(this.state.courseQuestions.length),
-								 experienceInputs: new Array(this.state.experienceQuestions.length)
-						   });
-           })
-           .catch(err => console.log(err));
-    }
+		// await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/skills')
+		// .then(res => {
+		//    console.log(res);
+		//    this.setState({
+		// 					 techSkills: res.data,
+		// 					 decisionData: new Array(res.data.length),
+		// 					 intentionData: new Array(this.state.intentionOptions.length),
+		// 					 interestInput: new Array(this.state.interestOptions.length),
+		// 					 degreeInputs: new Array(this.state.degreeOptions.length),
+		// 					 logisticInputs: new Array(this.state.logisticQuestions.length),
+		// 					 logisticFlags: new Array(this.state.logisticQuestions.length),
+		// 					 courseInputs: new Array(this.state.courseQuestions.length),
+		// 					 experienceInputs: new Array(this.state.experienceQuestions.length)
+		// 			   });
+		// })
+		// .catch(err => console.log(err));
 
-		handleSubmit() {
-			var {phoneInput} = this.state;
-			var {firstNameInput} = this.state;
+		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/intentions')
+			.then(res => {
+				console.log(res);
+				this.setState({
+					intentionOptions: res.data,
+                    intentionInputs: new Array(res.data.length),
+				});
+			})
+			.catch(err => console.log(err));
+
+		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/interests')
+			.then(res => {
+				console.log(res);
+				this.setState({
+					interestOptions: res.data,
+                    interestInputs: new Array(res.data.length),
+				});
+			})
+			.catch(err => console.log(err));
+
+		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/logistics')
+			.then(res => {
+				console.log(res);
+				this.setState({
+					logisticQuestions: res.data,
+					logisticInputs: new Array(res.data.length),
+				});
+			})
+			.catch(err => console.log(err));
+
+		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/degrees')
+			.then(res => {
+				console.log(res);
+				this.setState({
+					degreeOptions: res.data,
+                    degreeInputs: new Array(res.data.length),
+				});
+			})
+			.catch(err => console.log(err));
+
+		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/experiences')
+			.then(res => {
+				console.log(res);
+				this.setState({
+					experienceQuestions: res.data,
+					experienceInputs: new Array(res.data.length)
+				});
+			})
+			.catch(err => console.log(err));
+
+		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/tech-courses')
+			.then(res => {
+				console.log(res);
+				this.setState({
+					techCourseOptions: res.data,
+					techCourseInputs: new Array(res.data.length),
+				});
+			})
+			.catch(err => console.log(err));
+
+		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/prof-courses')
+			.then(res => {
+				console.log(res);
+				this.setState({
+					profCourseOptions: res.data,
+					profCourseInputs: new Array(res.data.length),
+				});
+			})
+			.catch(err => console.log(err));
+
+
+		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/tech-skills')
+			.then(res => {
+				console.log(res);
+				this.setState({
+					techSkillOptions: res.data,
+					techSkillInputs: new Array(res.data.length),
+				});
+			})
+			.catch(err => console.log(err));
+
+		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/prof-courses')
+			.then(res => {
+				console.log(res);
+				this.setState({
+					profSkillOptions: res.data,
+					profSkillInputs: new Array(res.data.length),
+				});
+			})
+			.catch(err => console.log(err));
+	}
+
+	handleSubmit() {
+		var {phoneInput} = this.state;
+		var {firstNameInput} = this.state;
 			var {lastNameInput} = this.state;
 			var {emailInput} = this.state;
 			var {linkedinInput} = this.state;
@@ -281,13 +370,13 @@ class StudentForm extends Component {
 			var {intentionOptions} = this.state;
 			var {intentionData} = this.state;
 			var {interestOptions} = this.state;
-			var {interestInput} = this.state;
+			var {interestInputs} = this.state;
 			var {timeCommit} = this.state;
 
 			var {logisticQuestions} = this.state;
-			var {logisticData} = this.state;
+			var {logisticInputs} = this.state;
 
-			var {degreeOption} = this.state;
+			var {degreeOptions} = this.state;
 			var {degreeOtherInput} = this.state;
 
 			var {courseQuestions} = this.state;
@@ -296,10 +385,9 @@ class StudentForm extends Component {
 			var {experienceQuestions} = this.state;
 			var {experienceInputs} = this.state;
 
-			var {guidanceSkill} = this.state;
 			var {extraSkills} = this.state;
 
-			var {skills} = this.state;
+			var {techSkills, profSkills} = this.state;
 			var {decisionData} = this.state;
 
 
@@ -308,8 +396,8 @@ class StudentForm extends Component {
 
     render() {
         let hasMounted = false;
-        let {skills} = this.state;
-        if(skills !== null) {
+        let {techSkillOptions} = this.state;
+        if(techSkillOptions !== null) {
             hasMounted = true;
         }
         let CurrentDisplay;
@@ -390,8 +478,8 @@ class StudentForm extends Component {
 														return (
 															<Form.Group key={index}>
 																	<Form.Label>{question}</Form.Label>
-																		<Form.Check type="Radio" label="Yes" checked={this.state.logisticData[index]} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
-																		<Form.Check type="Radio" label="No" checked={!this.state.logisticData[index]} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
+																		<Form.Check type="Radio" label="Yes" checked={this.state.logisticInputs[index]} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
+																		<Form.Check type="Radio" label="No" checked={!this.state.logisticInputs[index]} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
 															</Form.Group>
 														)
 													}
@@ -412,7 +500,7 @@ class StudentForm extends Component {
 														{this.state.degreeOptions.map((option, index) => {
 																return(
 																		<Form.Group key={index}>
-																			<Form.Check type="Radio" label={option} checked={this.state.degreeData[index]} onChange={this.handleDegreeOption.bind(this, index)}/>
+																			<Form.Check type="Radio" label={option} checked={this.state.degreeInputs[index]} onChange={this.handleDegreeOption.bind(this, index)}/>
 																		</Form.Group>
 																)
 														})}
@@ -454,20 +542,6 @@ class StudentForm extends Component {
 													})}
 												</Form.Group>
 
-                        <Form.Group controlId="guidanceSkill">
-                            <Form.Label>How skilled are you with leading and managing a project from start to finish
-                                with little guidance from your client? </Form.Label>
-                            <Form.Control required as="select" onChange={this.handleGuidanceQuestion}>
-                                <option></option>
-                                <option>1 - No Experience</option>
-                                <option>2</option>
-                                <option>3 - Somewhat Skilled</option>
-                                <option>4</option>
-                                <option>5 - Extremely Experienced</option>
-                            </Form.Control>
-                        </Form.Group>
-
-
                         <Form.Label>Please rate your experience in the following technical skills using the scale below:</Form.Label>
 												<br/>
 												<div>1: No Experience </div>
@@ -476,7 +550,7 @@ class StudentForm extends Component {
 												<div>4: Experienced	</div>
 												<div>5: Extremely Experienced </div>
 												<br/>
-                        {skills.map((skill, index) => {
+                        {techSkillOptions.map((skill, index) => {
                             let formattedSkill = skill.name.replace(/\s+/g, '');
                             return(
                                 <Form.Group key={index}>
