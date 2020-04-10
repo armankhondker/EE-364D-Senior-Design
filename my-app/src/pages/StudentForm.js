@@ -48,213 +48,213 @@ class StudentForm extends Component {
 			profSkillInputs: [],
 			extraSkills: ""
         }
-				this.handlePhone = this.handlePhone.bind(this);
-	 		 	this.handleFirstName = this.handleFirstName.bind(this);
-				this.handleLastName = this.handleLastName.bind(this);
-				this.handleEID = this.handleEID.bind(this);
-				this.handleEmail = this.handleEmail.bind(this);
-				this.handleLinkedin = this.handleLinkedin.bind(this);
-				this.handleResumeUpload = this.handleResumeUpload.bind(this);
-				this.handleTimeCommit = this.handleTimeCommit.bind(this);
-				this.handleIntentions = this.handleIntentions.bind(this);
-				this.handleInterest = this.handleInterest.bind(this);
-				this.handleDegreeOption = this.handleDegreeOption.bind(this);
-				this.handleLogisticQuestions = this.handleLogisticQuestions.bind(this);
-				this.handleCourseInputs = this.handleCourseInputs.bind(this);
-				this.handleExperienceQuestions = this.handleExperienceQuestions.bind(this);
-				this.handleRadio = this.handleRadio.bind(this);
-				this.handleExtraSkills = this.handleExtraSkills.bind(this);
-				this.handleSubmit = this.handleSubmit.bind(this);
+
+		this.handlePhone = this.handlePhone.bind(this);
+		this.handleFirstName = this.handleFirstName.bind(this);
+		this.handleLastName = this.handleLastName.bind(this);
+		this.handleEID = this.handleEID.bind(this);
+		this.handleEmail = this.handleEmail.bind(this);
+		this.handleLinkedin = this.handleLinkedin.bind(this);
+		this.handleResumeUpload = this.handleResumeUpload.bind(this);
+		this.handleTimeCommit = this.handleTimeCommit.bind(this);
+		this.handleIntentions = this.handleIntentions.bind(this);
+		this.handleInterest = this.handleInterest.bind(this);
+		this.handleDegreeOption = this.handleDegreeOption.bind(this);
+		this.handleLogisticQuestions = this.handleLogisticQuestions.bind(this);
+		this.handleCourseInputs = this.handleCourseInputs.bind(this);
+		this.handleExperienceQuestions = this.handleExperienceQuestions.bind(this);
+		this.handleRadio = this.handleRadio.bind(this);
+		this.handleExtraSkills = this.handleExtraSkills.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
     }
-		handlePhone(e) {
-			var num = e.target.value;
-			this.setState(state => ({
-	      phoneInput: num
-	    }));
+
+	handlePhone(e) {
+		var num = e.target.value;
+		this.setState(state => ({
+		  phoneInput: num
+		}));
+	}
+
+	handleFirstName(e) {
+		var name = e.target.value;
+		this.setState(state => ({
+		  firstNameInput: name
+		}));
+	}
+
+	handleEmail(e) {
+		var email = e.target.value;
+		this.setState(state => ({
+			emailInput: email
+		}));
+	}
+
+	handleLinkedin(e) {
+		var li = e.target.value;
+		this.setState(state => ({
+			linkedinInput: li
+		}));
+	}
+
+	handleLastName(e) {
+		var name = e.target.value;
+		this.setState(state => ({
+		  lastNameInput: name
+		}));
+	}
+
+	handleEID(e) {
+		this.setState(({
+			eidInput: e.target.value
+		}));
+	}
+
+	handleResumeUpload(e) {
+		this.setState({ uploading: true })
+		const files = Array.from(e.target.files)
+		const formData = new FormData()
+
+		this.setState({
+			uploading: false,
+			resumeInput: files[0]
+		})
+		// files.forEach((file, i) => {
+	//   formData.append(i, file)
+	// })
+		// fetch(`${API_URL}/image-upload`, {
+	//   method: 'POST',
+	//   body: formData
+	// })
+	// .then(res => res.json())
+	// .then(images => {
+	//   this.setState({
+	//     uploading: false,
+	//     images
+	//   })
+	// })
+	}
+
+	handleTimeCommit(e) {
+		var tc = e.target.value
+		this.setState(state => ({
+	  timeCommit: tc
+	}));
+	}
+
+	handleIntentions(i, e) {
+		this.setState(update(this.state, {
+			intentionData: {
+				[i] : {
+					$set: e.target.checked
+				}
+			}
+		}));
+	}
+
+	handleInterest(i, e) {
+		this.setState(update(this.state, {
+			interestInput: {
+				[i] : {
+					$set: e.target.checked
+				}
+			}
+		}));
+	}
+
+	handleDegreeOption(i, e) {
+		var formerCheck = -1;
+		if (e.target.checked) {
+			var k=0;
+			for (k; k<this.state.degreeInputs.length; k++) {
+				if (this.state.degreeInputs[k] === true && k !== i)
+					formerCheck=k;
+			}
 		}
-
-		handleFirstName(e) {
-			var name = e.target.value;
-			this.setState(state => ({
-	      firstNameInput: name
-	    }));
-		}
-
-		handleEmail(e) {
-			var email = e.target.value;
-			this.setState(state => ({
-				emailInput: email
-			}));
-		}
-
-		handleLinkedin(e) {
-			var li = e.target.value;
-			this.setState(state => ({
-				linkedinInput: li
-			}));
-		}
-
-		handleLastName(e) {
-			var name = e.target.value;
-			this.setState(state => ({
-			  lastNameInput: name
-			}));
-		}
-
-		handleEID(e) {
-    		this.setState(({
-				eidInput: e.target.value
-			}));
-		}
-
-		handleResumeUpload(e) {
-			this.setState({ uploading: true })
-			const files = Array.from(e.target.files)
-			const formData = new FormData()
-
-			this.setState({
-				uploading: false,
-				resumeInput: files[0]
-			})
-			// files.forEach((file, i) => {
-	    //   formData.append(i, file)
-	    // })
-			// fetch(`${API_URL}/image-upload`, {
-	    //   method: 'POST',
-	    //   body: formData
-	    // })
-	    // .then(res => res.json())
-	    // .then(images => {
-	    //   this.setState({
-	    //     uploading: false,
-	    //     images
-	    //   })
-	    // })
-
-
-		}
-
-		handleTimeCommit(e) {
-			var tc = e.target.value
-			this.setState(state => ({
-	      timeCommit: tc
-	    }));
-		}
-
-		handleIntentions(i, e) {
+		// Former check is the previously checked box index
+		if (formerCheck === -1) {
 			this.setState(update(this.state, {
-				intentionData: {
+				degreeInputs: {
 					[i] : {
 						$set: e.target.checked
 					}
 				}
 			}));
 		}
-
-		handleInterest(i, e) {
+		// If a different box was checked, uncheck it
+		else {
 			this.setState(update(this.state, {
-				interestInput: {
+				degreeInputs: {
 					[i] : {
 						$set: e.target.checked
+					},
+					[formerCheck] : {
+						$set: false
 					}
 				}
 			}));
 		}
-
-		handleDegreeOption(i, e) {
-			var formerCheck = -1;
-			if (e.target.checked) {
-				var k=0;
-				for (k; k<this.state.degreeInputs.length; k++) {
-					if (this.state.degreeInputs[k] === true && k !== i)
-						formerCheck=k;
-				}
-			}
-			// Former check is the previously checked box index
-			if (formerCheck === -1) {
-				this.setState(update(this.state, {
-					degreeInputs: {
-						[i] : {
-							$set: e.target.checked
-						}
-					}
-				}));
-			}
-			// If a different box was checked, uncheck it
-			else {
-				this.setState(update(this.state, {
-					degreeInputs: {
-						[i] : {
-							$set: e.target.checked
-						},
-						[formerCheck] : {
-							$set: false
-						}
-					}
-				}));
-			}
-			// Also update actual degree option chosen
-			if (e.target.checked) {
-				this.setState(state => ({
-					degreeOption: this.state.degreeOptions[i]
-		    }));
-			}
-		}
-
-		handleLogisticQuestions(i, choice, e) {
-			var pick=false;
-			if (choice === 0)
-				pick = true;
-			this.setState(update(this.state, {
-				logisticInputs: {
-					[i] : {
-						$set: pick
-					}
-				},
-				logisticFlags: {
-					[i] : {
-						$set: true
-					}
-				}
-			}));
-		}
-
-		handleCourseInputs(i, e) {
-			this.setState(update(this.state, {
-				courseInputs: {
-					[i] : {
-						$set: e.target.checked
-					}
-				}
-			}));
-		}
-
-		handleExperienceQuestions(i, e) {
-			this.setState(update(this.state, {
-				experienceInputs: {
-					[i] : {
-						$set: e.target.value
-					}
-				}
-			}));
-		}
-
-		handleRadio(i, e) {
-			this.setState(update(this.state, {
-				decisionData: {
-					[i] : {
-						$set: e
-					}
-				}
-			}));
-		}
-
-		handleExtraSkills(e) {
-			var writtenText = e.target.value
+		// Also update actual degree option chosen
+		if (e.target.checked) {
 			this.setState(state => ({
-				extraSkills: writtenText
-			}));
+				degreeOption: this.state.degreeOptions[i]
+		}));
 		}
+	}
+
+	handleLogisticQuestions(i, choice, e) {
+		var pick=false;
+		if (choice === 0)
+			pick = true;
+		this.setState(update(this.state, {
+			logisticInputs: {
+				[i] : {
+					$set: pick
+				}
+			},
+			logisticFlags: {
+				[i] : {
+					$set: true
+				}
+			}
+		}));
+	}
+
+	handleCourseInputs(i, e) {
+		this.setState(update(this.state, {
+			courseInputs: {
+				[i] : {
+					$set: e.target.checked
+				}
+			}
+		}));
+	}
+
+	handleExperienceQuestions(i, e) {
+		this.setState(update(this.state, {
+			experienceInputs: {
+				[i] : {
+					$set: e.target.value
+				}
+			}
+		}));
+	}
+
+	handleRadio(i, e) {
+		this.setState(update(this.state, {
+			decisionData: {
+				[i] : {
+					$set: e
+				}
+			}
+		}));
+	}
+
+	handleExtraSkills(e) {
+		var writtenText = e.target.value
+		this.setState(state => ({
+			extraSkills: writtenText
+		}));
+	}
 
     async componentDidMount() {
 		// await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/skills')
@@ -369,37 +369,37 @@ class StudentForm extends Component {
 	handleSubmit() {
 		var {phoneInput} = this.state;
 		var {firstNameInput} = this.state;
-			var {lastNameInput} = this.state;
-			var {emailInput} = this.state;
-			var {linkedinInput} = this.state;
-			var {resumeInput} = this.state;
+		var {lastNameInput} = this.state;
+		var {emailInput} = this.state;
+		var {linkedinInput} = this.state;
+		var {resumeInput} = this.state;
 
-			var {intentionOptions} = this.state;
-			var {intentionData} = this.state;
-			var {interestOptions} = this.state;
-			var {interestInputs} = this.state;
-			var {timeCommit} = this.state;
+		var {intentionOptions} = this.state;
+		var {intentionData} = this.state;
+		var {interestOptions} = this.state;
+		var {interestInputs} = this.state;
+		var {timeCommit} = this.state;
 
-			var {logisticQuestions} = this.state;
-			var {logisticInputs} = this.state;
+		var {logisticQuestions} = this.state;
+		var {logisticInputs} = this.state;
 
-			var {degreeOptions} = this.state;
-			var {degreeOtherInput} = this.state;
+		var {degreeOptions} = this.state;
+		var {degreeOtherInput} = this.state;
 
-			var {courseQuestions} = this.state;
-			var {courseInputs} = this.state;
+		var {courseQuestions} = this.state;
+		var {courseInputs} = this.state;
 
-			var {experienceQuestions} = this.state;
-			var {experienceInputs} = this.state;
+		var {experienceQuestions} = this.state;
+		var {experienceInputs} = this.state;
 
-			var {extraSkills} = this.state;
+		var {extraSkills} = this.state;
 
-			var {techSkills, profSkills} = this.state;
-			var {decisionData} = this.state;
+		var {techSkills, profSkills} = this.state;
+		var {decisionData} = this.state;
 
 
 
-		}
+	}
 
     render() {
         let hasMounted = false;
@@ -441,34 +441,34 @@ class StudentForm extends Component {
                             <Form.Label>LinkedIn (preferred, but not required)</Form.Label>
                             <Form.Control type="text" value={this.state.linkedinInput} onChange={this.handleLinkedin}/>
                         </Form.Group>
-												<div className="mb-3">
-											    <Form.File id="resumeInput">
-											      <Form.File.Label>Please upload a PDF of your resume.</Form.File.Label>
-											      <Form.File.Input required accept=".pdf,.PDF" onChange={this.handleResumeUpload}/>
-														{this.state.uploading ? <p>Uploading...</p> : <p></p>}
-											    </Form.File>
-											  </div>
+						<div className="mb-3">
+							<Form.File id="resumeInput">
+							  <Form.File.Label>Please upload a PDF of your resume.</Form.File.Label>
+							  <Form.File.Input required accept=".pdf,.PDF" onChange={this.handleResumeUpload}/>
+									{this.state.uploading ? <p>Uploading...</p> : <p></p>}
+							</Form.File>
+						</div>
 
-												<br></br>
+						<br></br>
 
-												<Form.Label>Why are you interested in working on a project? (Check all that apply </Form.Label>
-														{this.state.intentionOptions.map((option, index) => {
-		                            return(
-																	<Form.Group key={index}>
-																			<Form.Check label={option.name} onChange={this.handleIntentions.bind(this, index)}/>
-																	</Form.Group>
-																)
-														})}
+						<Form.Label>Why are you interested in working on a project? (Check all that apply </Form.Label>
+							{this.state.intentionOptions.map((option, index) => {
+								return (
+									<Form.Group key={index}>
+											<Form.Check label={option.name} onChange={this.handleIntentions.bind(this, index)}/>
+									</Form.Group>
+								)
+							})}
 
                         <Form.Label>Identify each of the project categories you are interested in. (Check all that
                             apply)</Form.Label>
-														{this.state.interestOptions.map((option, index) => {
+								{this.state.interestOptions.map((option, index) => {
 		                            return(
-																	<Form.Group key={index}>
-																			<Form.Check label={option.name} onChange={this.handleInterest.bind(this, index)}/>
-																	</Form.Group>
-																)
-														})}
+										<Form.Group key={index}>
+												<Form.Check label={option.name} onChange={this.handleInterest.bind(this, index)}/>
+										</Form.Group>
+									)
+								})}
 
                         <Form.Group controlId="timeCommit">
                             <Form.Label>Realistically, how much time can you commit per week to working on a
@@ -482,29 +482,28 @@ class StudentForm extends Component {
                             </Form.Control>
                         </Form.Group>
 
-												<br></br>
+						<br></br>
 
-												{this.state.logisticQuestions.map((question, index) => {
-													if (this.state.logisticFlags[index]) {
-														return (
-															<Form.Group key={index}>
-																	<Form.Label>{question.name}</Form.Label>
-																		<Form.Check type="Radio" label="Yes" checked={this.state.logisticInputs[index]} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
-																		<Form.Check type="Radio" label="No" checked={!this.state.logisticInputs[index]} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
-															</Form.Group>
-														)
-													}
-													else {
-														return (
-															<Form.Group key={index}>
-																	<Form.Label>{question.name}</Form.Label>
-																	<Form.Check type="Radio" label="Yes" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
-																	<Form.Check type="Radio" label="No" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
-															</Form.Group>
-														)
-													}
-												})}
-
+						{this.state.logisticQuestions.map((question, index) => {
+							if (this.state.logisticFlags[index]) {
+								return (
+									<Form.Group key={index}>
+											<Form.Label>{question.name}</Form.Label>
+												<Form.Check type="Radio" label="Yes" checked={this.state.logisticInputs[index]} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
+												<Form.Check type="Radio" label="No" checked={!this.state.logisticInputs[index]} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
+									</Form.Group>
+								)
+							}
+							else {
+								return (
+									<Form.Group key={index}>
+											<Form.Label>{question.name}</Form.Label>
+											<Form.Check type="Radio" label="Yes" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
+											<Form.Check type="Radio" label="No" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
+									</Form.Group>
+								)
+							}
+						})}
 
                         <Form.Group controlId="degree">
                             <Form.Label>Which degree program are you currently enrolled in?</Form.Label>
@@ -536,30 +535,30 @@ class StudentForm extends Component {
 						</Form.Group>
 
                         <Form.Group controlId="experience">
-													{this.state.experienceQuestions.map((question, index) => {
-															return(
-																<Form.Group key={index}>
-																	<Form.Label>{question.name}</Form.Label>
-																	<Form.Control required as="select" onChange={this.handleExperienceQuestions.bind(this,index)}>
-																			<option></option>
-																			<option>No Experience</option>
-																			<option>Less than 6 months</option>
-																			<option>6-12 Months</option>
-																			<option>More than 1 year</option>
-																	</Form.Control>
-																</Form.Group>
-															)
-													})}
-												</Form.Group>
+							{this.state.experienceQuestions.map((question, index) => {
+								return(
+									<Form.Group key={index}>
+										<Form.Label>{question.name}</Form.Label>
+										<Form.Control required as="select" onChange={this.handleExperienceQuestions.bind(this,index)}>
+												<option></option>
+												<option>No Experience</option>
+												<option>Less than 6 months</option>
+												<option>6-12 Months</option>
+												<option>More than 1 year</option>
+										</Form.Control>
+									</Form.Group>
+								)
+							})}
+						</Form.Group>
 
                         <Form.Label>Please rate your experience in the following technical skills using the scale below:</Form.Label>
-												<br/>
-												<div>1: No Experience </div>
-												<div>2: Can Learn		</div>
-												<div>3: Slightly Experienced</div>
-												<div>4: Experienced	</div>
-												<div>5: Extremely Experienced </div>
-												<br/>
+						<br/>
+						<div>1: No Experience </div>
+						<div>2: Can Learn		</div>
+						<div>3: Slightly Experienced</div>
+						<div>4: Experienced	</div>
+						<div>5: Extremely Experienced </div>
+						<br/>
                         {techSkillOptions.map((skill, index) => {
                             let formattedSkill = skill.name.replace(/\s+/g, '');
                             return(
@@ -572,14 +571,14 @@ class StudentForm extends Component {
 
 
 
-												<Form.Label>Please rate your experience in the following professional skills using the scale below:</Form.Label>
-												<br/>
-												<div>1: No Experience </div>
-												<div>2: Slightly Experienced	</div>
-												<div>3: Can Learn	</div>
-												<div>4: Experienced	</div>
-												<div>5: Extremely Experienced </div>
-												<br/>
+						<Form.Label>Please rate your experience in the following professional skills using the scale below:</Form.Label>
+						<br/>
+						<div>1: No Experience </div>
+						<div>2: Slightly Experienced	</div>
+						<div>3: Can Learn	</div>
+						<div>4: Experienced	</div>
+						<div>5: Extremely Experienced </div>
+						<br/>
                         <Form.Group>
                             <Form.Label>Communication</Form.Label>
                                 <RadioButton name="Communication"/>
