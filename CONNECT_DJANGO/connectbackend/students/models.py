@@ -1,6 +1,6 @@
 # from django.db import models
 from djongo import models
-from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.fields import JSONField
 
 
 class Student(models.Model):
@@ -11,16 +11,16 @@ class Student(models.Model):
     email = models.EmailField(max_length=100)
     linkedIn = models.URLField(max_length=100, blank=True)
     resume_link = models.URLField(max_length=100, blank=True)
-    intentions = ArrayField(models.CharField(max_length=100, blank=True), size=100)
-    interests = ArrayField(models.CharField(max_length=100, blank=True), size=100)
+    intentions = JSONField()
+    interests = JSONField()
     time_commitment = models.CharField(max_length=100)
-    logistics = ArrayField(models.CharField(max_length=100), size=100)
+    logistics = JSONField()
     degree = models.CharField(max_length=100)
-    tech_courses = ArrayField(models.CharField(max_length=100, blank=True), size=100)
-    prof_courses = ArrayField(models.CharField(max_length=100, blank=True), size=100)
-    experience = ArrayField(models.CharField(max_length=100, blank=True), size=100)
-    tech_skills = ArrayField(models.CharField(max_length=100), size=100)
-    prof_skills = ArrayField(models.CharField(max_length=100), size=100)
+    tech_courses = JSONField()
+    prof_courses = JSONField()
+    experience = JSONField()
+    tech_skills = JSONField()
+    prof_skills = JSONField()
     other_skills = models.TextField(max_length=500, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
