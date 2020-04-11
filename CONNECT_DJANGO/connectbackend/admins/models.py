@@ -106,3 +106,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         "Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always
         return True
+
+
+class Settings(models.Model):
+    student_form_enabled = models.BooleanField
+    organization_form_enabled = models.BooleanField
+    current_cohort = models.CharField(max_length=50)
