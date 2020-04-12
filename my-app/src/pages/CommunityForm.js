@@ -12,73 +12,79 @@ import axios from "axios";
 class CommunityForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            skills: null,
-						phoneInput: "",
-						firstNameInput: "",
-						lastNameInput: "",
-						emailInput: "",
-						orgInput: "",
-						resumeInput: "",
-						uploading: false,
-						timeCommit: "",
-						//intentionOptions: ["To gain real world experience", "To participate in a paid experience", "To fulfill an academic requirement (i.e. capstone, thesis, dissertation"],
-						interestOptions: ["Research", "Data Collection", "Software Development", "Business Intelligence", "Data Analytics"],
-						logisticQuestions: ["Does your student need to have access to transportation?", "Do you offer flexible work hours?", "Do you offer the ability to work remotely?"],
-						degreeOptions: ["Master of Public Affair", "Master of Global Policy Studies", "DC Concentration (MPAFF/MGPS)", "Ph.D. in Public Policy", "Nonprofit Portfolio Program", "Public Health", "Educational Psychology", "Social Work", "Other"],
-						logisticData: [],
-						logisticFlags: [],
-						//intentionData: [],
-						interestInput: [],
-						courseQuestions: ["Data Visualization, Statistics, and Econometrics for Policy Analysis, Using the Python Data Science Platform (PA 397C-60380)", "Data Analysis/Simulation in R (EDP 380C)", "Advanced Statistical Modeling (EDP 381D)"],
-						courseInputs: [],
-						decisionData: [],
-						degreeData:[],
-						degreeOption: "",
-						degreeOtherInput: "",
-						experienceQuestions:["Over the past 5 years, approximately how much experience do you expect your student to have had working or directly volunteering with nonprofit organizations?"],
-						experienceInputs: [],
-						guidanceSkill: "",
-						extraSkills: ""
-        }
-				this.handlePhone = this.handlePhone.bind(this);
-	 		 	this.handleFirstName = this.handleFirstName.bind(this);
-				this.handleLastName = this.handleLastName.bind(this);
-				this.handleEmail = this.handleEmail.bind(this);
-				this.handleOrgName = this.handleOrgName.bind(this);
-				this.handleResumeUpload = this.handleResumeUpload.bind(this);
-				this.handleTimeCommit = this.handleTimeCommit.bind(this);
-//              this.handleIntentions = this.handleIntentions.bind(this);
-				this.handleInterest = this.handleInterest.bind(this);
-				this.handleDegreeOption = this.handleDegreeOption.bind(this);
-				this.handleLogisticQuestions = this.handleLogisticQuestions.bind(this);
-				this.handleCourseInputs = this.handleCourseInputs.bind(this);
-				this.handleExperienceQuestions = this.handleExperienceQuestions.bind(this);
-				this.handleGuidanceQuestion = this.handleGuidanceQuestion.bind(this);
-				this.handleRadio = this.handleRadio.bind(this);
-				this.handleExtraSkills = this.handleExtraSkills.bind(this);
-				this.handleSubmit = this.handleSubmit.bind(this);
-    }
-		handlePhone(e) {
-			var num = e.target.value;
+		this.state = {
+			uploading: false,
+			firstNameInput: "",
+			lastNameInput: "",
+			phoneInput: "",
+			emailInput: "",
+            orgNameInput:"",
+			orgAddressInput:"",
+			orgWebsiteInput:"",
+			projNameInput:"",
+			projDescInput:"",
+			projCatInput: [],
+			timeCommit: "",
+			interestOptions: [],
+			interestInputs: [],
+			logisticQuestions: [],
+			logisticInputs: [],
+			logisticFlags: [],
+			techCourseOptions: [],
+			techCourseInputs: [],
+			profCourseOptions: [],
+			profCourseInputs: [],
+			degreeOptions: [],
+			degreeInputs:[],
+			degreeInput: "",
+			degreeOtherInput: "",
+			experienceQuestions:[],
+			experienceInputs: [],
+			techSkillOptions: [],
+			techSkillInputs: [],
+			profSkillOptions: [],
+			profSkillInputs: [],
+			extraSkills: ""
+		}
+
+		this.handlePhone = this.handlePhone.bind(this);
+		this.handleFirstName = this.handleFirstName.bind(this);
+		this.handleLastName = this.handleLastName.bind(this);
+		this.handleEmail = this.handleEmail.bind(this);
+		this.handleTimeCommit = this.handleTimeCommit.bind(this);
+		this.handleInterest = this.handleInterest.bind(this);
+		this.handleDegreeOption = this.handleDegreeOption.bind(this);
+		this.handleLogisticQuestions = this.handleLogisticQuestions.bind(this);
+		this.handleTechCourseInputs = this.handleTechCourseInputs.bind(this);
+		this.handleProfCourseInputs = this.handleProfCourseInputs.bind(this);
+		this.handleExperienceQuestions = this.handleExperienceQuestions.bind(this);
+		this.handleTechSkills = this.handleTechSkills.bind(this);
+		this.handleExtraSkills = this.handleExtraSkills.bind(this);
+		this.validateForm = this.validateForm.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleTest = this.handleTest.bind(this);
+	}
+
+	handlePhone(e) {
+		var num = e.target.value;
 			this.setState(state => ({
 	      phoneInput: num
 	    }));
-		}
+	}
 
 		handleFirstName(e) {
 			var name = e.target.value;
 			this.setState(state => ({
 	      firstNameInput: name
 	    }));
-		}
+	}
 
-		handleEmail(e) {
-			var email = e.target.value;
-			this.setState(state => ({
-				emailInput: email
-			}));
-		}
+	handleEmail(e) {
+		var email = e.target.value;
+		this.setState(state => ({
+			emailInput: email
+		}));
+	}
 
 		handleOrgName(e) {
 			var li = e.target.value;
@@ -94,19 +100,6 @@ class CommunityForm extends Component {
 	    }));
 		}
 
-		handleResumeUpload(e) {
-			this.setState({ uploading: true })
-			const files = Array.from(e.target.files)
-			const formData = new FormData()
-
-			this.setState({
-				uploading: false,
-				resumeInput: files[0]
-			})
-
-
-		}
-
 		handleTimeCommit(e) {
 			var tc = e.target.value
 			this.setState(state => ({
@@ -114,16 +107,6 @@ class CommunityForm extends Component {
 	    }));
 		}
 
-		/*handleIntentions(i, e) {
-			this.setState(update(this.state, {
-				intentionData: {
-					[i] : {
-						$set: e.target.checked
-					}
-				}
-			}));
-		}
-*/
 		handleInterest(i, e) {
 			this.setState(update(this.state, {
 				interestInput: {
@@ -192,38 +175,61 @@ class CommunityForm extends Component {
 			}));
 		}
 
-		handleCourseInputs(i, e) {
-			this.setState(update(this.state, {
-				courseInputs: {
-					[i] : {
-						$set: e.target.checked
-					}
+	handleTechCourseInputs(i, e) {
+		this.setState(update(this.state, {
+			techCourseInputs: {
+				[i] : {
+					$set: e.target.checked
 				}
-			}));
-		}
+			}
+		}));
+	}
+
+	handleProfCourseInputs(i, e) {
+		this.setState(update(this.state, {
+			profCourseInputs: {
+				[i] : {
+					$set: e.target.checked
+				}
+			}
+		}));
+	}
+
+	handleExperienceQuestions(i, e) {
+		this.setState(update(this.state, {
+			experienceInputs: {
+				[i] : {
+					$set: e.target.value
+				}
+			}
+		}));
+	}
+
+	handleTechSkills(i, e) {
+		this.setState(update(this.state, {
+			techSkillInputs: {
+				[i] : {
+					$set: e
+				}
+			}
+		}));
+	}
+
+	handleProfSkills(i, e) {
+		this.setState(update(this.state, {
+			profSkillInputs: {
+				[i] : {
+					$set: e
+				}
+			}
+		}));
+	}
 
 		handleExperienceQuestions(i, e) {
 			this.setState(update(this.state, {
 				experienceInputs: {
 					[i] : {
 						$set: e.target.value
-					}
-				}
-			}));
-		}
-
-		handleGuidanceQuestion(e) {
-			var guidanceValue = e.target.value
-			this.setState(state => ({
-				guidanceSkill: guidanceValue
-			}));
-		}
-
-		handleRadio(i, e) {
-			this.setState(update(this.state, {
-				decisionData: {
-					[i] : {
-						$set: e
 					}
 				}
 			}));
@@ -236,28 +242,113 @@ class CommunityForm extends Component {
 			}));
 		}
 
-    async componentDidMount() {
-       await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/skills')
-           .then(res => {
-               console.log(res);
-               this.setState({
-								 skills: res.data,
-								 decisionData: new Array(res.data.length),
-								// intentionData: new Array(this.state.intentionOptions.length),
-								 interestInput: new Array(this.state.interestOptions.length),
-								 degreeData: new Array(this.state.degreeOptions.length),
-								 logisticData: new Array(this.state.logisticQuestions.length),
-								 logisticFlags: new Array(this.state.logisticQuestions.length),
-								 courseInputs: new Array(this.state.courseQuestions.length),
-								 experienceInputs: new Array(this.state.experienceQuestions.length)
-						   });
-           })
-           .catch(err => console.log(err));
-    }
+	async componentDidMount() {
+		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/intentions')
+			.then(res => {
+				console.log(res);
+				this.setState({
+					intentionOptions: res.data,
+					intentionInputs: new Array(res.data.length),
+				});
+			})
+			.catch(err => console.log(err));
 
-		handleSubmit() {
-			var {phoneInput} = this.state;
-			var {firstNameInput} = this.state;
+		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/interests')
+			.then(res => {
+				console.log(res);
+				this.setState({
+					interestOptions: res.data,
+					interestInputs: new Array(res.data.length),
+				});
+			})
+			.catch(err => console.log(err));
+
+		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/logistics')
+			.then(res => {
+				console.log(res);
+				let flags = new Array(res.data.length);
+				flags.fill(null);
+				this.setState({
+					logisticQuestions: res.data,
+					logisticInputs: new Array(res.data.length),
+					logisticFlags: flags,
+				});
+			})
+			.catch(err => console.log(err));
+
+		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/degrees')
+			.then(res => {
+				console.log(res);
+				this.setState({
+					degreeOptions: res.data,
+					degreeInputs: new Array(res.data.length),
+				});
+			})
+			.catch(err => console.log(err));
+
+		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/experiences')
+			.then(res => {
+				console.log(res);
+				this.setState({
+					experienceQuestions: res.data,
+					experienceInputs: new Array(res.data.length)
+				});
+			})
+			.catch(err => console.log(err));
+
+		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/tech-courses')
+			.then(res => {
+				console.log(res);
+				this.setState({
+					techCourseOptions: res.data,
+					techCourseInputs: new Array(res.data.length),
+				});
+			})
+			.catch(err => console.log(err));
+
+		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/prof-courses')
+			.then(res => {
+				console.log(res);
+				this.setState({
+					profCourseOptions: res.data,
+					profCourseInputs: new Array(res.data.length),
+				});
+			})
+			.catch(err => console.log(err));
+
+
+		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/tech-skills')
+			.then(res => {
+				console.log(res);
+				this.setState({
+					techSkillOptions: res.data,
+					techSkillInputs: new Array(res.data.length),
+				});
+			})
+			.catch(err => console.log(err));
+
+		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/prof-skills')
+			.then(res => {
+				console.log(res);
+				this.setState({
+					profSkillOptions: res.data,
+					profSkillInputs: new Array(res.data.length),
+				});
+			})
+			.catch(err => console.log(err));
+	}
+
+	validateForm() {
+
+	}
+
+	handleTest() {
+
+	}
+
+	handleSubmit() {
+		var {phoneInput} = this.state;
+		var {firstNameInput} = this.state;
 			var {lastNameInput} = this.state;
 			var {emailInput} = this.state;
 			var {orgInput} = this.state;
@@ -284,7 +375,6 @@ class CommunityForm extends Component {
 			var {guidanceSkill} = this.state;
 			var {extraSkills} = this.state;
 
-			var {skills} = this.state;
 			var {decisionData} = this.state;
 
 
@@ -293,12 +383,16 @@ class CommunityForm extends Component {
 
     render() {
         let hasMounted = false;
-        let {skills} = this.state;
-        if(skills !== null) {
-            hasMounted = true;
-        }
-        let CurrentDisplay;
-        if(!hasMounted) {
+		let {interestOptions, logisticQuestions, degreeOptions, experienceQuestions, techCourseOptions,
+			profCourseOptions, techSkillOptions, profSkillOptions} = this.state;
+		if(interestOptions.length && logisticQuestions.length && degreeOptions.length &&
+			techCourseOptions.length && profCourseOptions.length && techSkillOptions.length &&
+			profSkillOptions.length
+		) {
+			hasMounted = true;
+		}
+		let CurrentDisplay;
+		if(!hasMounted) {
             CurrentDisplay =
                 <div>
                     <LoadingAnimation/>;
@@ -328,17 +422,17 @@ class CommunityForm extends Component {
                             <Form.Control required type="email" value={this.state.emailInput} onChange={this.handleEmail} placeholder="example@utexas.edu"/>
                         </Form.Group>
 
-												<br></br>
+						<br></br>
 
                         <Form.Label>Identify the project categories your project falls under. (Check all that
                             apply)</Form.Label>
-														{this.state.interestOptions.map((option, index) => {
-		                            return(
-																	<Form.Group key={index}>
-																			<Form.Check label={option} onChange={this.handleInterest.bind(this, index)}/>
-																	</Form.Group>
-																)
-														})}
+							{this.state.interestOptions.map((option, index) => {
+								return(
+										<Form.Group key={index}>
+												<Form.Check label={option.name} onChange={this.handleInterest.bind(this, index)}/>
+										</Form.Group>
+									)
+							})}
 
                         <Form.Group controlId="timeCommit">
                             <Form.Label>Realistically, how much time do you expect your student to commit per week working on your assigned
@@ -352,93 +446,62 @@ class CommunityForm extends Component {
                             </Form.Control>
                         </Form.Group>
 
-												<br></br>
+						<br></br>
 
-												{this.state.logisticQuestions.map((question, index) => {
-													if (this.state.logisticFlags[index]) {
-														return (
-															<Form.Group key={index}>
-																	<Form.Label>{question}</Form.Label>
-																		<Form.Check type="Radio" label="Yes" checked={this.state.logisticData[index]} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
-																		<Form.Check type="Radio" label="No" checked={!this.state.logisticData[index]} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
-															</Form.Group>
-														)
-													}
-													else {
-														return (
-															<Form.Group key={index}>
-																	<Form.Label>{question}</Form.Label>
-																	<Form.Check type="Radio" label="Yes" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
-																	<Form.Check type="Radio" label="No" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
-															</Form.Group>
-														)
-													}
-												})}
+						{this.state.logisticQuestions.map((question, index) => {
+							if (this.state.logisticFlags[index]) {
+								return (
+									<Form.Group key={index}>
+											<Form.Label>{question.name}</Form.Label>
+												<Form.Check type="Radio" label="Yes" checked={this.state.logisticData[index]} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
+												<Form.Check type="Radio" label="No" checked={!this.state.logisticData[index]} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
+									</Form.Group>
+								)
+							}
+							else {
+								return (
+									<Form.Group key={index}>
+											<Form.Label>{question.name}</Form.Label>
+											<Form.Check type="Radio" label="Yes" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
+											<Form.Check type="Radio" label="No" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
+									</Form.Group>
+								)
+							}
+						})}
 
-												<Form.Group controlId="CoursesTaken">
+						<Form.Group controlId="CoursesTaken">
+							<Form.Label>Identify each of the following courses you expect your student to have taken/completed. </Form.Label>
+								{this.state.techCourseOptions.map((course, index) => {
+									if (index % 10 === 0 && index > 0) {
+										return (
+												<div>
+													<br></br>
 													<Form.Label>Identify each of the following courses you expect your student to have taken/completed. </Form.Label>
-														{this.state.courseQuestions.map((course, index) => {
-															if (index % 10 === 0 && index > 0) {
-																return (
-																		<div>
-																	 		<br></br>
-																			<Form.Label>Identify each of the following courses you expect your student to have taken/completed. </Form.Label>
-																			<Form.Check label={course} onChange={this.handleCourseInputs.bind(this, index)}/>
-																		</div>
-															  )
-														 }
-														 else
-																return (
- 																		<Form.Check label={course} onChange={this.handleCourseInputs.bind(this, index)}/>
- 															 )
-														})}
-												</Form.Group>
-
-                        <Form.Group controlId="experience">
-													{this.state.experienceQuestions.map((question, index) => {
-															return(
-																<Form.Group key={index}>
-																	<Form.Label>{question}</Form.Label>
-																	<Form.Control required as="select" onChange={this.handleExperienceQuestions.bind(this,index)}>
-																			<option></option>
-																			<option>No Experience</option>
-																			<option>Less than 6 months</option>
-																			<option>6-12 Months</option>
-																			<option>More than 1 year</option>
-																	</Form.Control>
-																</Form.Group>
-															)
-													})}
-												</Form.Group>
-
-                        <Form.Group controlId="guidanceSkill">
-                            <Form.Label>How skilled are you expecting your student to be with leading and managing a project from start to finish
-                                with little guidance from you? </Form.Label>
-                            <Form.Control required as="select" onChange={this.handleGuidanceQuestion}>
-                                <option></option>
-                                <option>1 - No Experience</option>
-                                <option>2</option>
-                                <option>3 - Somewhat Skilled</option>
-                                <option>4</option>
-                                <option>5 - Extremely Experienced</option>
-                            </Form.Control>
-                        </Form.Group>
-
+													<Form.Check label={course.name} onChange={this.handleTechCourseInputs.bind(this, index)}/>
+												</div>
+									  )
+								 }
+								 else
+										return (
+												<Form.Check label={course.name} onChange={this.handleTechCourseInputs.bind(this, index)}/>
+									 )
+								})}
+						</Form.Group>
 
                         <Form.Label>Please rate the experience you expect from your student in the following technical skills using the scale below:</Form.Label>
-												<br/>
-												<div>1: No Experience </div>
-												<div>2: Can Learn		</div>
-												<div>3: Slightly Experienced</div>
-												<div>4: Experienced	</div>
-												<div>5: Extremely Experienced </div>
-												<br/>
-                        {skills.map((skill, index) => {
+							<br/>
+							<div>1: No Experience </div>
+							<div>2: Can Learn		</div>
+							<div>3: Slightly Experienced</div>
+							<div>4: Experienced	</div>
+							<div>5: Extremely Experienced </div>
+							<br/>
+                        {this.state.techSkillOptions.map((skill, index) => {
                             let formattedSkill = skill.name.replace(/\s+/g, '');
                             return(
                                 <Form.Group key={index}>
                                     <Form.Label>{skill.name}</Form.Label>
-                                    <RadioButton name={formattedSkill} handleRadio={this.handleRadio.bind(this, index)}/>
+                                    <RadioButton name={formattedSkill} handleRadio={this.handleTechSkills.bind(this, index)}/>
                                 </Form.Group>
                             );
                         })}

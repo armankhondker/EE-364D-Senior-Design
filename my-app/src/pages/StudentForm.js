@@ -24,22 +24,24 @@ class StudentForm extends Component {
 			linkedinInput: "",
 			resumeInput: "",
 			timeCommit: "",
-			intentionOptions: ["To gain real world experience", "To participate in a paid experience", "To fulfill an academic requirement (i.e. capstone, thesis, dissertation"],
+			intentionOptions: [],
 			intentionInputs: [],
-			interestOptions: ["Research", "Data Collection", "Software Development", "Business Intelligence", "Data Analytics"],
+			interestOptions: [],
 			interestInputs: [],
-			logisticQuestions: ["To comply with University rules and regulations, are you an international student?", "Do you currently receive any UT financial aid or fellowships?", "Do you have access to transportation?", "Do you need flexible work hours?", "Do you need the ability to work remotely?"],
+			logisticQuestions: ["To comply with University rules and regulations, are you an international student?",
+				"Do you currently receive any UT financial aid or fellowships?", "Do you have access to transportation?",
+				"Do you need flexible work hours?", "Do you need the ability to work remotely?"],
 			logisticInputs: [],
 			logisticFlags: [],
 			techCourseOptions: [],
 			techCourseInputs: [],
             profCourseOptions: [],
 			profCourseInputs: [],
-			degreeOptions: ["Master of Public Affair", "Master of Global Policy Studies", "DC Concentration (MPAFF/MGPS)", "Ph.D. in Public Policy", "Nonprofit Portfolio Program", "Public Health", "Educational Psychology", "Social Work", "Other"],
+			degreeOptions: [],
 			degreeInputs:[],
 			degreeInput: "",
 			degreeOtherInput: "",
-			experienceQuestions:["Over the past 5 years, approximately how much experience have you had working or directly volunteering with nonprofit organizations?"],
+			experienceQuestions:[],
 			experienceInputs: [],
 			techSkillOptions: [],
 			techSkillInputs: [],
@@ -307,7 +309,7 @@ class StudentForm extends Component {
 				flags.fill(null);
 				this.setState({
 					logisticQuestions: res.data,
-					logisticInputs: new Array(res.data.length),
+					logisticInputs: new Array(5),
                     logisticFlags: flags,
 				});
 			})
@@ -486,11 +488,6 @@ class StudentForm extends Component {
 			jsonInterests[interestOptions[i].name] = input;
 		}
 
-		for(let i = 0; i < logisticQuestions.length; i ++) {
-			let input = logisticInputs[i];
-			jsonLogistics[logisticQuestions[i].name] = input;
-		}
-
 		for(let i = 0; i < techCourseOptions.length; i ++) {
 			let input = techCourseInputs[i];
 			if(input === null || input === undefined) input = false;
@@ -530,7 +527,11 @@ class StudentForm extends Component {
 			intentions: jsonIntentions,
 			interests: jsonInterests,
 			time_commitment: timeCommit,
-			logistics: jsonLogistics,
+            international: logisticInputs[0],
+			fin_aid: logisticInputs[1],
+			transportation: logisticInputs[2],
+			flexible_hours: logisticInputs[3],
+			work_remotely: logisticInputs[4],
 			degree: degreeOption,
 			tech_courses: jsonTechCourses,
 			prof_courses: jsonProfCourses,
