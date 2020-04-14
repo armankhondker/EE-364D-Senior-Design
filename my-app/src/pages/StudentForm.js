@@ -1,8 +1,4 @@
-
 import Form from 'react-bootstrap/Form';
-import Alert from 'react-bootstrap/Alert';
-import FormCheck from 'react-bootstrap/FormCheck'
-import FormFile from 'react-bootstrap/FormFile'
 import Button from 'react-bootstrap/Button';
 import React, { Component } from 'react';
 import RadioButton from "../components/RadioButton";
@@ -116,7 +112,7 @@ class StudentForm extends Component {
 	handleResumeUpload(e) {
 		this.setState({ uploading: true })
 		const files = Array.from(e.target.files)
-		const formData = new FormData()
+		// const formData = new FormData()
 
 		this.setState({
 			uploading: false,
@@ -418,11 +414,11 @@ class StudentForm extends Component {
 
 	async handleSubmit(e) {
 		let {
-			firstNameInput, lastNameInput, eidInput, phoneInput, emailInput, linkedinInput, resumeInput, timeCommit,
-            intentionOptions, intentionInputs, interestOptions, interestInputs,  degreeOptions,
-			logisticInputs, logisticFlags, logisticQuestions,
-			courseQuestions, techCourseOptions, techCourseInputs, profCourseOptions, profCourseInputs,
-			degreeInputs, degreeOption, degreeOtherInput, experienceQuestions, experienceInputs, techSkillOptions,
+			firstNameInput, lastNameInput, eidInput, phoneInput, emailInput, linkedinInput, timeCommit,
+            intentionOptions, intentionInputs, interestOptions, interestInputs,
+			logisticInputs,
+			techCourseOptions, techCourseInputs, profCourseOptions, profCourseInputs,
+			degreeOption, experienceQuestions, experienceInputs, techSkillOptions,
 			techSkillInputs, profSkillOptions, profSkillInputs, extraSkills
 		} = this.state;
 
@@ -524,150 +520,23 @@ class StudentForm extends Component {
 	}
 
 	async handleTest() {
-
-		let test = {
-			"first_name": "t",
-			"last_name": "t",
-			"eid": "t",
-			"phone": "8328378432",
-			"email": "thiensonhho@gmail.com",
-			"linkedIn": "",
-			"resume_link": "",
-			"intentions": {
-				"question 1": false,
-				"question 2": 2
-			},
-			"interests": {
-				"question 1": false,
-				"question 2": 2
-			},
-			"time_commitment": "5 hours",
-			"logistics": {
-				"question 1": false,
-				"question 2": 2
-			},
-			"degree": "t",
-			"tech_courses": {
-				"question 1": false,
-				"question 2": 2
-			},
-			"prof_courses": {
-				"question 1": false,
-				"question 2": 2
-			},
-			"experience": {
-				"question 1": false,
-				"question 2": 2
-			},
-			"tech_skills": {
-				"question 1": false,
-				"question 2": 2
-			},
-			"prof_skills": {
-				"question 1": false,
-				"question 2": 2
-			},
-			"other_skills": ""
-		}
-
-		let test2 = {
-			"first_name": "t",
-			"last_name": "t",
-			"eid": "t",
-			"phone": "4353",
-			"email": "tho@gmail.com",
-			"linkedIn": "thienson.com",
-			"resume_link": "",
-			"intentions": {
-				"To gain real world experience": true,
-				"To participate in a paid experience": false,
-				"To fulfill an academic requirement": true
-			},
-			"interests": {
-				"Research": false,
-				"Data Collection": false,
-				"Measurement/Evaluation Tool Development": true,
-				"Business Intelligence & Advanced Analytics": false,
-				"Logic Modeling/Outcomes Definition/Measurement": true
-			},
-			"time_commitment": "5-10 Hours Per Week",
-			"logistics": {
-				"To comply with University rules and regulations, are you an international student?": false,
-				"Do you currently receive any UT financial aid or fellowships?": true,
-				"Do you have access to transportation?": true,
-				"Do you need flexible work hours?": false,
-				"Do you need the ability to work remotely?": true
-			},
-			"degree": "Master of Public Affairs",
-			"tech_courses": {
-				"Data Management & Research Life Cycle": false,
-				"Linked Open Data & Computational Social Science Methods": false,
-				"Data Visualization, Statistics, and Econometrics for Policy Analysis": true,
-				"Statistical Analysis & Learning": false,
-				"Data Analysis/Simulation in R": false,
-				"Advanced Statistical Modeling": false,
-				"Introduction to Data Science": true,
-				"Fundamentals of Data Analysis for Behavioral Science": false,
-				"Structural Equation Modeling": false
-			},
-			"prof_courses": {
-				"Consulting For Social Impact": false,
-				"Program Evaluation for Nonprofit, Public, & Social Impact Initiatives": true,
-				"Nonprofit Management & Strategy": false,
-				"Program Evaluation": false,
-				"Nonprofit Management": false,
-				"Program Evaluation: Models & Techniques": false,
-				"Measurement Theory": false,
-				"Program Evaluation 2": true
-			},
-			"experience": {},
-			"tech_skills": {
-				"Literature Review": 5,
-				"Baseline Data Identification": 5,
-				"Logic Modeling": 5,
-				"Outcomes Definition": 5,
-				"Survey Administration": 5,
-				"Conducting Interviews": 5,
-				"Data Mining": 5,
-				"Statistical Analysis": 5,
-				"SQL": 5,
-				"Machine Learning": 5,
-				"HTML": 5,
-				"CSS": 5,
-				"Java": 5,
-				"Python": 5,
-				"Tableau": 5,
-				"Microsoft Office Suite": 5
-			},
-			"prof_skills": {
-				"Communication": 3,
-				"Time Management": 3,
-				"Decision Making": 3,
-				"Leadership": 3,
-				"Teamwork": 3
-			},
-			"other_skills": "Spanish",
-			"cohort": "SP20",
-			"unique_id": "t-SP20"
-		}
-
-		console.log("Sending post");
-
-		await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/students/', JSON.stringify(),
-			{headers: {
-				'content-type': 'application/json',
-			}})
-			.then(res => {
-				console.log(res);
-			})
-			.catch(error => {
-				console.log(error);
-			})
+		// console.log("Sending post");
+		//
+		// await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/students/', JSON.stringify(),
+		// 	{headers: {
+		// 		'content-type': 'application/json',
+		// 	}})
+		// 	.then(res => {
+		// 		console.log(res);
+		// 	})
+		// 	.catch(error => {
+		// 		console.log(error);
+		// 	})
 	}
 
     render() {
         let hasMounted = false;
-        let {intentionOptions, interestOptions, logisticQuestions, degreeOptions, experienceQuestions, techCourseOptions,
+        let {intentionOptions, interestOptions, logisticQuestions, degreeOptions, techCourseOptions,
 			profCourseOptions, techSkillOptions, profSkillOptions} = this.state;
         if(intentionOptions.length && interestOptions.length && logisticQuestions.length && degreeOptions.length &&
 			techCourseOptions.length && profCourseOptions.length && techSkillOptions.length &&
@@ -819,22 +688,22 @@ class StudentForm extends Component {
 									)
 							})}
 						</Form.Group>
-						<Form.Group controlId="experience">
-							{this.state.experienceQuestions.map((question, index) => {
-								return(
-									<Form.Group key={index}>
-										<Form.Label>{question.name}</Form.Label>
-										<Form.Control required as="select" onChange={this.handleExperienceQuestions.bind(this,index)}>
-											<option></option>
-											<option>No Experience</option>
-											<option>Less than 6 months</option>
-											<option>6-12 Months</option>
-											<option>More than 1 year</option>
-										</Form.Control>
-									</Form.Group>
-								)
-							})}
-						</Form.Group>
+						{/*<Form.Group controlId="experience">*/}
+						{/*	{this.state.experienceQuestions.map((question, index) => {*/}
+						{/*		return(*/}
+						{/*			<Form.Group key={index}>*/}
+						{/*				<Form.Label>{question.name}</Form.Label>*/}
+						{/*				<Form.Control required as="select" onChange={this.handleExperienceQuestions.bind(this,index)}>*/}
+						{/*					<option></option>*/}
+						{/*					<option>No Experience</option>*/}
+						{/*					<option>Less than 6 months</option>*/}
+						{/*					<option>6-12 Months</option>*/}
+						{/*					<option>More than 1 year</option>*/}
+						{/*				</Form.Control>*/}
+						{/*			</Form.Group>*/}
+						{/*		)*/}
+						{/*	})}*/}
+						{/*</Form.Group>*/}
 
                         <Form.Label>Please rate your experience in the following technical skills using the scale below:</Form.Label>
 						<br/>

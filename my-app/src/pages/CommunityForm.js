@@ -1,6 +1,4 @@
 import Form from 'react-bootstrap/Form';
-import FormCheck from 'react-bootstrap/FormCheck'
-import FormFile from 'react-bootstrap/FormFile'
 import Button from 'react-bootstrap/Button';
 import React, { Component } from 'react';
 import RadioButton from "../components/RadioButton";
@@ -120,13 +118,6 @@ class CommunityForm extends Component {
 			emailInput: email
 		}));
 	}
-
-		handleOrgName(e) {
-			var li = e.target.value;
-			this.setState(state => ({
-				orgNameInput: li
-			}));
-		}
 
 		handleLastName(e) {
 			var name = e.target.value;
@@ -260,22 +251,12 @@ class CommunityForm extends Component {
 		}));
 	}
 
-		handleExperienceQuestions(i, e) {
-			this.setState(update(this.state, {
-				experienceInputs: {
-					[i] : {
-						$set: e.target.value
-					}
-				}
-			}));
-		}
-
-		handleExtraSkills(e) {
-			var writtenText = e.target.value
-			this.setState(state => ({
-				extraSkills: writtenText
-			}));
-		}
+	handleExtraSkills(e) {
+		var writtenText = e.target.value
+		this.setState(state => ({
+			extraSkills: writtenText
+		}));
+	}
 
 	async componentDidMount() {
 		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/intentions')
@@ -381,7 +362,7 @@ class CommunityForm extends Component {
 
 		for(let i = 0; i < logisticQuestions.length; i++) {
 			if(logisticFlags[i] === null || logisticFlags[i] === undefined) {
-				alertMessage += `${logisticQuestions[i].name} \n`;
+				alertMessage += `${logisticQuestions[i]} \n`;
 			}
 		}
 
@@ -418,7 +399,7 @@ class CommunityForm extends Component {
 		    orgNameInput, orgAddressInput, orgWebsiteInput, projNameInput, projDescInput,
 			firstNameInput, lastNameInput, phoneInput, emailInput, timeCommit,
 			interestOptions, interestInputs,
-			logisticInputs, logisticFlags, logisticQuestions,
+			logisticInputs,
 			techCourseOptions, techCourseInputs, profCourseOptions, profCourseInputs,
 			degreeInputs, degreeOptions, experienceQuestions, experienceInputs, techSkillOptions,
 			techSkillInputs, profSkillOptions, profSkillInputs, extraSkills
@@ -513,17 +494,23 @@ class CommunityForm extends Component {
 			})
 			.then(res => {
 				console.log(res);
+				// if(res.status === 201) {
+				// 	window.alert("For submitted successfully")
+				// } else {
+				// 	window.alert("Error submitting form. Please contact an administrator for help.")
+				// }
 			})
 			.catch(error => {
 				console.log(error);
 			})
+
 	}
 
 
 
 render() {
 	let hasMounted = false;
-		let {interestOptions, logisticQuestions, degreeOptions, experienceQuestions, techCourseOptions,
+		let {interestOptions, logisticQuestions, degreeOptions, techCourseOptions,
 			profCourseOptions, techSkillOptions, profSkillOptions} = this.state;
 		if(interestOptions.length && logisticQuestions.length && degreeOptions.length &&
 			techCourseOptions.length && profCourseOptions.length && techSkillOptions.length &&
@@ -631,7 +618,7 @@ render() {
 								{this.state.techCourseOptions.map((course, index) => {
 									if (index % 10 === 0 && index > 0) {
 										return (
-											<div>
+											<div key={index}>
 												<br></br>
 												<Form.Check label={`${course.name} (${course.courseId})`} onChange={this.handleTechCourseInputs.bind(this, index)}/>
 											</div>
@@ -639,7 +626,7 @@ render() {
 									}
 									else
 										return (
-											<Form.Check label={`${course.name} (${course.courseId})`} onChange={this.handleTechCourseInputs.bind(this, index)}/>
+											<Form.Check key={index} label={`${course.name} (${course.courseId})`} onChange={this.handleTechCourseInputs.bind(this, index)}/>
 										)
 								})}
 						</Form.Group>
@@ -648,7 +635,7 @@ render() {
 							{this.state.profCourseOptions.map((course, index) => {
 								if (index % 10 === 0 && index > 0) {
 									return (
-										<div>
+										<div key={index}>
 											<br></br>
 											<Form.Check label={`${course.name} (${course.courseId})`} onChange={this.handleProfCourseInputs.bind(this, index)}/>
 										</div>
@@ -656,7 +643,7 @@ render() {
 								}
 								else
 									return (
-										<Form.Check label={`${course.name} (${course.courseId})`} onChange={this.handleProfCourseInputs.bind(this, index)}/>
+										<Form.Check key={index} label={`${course.name} (${course.courseId})`} onChange={this.handleProfCourseInputs.bind(this, index)}/>
 									)
 							})}
 						</Form.Group>
