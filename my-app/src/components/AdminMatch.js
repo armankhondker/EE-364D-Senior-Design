@@ -78,19 +78,31 @@ class AdminMatch extends Component {
         if(result === undefined || result === null) {
             return 'Auto';
         } else {
-            return result.project;
+            return result.projectName;
         }
     }
 
     async runMatchingAlgorithm() {
+        let {projectSelection} = this.state;
+        let params = {};
+        for(let i = 0; i < projectSelection.length; i ++) {
+            params[projectSelection[i].studentUID] = projectSelection[i].projectUID;
+        }
+        console.log(params);
         console.log("running");
         window.scrollTo(0,0);
         this.setState({ isRunning: true });
-        await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/algo')
+        // await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/algo')
         // await axios.get('http://localhost:8000/api/algo')
+        await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/algo', JSON.stringify(params),
+            {
+                headers: {
+                    'content-type': 'application/json',
+                },
+            })
             .then(res => {
                 console.log(res);
-                if(res.status === 200) {
+                if(res.status === 201) {
                    this.setState({ isDone: true });
                 }
                 this.setState({ isRunning: false });
@@ -120,7 +132,7 @@ class AdminMatch extends Component {
                                 {this.props.students.map((val, ind) => {
                                     return (
                                         <tr key={ind}>
-                                            <td><Button style={{width: "200px"}}>{val.eid}</Button></td>
+                                            <td><Button style={{width: "200px"}}>{val.first_name + ' ' + val.last_name}</Button></td>
                                             <td>
                                                 <Dropdown>
                                                     <Dropdown>
@@ -128,20 +140,23 @@ class AdminMatch extends Component {
                                                             {this.findSelection(ind)}
                                                         </Dropdown.Toggle>
                                                         <Dropdown.Menu
-                                                            style={{'max-height': '350px', 'overflow-y': 'auto'}}>
+                                                            style={{'maxHeight': '350px', 'overflowY': 'auto'}}>
                                                             {this.state.projectListToPickFrom.map((proj, index) => {
                                                                 return (
                                                                     <Dropdown.Item
                                                                         eventKey={proj.name}
                                                                         href={`#/action-${index}`}
                                                                         onSelect={() => this.handleSelect({
-                                                                            student: val.name,
-                                                                            project: proj.name,
+                                                                            studentID: val.id,
+                                                                            studentUID: val.unique_id,
+                                                                            projectID: proj.id,
+                                                                            projectUID: proj.unique_id,
+                                                                            projectName: proj.project_name,
                                                                             index: ind
                                                                         })}
                                                                         key={index}
                                                                     >
-                                                                        {proj.name}
+                                                                        {proj.project_name}
                                                                     </Dropdown.Item>
                                                                 )
                                                             })}
