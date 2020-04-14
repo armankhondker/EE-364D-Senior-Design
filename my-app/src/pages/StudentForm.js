@@ -1,7 +1,4 @@
-
 import Form from 'react-bootstrap/Form';
-import FormCheck from 'react-bootstrap/FormCheck'
-import FormFile from 'react-bootstrap/FormFile'
 import Button from 'react-bootstrap/Button';
 import React, { Component } from 'react';
 import RadioButton from "../components/RadioButton";
@@ -23,22 +20,24 @@ class StudentForm extends Component {
 			linkedinInput: "",
 			resumeInput: "",
 			timeCommit: "",
-			intentionOptions: ["To gain real world experience", "To participate in a paid experience", "To fulfill an academic requirement (i.e. capstone, thesis, dissertation"],
+			intentionOptions: [],
 			intentionInputs: [],
-			interestOptions: ["Research", "Data Collection", "Software Development", "Business Intelligence", "Data Analytics"],
+			interestOptions: [],
 			interestInputs: [],
-			logisticQuestions: ["To comply with University rules and regulations, are you an international student?", "Do you currently receive any UT financial aid or fellowships?", "Do you have access to transportation?", "Do you need flexible work hours?", "Do you need the ability to work remotely?"],
+			logisticQuestions: ["To comply with University rules and regulations, are you an international student?",
+				"Do you currently receive any UT financial aid or fellowships?", "Do you have access to transportation?",
+				"Do you need flexible work hours?", "Do you need the ability to work remotely?"],
 			logisticInputs: [],
 			logisticFlags: [],
 			techCourseOptions: [],
 			techCourseInputs: [],
             profCourseOptions: [],
 			profCourseInputs: [],
-			degreeOptions: ["Master of Public Affair", "Master of Global Policy Studies", "DC Concentration (MPAFF/MGPS)", "Ph.D. in Public Policy", "Nonprofit Portfolio Program", "Public Health", "Educational Psychology", "Social Work", "Other"],
+			degreeOptions: [],
 			degreeInputs:[],
 			degreeInput: "",
 			degreeOtherInput: "",
-			experienceQuestions:["Over the past 5 years, approximately how much experience have you had working or directly volunteering with nonprofit organizations?"],
+			experienceQuestions:[],
 			experienceInputs: [],
 			techSkillOptions: [],
 			techSkillInputs: [],
@@ -64,7 +63,9 @@ class StudentForm extends Component {
 		this.handleExperienceQuestions = this.handleExperienceQuestions.bind(this);
 		this.handleTechSkills = this.handleTechSkills.bind(this);
 		this.handleExtraSkills = this.handleExtraSkills.bind(this);
+		this.validateForm = this.validateForm.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleTest = this.handleTest.bind(this);
     }
 
 	handlePhone(e) {
@@ -111,26 +112,22 @@ class StudentForm extends Component {
 	handleResumeUpload(e) {
 		this.setState({ uploading: true })
 		const files = Array.from(e.target.files)
-		const formData = new FormData()
+
+		var fileContent = files[0]; // As a sample, upload a text file.
+		var file = new Blob([fileContent], {type: 'application/pdf'});
+
+		var reader = new FileReader();
+    var base64data = "";
+		reader.readAsDataURL(file);
+	  reader.onloadend = function() {
+	     base64data = reader.result;
+		}
 
 		this.setState({
 			uploading: false,
-			resumeInput: files[0]
+			resumeInput: base64data
 		})
-		// files.forEach((file, i) => {
-	//   formData.append(i, file)
-	// })
-		// fetch(`${API_URL}/image-upload`, {
-	//   method: 'POST',
-	//   body: formData
-	// })
-	// .then(res => res.json())
-	// .then(images => {
-	//   this.setState({
-	//     uploading: false,
-	//     images
-	//   })
-	// })
+
 	}
 
 	handleTimeCommit(e) {
@@ -161,6 +158,7 @@ class StudentForm extends Component {
 	}
 
 	handleDegreeOption(i, e) {
+    	console.log(i);
 		var formerCheck = -1;
 		if (e.target.checked) {
 			var k=0;
@@ -276,24 +274,7 @@ class StudentForm extends Component {
 	}
 
     async componentDidMount() {
-		// await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/skills')
-		// .then(res => {
-		//    console.log(res);
-		//    this.setState({
-		// 					 techSkills: res.data,
-		// 					 decisionData: new Array(res.data.length),
-		// 					 intentionData: new Array(this.state.intentionOptions.length),
-		// 					 interestInput: new Array(this.state.interestOptions.length),
-		// 					 degreeInputs: new Array(this.state.degreeOptions.length),
-		// 					 logisticInputs: new Array(this.state.logisticQuestions.length),
-		// 					 logisticFlags: new Array(this.state.logisticQuestions.length),
-		// 					 courseInputs: new Array(this.state.courseQuestions.length),
-		// 					 experienceInputs: new Array(this.state.experienceQuestions.length)
-		// 			   });
-		// })
-		// .catch(err => console.log(err));
-
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/intentions')
+		 axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/intentions')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -303,7 +284,7 @@ class StudentForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/interests')
+		 axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/interests')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -313,19 +294,20 @@ class StudentForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/logistics')
+		 axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/logistics')
 			.then(res => {
 				console.log(res);
-				let defaultInputs = new Array(res.data.length);
-				defaultInputs.fill(false);
+				let flags = new Array(res.data.length);
+				flags.fill(null);
 				this.setState({
 					logisticQuestions: res.data,
-					logisticInputs: defaultInputs,
+					logisticInputs: new Array(5),
+                    logisticFlags: flags,
 				});
 			})
 			.catch(err => console.log(err));
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/degrees')
+		 axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/degrees')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -335,7 +317,7 @@ class StudentForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/experiences')
+		 axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/experiences')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -345,7 +327,7 @@ class StudentForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/tech-courses')
+		 axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/tech-courses')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -355,7 +337,7 @@ class StudentForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/prof-courses')
+		 axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/prof-courses')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -366,7 +348,7 @@ class StudentForm extends Component {
 			.catch(err => console.log(err));
 
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/tech-skills')
+		 axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/tech-skills')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -376,7 +358,7 @@ class StudentForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/prof-skills')
+		 axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/prof-skills')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -387,57 +369,68 @@ class StudentForm extends Component {
 			.catch(err => console.log(err));
 	}
 
-	handleSubmit() {
-		// var {phoneInput} = this.state;
-		// var {firstNameInput} = this.state;
-		// var {lastNameInput} = this.state;
-		// var {emailInput} = this.state;
-		// var {linkedinInput} = this.state;
-		// var {resumeInput} = this.state;
-		//
-		// var {intentionOptions} = this.state;
-		// var {intentionData} = this.state;
-		// var {interestOptions} = this.state;
-		// var {interestInputs} = this.state;
-		// var {timeCommit} = this.state;
-		//
-		// var {logisticQuestions} = this.state;
-		// var {logisticInputs} = this.state;
-		//
-		// var {degreeOptions} = this.state;
-		// var {degreeOtherInput} = this.state;
-		//
-		// var {courseQuestions} = this.state;
-		// var {courseInputs} = this.state;
-		//
-		// var {experienceQuestions} = this.state;
-		// var {experienceInputs} = this.state;
-		//
-		// var {extraSkills} = this.state;
-		//
-		// var {techSkills, profSkills} = this.state;
-		// var {decisionData} = this.state;
+	validateForm() {
+		let alertMessage = "";
+		let {logisticFlags, logisticQuestions, degreeOption, techSkillInputs, techSkillOptions, profSkillOptions,
+			profSkillInputs
+		} = this.state;
 
+		for(let i = 0; i < logisticQuestions.length; i++) {
+			if(logisticFlags[i] === null || logisticFlags[i] === undefined) {
+				alertMessage += `${logisticQuestions[i].name} \n`;
+			}
+		}
+
+		if(degreeOption === "" || degreeOption === undefined || degreeOption === null) {
+			alertMessage += 'Degree \n';
+		}
+
+		for(let i = 0; i < techSkillInputs.length; i++) {
+			let input = techSkillInputs[i];
+			if(input === null || input === undefined) {
+				alertMessage += `${techSkillOptions[i].name} \n`
+			}
+		}
+
+		for(let i = 0; i < profSkillInputs.length; i++) {
+			let input = profSkillInputs[i];
+			if(input === null || input === undefined) {
+				alertMessage += `${profSkillOptions[i].name} \n`
+			}
+		}
+
+		if(alertMessage !== "") {
+			window.alert("Please fill out the following: \n" + alertMessage);
+			return(false);
+		} else {
+			return(true);
+		}
+
+	}
+
+	async handleSubmit(e) {
 		let {
-			firstNameInput, lastNameInput, eidInput, phoneInput, emailInput, linkedinInput, resumeInput, timeCommit,
-            intentionOptions, intentionInputs, interestOptions, interestInputs,  degreeOptions,
-			logisticInputs, logisticFlags, logisticQuestions,
-			courseQuestions, techCourseOptions, techCourseInputs, profCourseOptions, profCourseInputs,
-			degreeInputs, degreeInput, degreeOtherInput, experienceQuestions, experienceInputs, techSkillOptions,
+			firstNameInput, lastNameInput, eidInput, phoneInput, emailInput, linkedinInput, resumeInput,
+      timeCommit, intentionOptions, intentionInputs, interestOptions, interestInputs,
+			logisticInputs, techCourseOptions, techCourseInputs, profCourseOptions, profCourseInputs,
+			degreeOption, experienceQuestions, experienceInputs, techSkillOptions,
 			techSkillInputs, profSkillOptions, profSkillInputs, extraSkills
 		} = this.state;
 
 		let jsonIntentions = {};
 		let	jsonInterests = {};
-		let jsonLogistics = {};
 		let jsonTechCourses = {};
 		let jsonProfCourses = {};
 		let jsonExperiences = {};
 		let jsonTechSkills = {};
 		let jsonProfSkills = {};
 
-		//TODO finish JSON parsing
-		//TODO add post request
+		const isFormValid = await this.validateForm();
+		if(!isFormValid) {
+			e.preventDefault();
+			return;
+		}
+        // e.preventDefault();
 
 		for(let i = 0; i < intentionOptions.length; i ++) {
 			let input = intentionInputs[i];
@@ -451,20 +444,15 @@ class StudentForm extends Component {
 			jsonInterests[interestOptions[i].name] = input;
 		}
 
-		for(let i = 0; i < logisticQuestions.length; i ++) {
-			let input = logisticInputs[i];
-			jsonLogistics[logisticQuestions[i].name] = input;
-		}
-
 		for(let i = 0; i < techCourseOptions.length; i ++) {
 			let input = techCourseInputs[i];
-			if(input === null) input = false;
+			if(input === null || input === undefined) input = false;
 			jsonTechCourses[techCourseOptions[i].name] = input;
 		}
 
 		for(let i = 0; i < profCourseOptions.length; i ++) {
 			let input = profCourseInputs[i];
-			if(input === null) input = false;
+			if(input === null || input === undefined) input = false;
 			jsonProfCourses[profCourseOptions[i].name] = input;
 		}
 
@@ -495,24 +483,79 @@ class StudentForm extends Component {
 			intentions: jsonIntentions,
 			interests: jsonInterests,
 			time_commitment: timeCommit,
-			logistics: jsonLogistics,
-			degree: degreeInput,
+            international: logisticInputs[0],
+			fin_aid: logisticInputs[1],
+			transportation: logisticInputs[2],
+			flexible_hours: logisticInputs[3],
+			work_remotely: logisticInputs[4],
+			degree: degreeOption,
 			tech_courses: jsonTechCourses,
 			prof_courses: jsonProfCourses,
 			experience: jsonExperiences,
 			tech_skills: jsonTechSkills,
 			prof_skills: jsonProfSkills,
-			other_skills: extraSkills
+			other_skills: extraSkills,
+			cohort: 'SP20',
+			unique_id: `${eidInput}-SP20`
 		}
 
-		console.log(params);
+    let resume_params = {
+      unique_id: `${eidInput}-SP20`,
+      data: resumeInput
+    }
 
+		console.log(JSON.stringify(params));
+		await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/students/', JSON.stringify(params),
+			{
+				headers: {
+					'content-type': 'application/json',
+				},
+			})
+			.then(res => {
+				console.log(res);
+			})
+			.catch(error => {
+				console.log(error);
+			})
+
+    await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/resumes/', JSON.stringify(resume_params),
+			{
+				headers: {
+					'content-type': 'application/json',
+				},
+			})
+			.then(res => {
+				console.log(res);
+			})
+			.catch(error => {
+				console.log(error);
+			})
+
+	}
+
+	async handleTest() {
+		// console.log("Sending post");
+		//
+		// await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/students/', JSON.stringify(),
+		// 	{headers: {
+		// 		'content-type': 'application/json',
+		// 	}})
+		// 	.then(res => {
+		// 		console.log(res);
+		// 	})
+		// 	.catch(error => {
+		// 		console.log(error);
+		// 	})
 	}
 
     render() {
         let hasMounted = false;
-        let {techSkillOptions} = this.state;
-        if(this.state.profSkillOptions !== null) {
+        let {intentionOptions, interestOptions, logisticQuestions, degreeOptions, techCourseOptions,
+			profCourseOptions, techSkillOptions, profSkillOptions} = this.state;
+        if(intentionOptions.length && interestOptions.length && logisticQuestions.length && degreeOptions.length &&
+			techCourseOptions.length && profCourseOptions.length && techSkillOptions.length &&
+			profSkillOptions.length
+		) {
             hasMounted = true;
         }
         let CurrentDisplay;
@@ -606,8 +649,8 @@ class StudentForm extends Component {
 								return (
 									<Form.Group key={index}>
 										<Form.Label>{question.name}</Form.Label>
-										<Form.Check type="Radio" label="Yes" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
-										<Form.Check type="Radio" label="No" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
+										<Form.Check type="Radio" label="Yes" onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
+										<Form.Check type="Radio" label="No" onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
 									</Form.Group>
 								)
 							}
@@ -637,7 +680,7 @@ class StudentForm extends Component {
 								 }
 								 else
 									return (
-										<Form.Check label={course.name + ' ' + course.courseId} onChange={this.handleTechCourseInputs.bind(this, index)}/>
+										<Form.Check key={index} label={course.name + ' ' + course.courseId} onChange={this.handleTechCourseInputs.bind(this, index)}/>
 								 )
 								})}
 						</Form.Group>
@@ -655,26 +698,26 @@ class StudentForm extends Component {
 								}
 								else
 									return (
-										<Form.Check label={course.name + ' ' + course.courseId} onChange={this.handleProfCourseInputs.bind(this, index)}/>
+										<Form.Check key={index} label={course.name + ' ' + course.courseId} onChange={this.handleProfCourseInputs.bind(this, index)}/>
 									)
 							})}
 						</Form.Group>
-						<Form.Group controlId="experience">
-							{this.state.experienceQuestions.map((question, index) => {
-								return(
-									<Form.Group key={index}>
-										<Form.Label>{question.name}</Form.Label>
-										<Form.Control required as="select" onChange={this.handleExperienceQuestions.bind(this,index)}>
-											<option></option>
-											<option>No Experience</option>
-											<option>Less than 6 months</option>
-											<option>6-12 Months</option>
-											<option>More than 1 year</option>
-										</Form.Control>
-									</Form.Group>
-								)
-							})}
-						</Form.Group>
+						{/*<Form.Group controlId="experience">*/}
+						{/*	{this.state.experienceQuestions.map((question, index) => {*/}
+						{/*		return(*/}
+						{/*			<Form.Group key={index}>*/}
+						{/*				<Form.Label>{question.name}</Form.Label>*/}
+						{/*				<Form.Control required as="select" onChange={this.handleExperienceQuestions.bind(this,index)}>*/}
+						{/*					<option></option>*/}
+						{/*					<option>No Experience</option>*/}
+						{/*					<option>Less than 6 months</option>*/}
+						{/*					<option>6-12 Months</option>*/}
+						{/*					<option>More than 1 year</option>*/}
+						{/*				</Form.Control>*/}
+						{/*			</Form.Group>*/}
+						{/*		)*/}
+						{/*	})}*/}
+						{/*</Form.Group>*/}
 
                         <Form.Label>Please rate your experience in the following technical skills using the scale below:</Form.Label>
 						<br/>
@@ -697,10 +740,10 @@ class StudentForm extends Component {
 
 
 						<Form.Label>Please rate your experience in the following professional skills using the scale below:</Form.Label>
-						<br/>
+            <br/>
 						<div>1: No Experience </div>
-						<div>2: Slightly Experienced	</div>
-						<div>3: Can Learn	</div>
+						<div>2: Can Learn		</div>
+						<div>3: Slightly Experienced</div>
 						<div>4: Experienced	</div>
 						<div>5: Extremely Experienced </div>
 						<br/>
@@ -713,27 +756,6 @@ class StudentForm extends Component {
 								</Form.Group>
 							);
 						})}
-						{/*<Form.Group>*/}
-						{/*	<Form.Label>Communication</Form.Label>*/}
-						{/*	<RadioButton name="Communication"/>*/}
-						{/*</Form.Group>*/}
-                        {/*<Form.Group>*/}
-                        {/*    <Form.Label>Time Management</Form.Label>*/}
-                        {/*    <RadioButton name="TimeManagement"/>*/}
-                        {/*</Form.Group>*/}
-                        {/*<Form.Group>*/}
-                        {/*    <Form.Label>Decision Making</Form.Label>*/}
-                        {/*    <RadioButton name="DecisionMaking"/>*/}
-                        {/*</Form.Group>*/}
-                        {/*<Form.Group>*/}
-                        {/*    <Form.Label>Leadership</Form.Label>*/}
-                        {/*    <RadioButton name="Leadership"/>*/}
-                        {/*</Form.Group>*/}
-                        {/*<Form.Group>*/}
-                        {/*    <Form.Label>Teamwork</Form.Label>*/}
-                        {/*    <RadioButton name="Teamwork"/>*/}
-                        {/*</Form.Group>*/}
-
                         <Form.Group controlId="ExtraSkills">
                             <Form.Label>Do you have other relevant skills that may be helpful for us to know about (i.e.
                                 other languages spoken, coding, analytical software, professional skills, etc.)? - List
@@ -744,9 +766,9 @@ class StudentForm extends Component {
                         <Button variant="primary" type="submit" onClick={this.handleSubmit}>
                             Submit
                         </Button>
-						<Button variant="primary" onClick={this.handleSubmit}>
-                            Test
-						</Button>
+						{/*<Button variant="primary" onClick={this.handleTest}>*/}
+                        {/*    Test*/}
+						{/*</Button>*/}
 					</Form>
 					<br/>
 				</div>
