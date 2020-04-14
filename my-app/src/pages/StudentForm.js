@@ -6,6 +6,7 @@ import LoadingAnimation from "../components/LoadingAnimation";
 import update from 'react-addons-update';
 import '../App.css';
 import axios from "axios";
+import google_drive_key from "../api_keys"
 
 class StudentForm extends Component {
     constructor(props) {
@@ -113,25 +114,21 @@ class StudentForm extends Component {
 		this.setState({ uploading: true })
 		const files = Array.from(e.target.files)
 		// const formData = new FormData()
-
 		this.setState({
 			uploading: false,
 			resumeInput: files[0]
 		})
-		// files.forEach((file, i) => {
-	//   formData.append(i, file)
-	// })
-		// fetch(`${API_URL}/image-upload`, {
-	//   method: 'POST',
-	//   body: formData
-	// })
-	// .then(res => res.json())
-	// .then(images => {
-	//   this.setState({
-	//     uploading: false,
-	//     images
-	//   })
-	// })
+
+		var fileContent = files[0]; // As a sample, upload a text file.
+		var file = new Blob([fileContent], {type: 'application/pdf'});
+
+		var reader = new FileReader();
+		reader.readAsDataURL(file);
+	  reader.onloadend = function() {
+	     var base64data = reader.result;
+			 console.log(base64data);
+		}
+
 	}
 
 	handleTimeCommit(e) {
