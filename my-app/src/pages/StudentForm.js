@@ -417,37 +417,6 @@ class StudentForm extends Component {
 	}
 
 	async handleSubmit(e) {
-		// var {phoneInput} = this.state;
-		// var {firstNameInput} = this.state;
-		// var {lastNameInput} = this.state;
-		// var {emailInput} = this.state;
-		// var {linkedinInput} = this.state;
-		// var {resumeInput} = this.state;
-		//
-		// var {intentionOptions} = this.state;
-		// var {intentionData} = this.state;
-		// var {interestOptions} = this.state;
-		// var {interestInputs} = this.state;
-		// var {timeCommit} = this.state;
-		//
-		// var {logisticQuestions} = this.state;
-		// var {logisticInputs} = this.state;
-		//
-		// var {degreeOptions} = this.state;
-		// var {degreeOtherInput} = this.state;
-		//
-		// var {courseQuestions} = this.state;
-		// var {courseInputs} = this.state;
-		//
-		// var {experienceQuestions} = this.state;
-		// var {experienceInputs} = this.state;
-		//
-		// var {extraSkills} = this.state;
-		//
-		// var {techSkills, profSkills} = this.state;
-		// var {decisionData} = this.state;
-		// e.preventDefault();
-
 		let {
 			firstNameInput, lastNameInput, eidInput, phoneInput, emailInput, linkedinInput, resumeInput, timeCommit,
             intentionOptions, intentionInputs, interestOptions, interestInputs,  degreeOptions,
@@ -459,22 +428,18 @@ class StudentForm extends Component {
 
 		let jsonIntentions = {};
 		let	jsonInterests = {};
-		let jsonLogistics = {};
 		let jsonTechCourses = {};
 		let jsonProfCourses = {};
 		let jsonExperiences = {};
 		let jsonTechSkills = {};
 		let jsonProfSkills = {};
 
-		// const isFormValid = await this.validateForm();
-		// if(!isFormValid) {
-		// 	e.preventDefault();
-		// 	return;
-		// }
-        e.preventDefault();
-
-		//TODO finish JSON parsing
-		//TODO add post request
+		const isFormValid = await this.validateForm();
+		if(!isFormValid) {
+			e.preventDefault();
+			return;
+		}
+        // e.preventDefault();
 
 		for(let i = 0; i < intentionOptions.length; i ++) {
 			let input = intentionInputs[i];
