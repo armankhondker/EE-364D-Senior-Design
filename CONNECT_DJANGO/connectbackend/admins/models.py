@@ -109,6 +109,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Settings(models.Model):
-    student_form_enabled = models.BooleanField
-    organization_form_enabled = models.BooleanField
+    student_form_enabled = models.BooleanField(default=False)
+    organization_form_enabled = models.BooleanField(default=False)
     current_cohort = models.CharField(max_length=50)

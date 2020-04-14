@@ -1,5 +1,6 @@
 # from django.db import models
 from djongo import models
+from django.db import models as models2
 from django.contrib.postgres.fields import JSONField
 
 
@@ -14,7 +15,11 @@ class Student(models.Model):
     intentions = models.DictField(default={})
     interests = models.DictField(default={})
     time_commitment = models.CharField(max_length=100)
-    logistics = models.DictField(default={})
+    international = models.BooleanField(default=False)
+    fin_aid = models.BooleanField(default=False)
+    transportation = models2.BooleanField(default=False)
+    flexible_hours = models2.BooleanField(default=False)
+    work_remotely = models2.BooleanField(default=False)
     degree = models.CharField(max_length=100)
     tech_courses = models.DictField(default={})
     prof_courses = models.DictField(default={})
@@ -26,4 +31,9 @@ class Student(models.Model):
     unique_id = models.CharField(max_length=100, unique=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+
+class Resume(models.Model):
+    unique_id = models.CharField(max_length=100, unique=True, null=True)
+    student_number = models.IntegerField(blank=True, null=True)
+    data = models.TextField()
 

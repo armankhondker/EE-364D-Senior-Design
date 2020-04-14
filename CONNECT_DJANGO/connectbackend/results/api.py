@@ -1,6 +1,6 @@
-from .models import Matching
+from .models import Matching, Result
 from rest_framework import viewsets, permissions
-from .serializers import MatchingSerializer
+from .serializers import MatchingSerializer, ResultSerializer
 
 
 # Student Viewset
@@ -10,3 +10,11 @@ class MatchingViewSet(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
     serializer_class = MatchingSerializer
+
+
+class ResultViewSet(viewsets.ModelViewSet):
+    queryset = Result.objects.all()
+    permission_classes = [
+        permissions.AllowAny
+    ]
+    serializer_class = ResultSerializer
