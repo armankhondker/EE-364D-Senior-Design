@@ -6,7 +6,6 @@ import LoadingAnimation from "../components/LoadingAnimation";
 import update from 'react-addons-update';
 import '../App.css';
 import axios from "axios";
-import google_drive_key from "../api_keys"
 
 class StudentForm extends Component {
     constructor(props) {
@@ -412,7 +411,7 @@ class StudentForm extends Component {
 	async handleSubmit(e) {
 		let {
 			firstNameInput, lastNameInput, eidInput, phoneInput, emailInput, linkedinInput, resumeInput,
-      imeCommit, intentionOptions, intentionInputs, interestOptions, interestInputs,
+      timeCommit, intentionOptions, intentionInputs, interestOptions, interestInputs,
 			logisticInputs, techCourseOptions, techCourseInputs, profCourseOptions, profCourseInputs,
 			degreeOption, experienceQuestions, experienceInputs, techSkillOptions,
 			techSkillInputs, profSkillOptions, profSkillInputs, extraSkills
@@ -741,10 +740,10 @@ class StudentForm extends Component {
 
 
 						<Form.Label>Please rate your experience in the following professional skills using the scale below:</Form.Label>
-						<br/>
+            <br/>
 						<div>1: No Experience </div>
-						<div>2: Slightly Experienced	</div>
-						<div>3: Can Learn	</div>
+						<div>2: Can Learn		</div>
+						<div>3: Slightly Experienced</div>
 						<div>4: Experienced	</div>
 						<div>5: Extremely Experienced </div>
 						<br/>
