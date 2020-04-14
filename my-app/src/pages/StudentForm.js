@@ -113,21 +113,21 @@ class StudentForm extends Component {
 	handleResumeUpload(e) {
 		this.setState({ uploading: true })
 		const files = Array.from(e.target.files)
-		// const formData = new FormData()
-		this.setState({
-			uploading: false,
-			resumeInput: files[0]
-		})
 
 		var fileContent = files[0]; // As a sample, upload a text file.
 		var file = new Blob([fileContent], {type: 'application/pdf'});
 
 		var reader = new FileReader();
+    var base64data = "";
 		reader.readAsDataURL(file);
 	  reader.onloadend = function() {
-	     var base64data = reader.result;
-			 console.log(base64data);
+	     base64data = reader.result;
 		}
+
+		this.setState({
+			uploading: false,
+			resumeInput: base64data
+		})
 
 	}
 
@@ -411,10 +411,9 @@ class StudentForm extends Component {
 
 	async handleSubmit(e) {
 		let {
-			firstNameInput, lastNameInput, eidInput, phoneInput, emailInput, linkedinInput, timeCommit,
-            intentionOptions, intentionInputs, interestOptions, interestInputs,
-			logisticInputs,
-			techCourseOptions, techCourseInputs, profCourseOptions, profCourseInputs,
+			firstNameInput, lastNameInput, eidInput, phoneInput, emailInput, linkedinInput, resumeInput,
+      imeCommit, intentionOptions, intentionInputs, interestOptions, interestInputs,
+			logisticInputs, techCourseOptions, techCourseInputs, profCourseOptions, profCourseInputs,
 			degreeOption, experienceQuestions, experienceInputs, techSkillOptions,
 			techSkillInputs, profSkillOptions, profSkillInputs, extraSkills
 		} = this.state;
@@ -501,6 +500,11 @@ class StudentForm extends Component {
 			unique_id: `${eidInput}-SP20`
 		}
 
+    let resume_params = {
+      unique_id: `${eidInput}-SP20`,
+      resume: resumeInput
+    }
+
 		console.log(JSON.stringify(params));
 		await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/students/', JSON.stringify(params),
 			{
@@ -514,6 +518,20 @@ class StudentForm extends Component {
 			.catch(error => {
 				console.log(error);
 			})
+
+    await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/resumes/', JSON.stringify(resume_params),
+			{
+				headers: {
+					'content-type': 'application/json',
+				},
+			})
+			.then(res => {
+				console.log(res);
+			})
+			.catch(error => {
+				console.log(error);
+			})
+
 	}
 
 	async handleTest() {
