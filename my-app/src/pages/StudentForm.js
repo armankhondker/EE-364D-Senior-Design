@@ -501,7 +501,7 @@ class StudentForm extends Component {
 
     let resume_params = {
       unique_id: `${eidInput}-SP20`,
-      resume: resumeInput
+      data: resumeInput
     }
 
 		console.log(JSON.stringify(params));
