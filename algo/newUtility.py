@@ -3,6 +3,8 @@ from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
 from pdfminer.pdfpage import PDFPage
 from io import StringIO
+import tweepy
+from textblob import TextBlob
 
 def engage_student_match(student, org, org_data):
     # print("Student: " + student['Name'] + " " + str(student['engaged']))
@@ -27,7 +29,7 @@ def engage_student_match(student, org, org_data):
             old_id = student['org_df'].ids[oldRank]
             oldOrg = next((item for item in org_data if item["unique_id"] == old_id), "")
             oldOrg['engaged'] = False
-            oldOrg['match'] = {'name': 'NO MATCH'}
+            oldOrg['match'] = {'name': 'NO MATCH', 'unique_id': '-1'}
             student['engaged'] = True
             student['orgRank'] = orgRank
             org['engaged'] = True
@@ -58,3 +60,22 @@ def convert_pdf_to_txt(path):
     device.close()
     retstr.close()
     return text
+
+
+def get_pdf_score(text):
+    consumer_key= '48IZviQDEhZKSTm3vYh7jWOKa'
+    consumer_secret= 'evFa5bSTgxJ8xQjSom7jlWnpCOgJDYJ6B3PmAvdrxC2LT95Wa6'
+
+    access_token='1131250496717709312-j58hita0e7XMgnLitpLGX2uj5nvi5n'
+    access_token_secret='RlCXpFpOWl50jp8SqDVocuXVuSET2Y5ROrX6MMNWCzLA4'
+
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+
+    api = tweepy.API(auth)
+
+    analysis = TextBlob(text)
+    if (analysis.sentiment > 0):
+        return 2*analysis.sentiment
+    else:
+        return 0
