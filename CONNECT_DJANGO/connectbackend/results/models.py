@@ -1,4 +1,4 @@
-from django.db import models
+from djongo import models
 
 
 class Matching(models.Model):
@@ -8,3 +8,9 @@ class Matching(models.Model):
 
     def __str__(self):
         return self.attr_name
+
+
+class Result(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    cohort = models.CharField(max_length=100)
+    data = models.DictField(default={})
