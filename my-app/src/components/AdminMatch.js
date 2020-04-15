@@ -84,9 +84,13 @@ class AdminMatch extends Component {
 
     async runMatchingAlgorithm() {
         let {projectSelection} = this.state;
-        let params = {};
+        let data = {};
         for(let i = 0; i < projectSelection.length; i ++) {
-            params[projectSelection[i].studentUID] = projectSelection[i].projectUID;
+            data[projectSelection[i].studentUID] = projectSelection[i].projectUID;
+        }
+        let params = {
+          'data': data,
+          'email_address': ""
         }
         console.log(params);
         console.log("running");

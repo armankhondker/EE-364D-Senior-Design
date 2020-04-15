@@ -5,6 +5,8 @@ from .match_algorithm import run
 
 
 class MatchAlgo(APIView):
-    def get(self, request, format=None):
-        run()
-        return Response('Hello')
+    def post(self, request, format=None):
+        pre_matches = request.POST.get("data")
+        email_address = request.POST.get("email_address")
+        run_algo(pre_matches, email_address)
+        return Response(request.post)
