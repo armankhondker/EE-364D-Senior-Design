@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import Popup from "reactjs-popup";
 
 function displayInfo(match) {
+    console.log(match);
     let studentComponent;
     let projectComponent;
 
     if(match.student_technical !== undefined) {
         studentComponent = <div>
-            <p>Name: {match.student}</p>
+            <p>Name: {match.student.name}</p>
             <p>Technical: {match.student_technical}</p>
             <p>Professional: {match.student_professional}</p>
             <p>Resume ID: {match.student_resume_id}</p>
