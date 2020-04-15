@@ -30,7 +30,7 @@ class AdminProjects extends Component {
                                 return(
                                     <tr key={index}>
                                         <td>
-                                            <Button>{proj.name}</Button>
+                                            <Button>{proj.project_name}</Button>
                                         </td>
                                     </tr>
                                 );
