@@ -9,4 +9,4 @@ class MatchAlgo(APIView):
         pre_matches = request.POST.get("data")
         email_address = request.POST.get("email_address")
         run_algo(pre_matches, email_address)
-        return Response(request.post)
+        return Response("Success")
