@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 from base64 import b64decode
 from utility import convert_pdf_to_txt, engage_student_match
+from api_keys import sendinblue_key
 import os
 import warnings
 import pandas as pd
@@ -256,7 +257,7 @@ def run_algo(pre_matches={}, email_address=""):
 
     headers = {
         "content-type": "application/json",
-        "api-key": "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",
+        "api-key": sendinblue_key,
         "accept" : "application/json",
     }
 

@@ -2,6 +2,7 @@ from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
 from pdfminer.pdfpage import PDFPage
+from api_keys import consumer_key, consumer_secret, access_token, access_token_secret
 from io import StringIO
 import tweepy
 from textblob import TextBlob
@@ -63,11 +64,6 @@ def convert_pdf_to_txt(path):
 
 
 def get_pdf_score(text):
-    consumer_key= '48IZviQDEhZKSTm3vYh7jWOKa'
-    consumer_secret= 'evFa5bSTgxJ8xQjSom7jlWnpCOgJDYJ6B3PmAvdrxC2LT95Wa6'
-
-    access_token='1131250496717709312-j58hita0e7XMgnLitpLGX2uj5nvi5n'
-    access_token_secret='RlCXpFpOWl50jp8SqDVocuXVuSET2Y5ROrX6MMNWCzLA4'
 
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
