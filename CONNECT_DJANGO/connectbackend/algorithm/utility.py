@@ -2,10 +2,10 @@ from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
 from pdfminer.pdfpage import PDFPage
-from api_keys import consumer_key, consumer_secret, access_token, access_token_secret
+from .api_keys import consumer_key, consumer_secret, access_token, access_token_secret
 from io import StringIO
-import tweepy
-from textblob import TextBlob
+# import tweepy
+# from textblob import TextBlob
 
 def engage_student_match(student, org, org_data):
     # print("Student: " + student['Name'] + " " + str(student['engaged']))
@@ -63,15 +63,15 @@ def convert_pdf_to_txt(path):
     return text
 
 
-def get_pdf_score(text):
-
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_token, access_token_secret)
-
-    api = tweepy.API(auth)
-
-    analysis = TextBlob(text)
-    if (analysis.sentiment > 0):
-        return 2*analysis.sentiment
-    else:
-        return 0
+# def get_pdf_score(text):
+#
+#     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+#     auth.set_access_token(access_token, access_token_secret)
+#
+#     api = tweepy.API(auth)
+#
+#     analysis = TextBlob(text)
+#     if (analysis.sentiment > 0):
+#         return 2*analysis.sentiment
+#     else:
+#         return 0

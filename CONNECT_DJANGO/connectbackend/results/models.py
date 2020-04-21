@@ -13,4 +13,5 @@ class Matching(models.Model):
 class Result(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     cohort = models.CharField(max_length=100)
+    email = models.EmailField(null=True, blank=True)
     data = models.DictField(default={})

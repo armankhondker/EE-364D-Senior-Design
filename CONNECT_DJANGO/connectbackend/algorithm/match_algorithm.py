@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 from base64 import b64decode
-from utility import convert_pdf_to_txt, engage_student_match
-from api_keys import sendinblue_key
+from .utility import convert_pdf_to_txt, engage_student_match
+from .api_keys import sendinblue_key
 import os
 import warnings
 import pandas as pd
@@ -70,12 +70,12 @@ def run_algo(pre_matches={}, email_address=""):
             temp_dict.update({'pre_matched': True})
             temp_dict.update({'engaged': True})
 
-        if (r != ""):
-            for skill in temp_dict['skills']:
-                for text_line in r:
-                    if skill.lower() in text_line.lower():
-                        score = get_pdf_score(text_line)
-                        temp_dict['skills'][skill] += score
+        # if (r != ""):
+        #     for skill in temp_dict['skills']:
+        #         for text_line in r:
+        #             if skill.lower() in text_line.lower():
+                        # score = get_pdf_score(text_line)
+                        # temp_dict['skills'][skill] += score
 
         student_data.append(temp_dict)
 
@@ -204,8 +204,8 @@ def run_algo(pre_matches={}, email_address=""):
                     i += 1
     ########## Algo done
 
-    collec = db.students.results_result
-    collec.drop()
+    # collec = db.students.results_result
+    # collec.drop()
     results_arr = []
     email="<p>---------------------------------</p>"
     for org in org_data:
@@ -232,7 +232,7 @@ def run_algo(pre_matches={}, email_address=""):
     api_link ='http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/results'
     params = {
         'cohort' : cohort,
-        data: results_arr
+        'data': results_arr
     }
     headers = {
         "content-type": "application/json",
