@@ -13,8 +13,8 @@ class AdminMatch extends Component {
         this.runMatchingAlgorithm = this.runMatchingAlgorithm.bind(this);
 
         this.state = {
-            projects: props.projects,
-            projectListToPickFrom: props.projects,
+            projects: props.projects, // whole list of projects
+            projectListToPickFrom: props.projects, // projects to pick from in drop down menu
             projectSelection : [],
             isRunning: false,
             isDone: false,
@@ -61,7 +61,7 @@ class AdminMatch extends Component {
         // from list of projects available to select
         let foundProject = false;
         let iProject;
-        let res = this.state.projectListToPickFrom.find(element => element.name === evtKey.project);
+        let res = this.state.projectListToPickFrom.find(element => element.project_name === evtKey.projectName);
 
         if(res != null){
             foundProject = true;
