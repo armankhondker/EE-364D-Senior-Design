@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from "react-bootstrap/Button"
+import '../styling/Admin.css';
 
 class AdminProjects extends Component {
 
@@ -24,12 +25,12 @@ class AdminProjects extends Component {
             <div>
                 <p>Click on a project to edit project survey information</p>
                 <table style={{width:"50%", margin: "auto"}}>
-                    <tbody>
+                    <tbody className="admin_table">
                         {hasMounted ? (
                             this.state.projects.map((proj, index) => {
                                 return(
                                     <tr key={index}>
-                                        <td>
+                                        <td className="admin_cell">
                                             <Button>{proj.project_name}</Button>
                                         </td>
                                     </tr>
