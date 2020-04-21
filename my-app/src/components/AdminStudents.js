@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Button from "react-bootstrap/Button"
 import NewWindowPortal from "../components/NewWindowPortal.js";
+import '../styling/Admin.css';
 
 class AdminStudents extends Component {
 
@@ -41,12 +42,12 @@ class AdminStudents extends Component {
             <div>
                 <p>Click on a student to edit student survey information</p>
                 <table style={{width:"50%", margin: "auto"}}>
-                    <tbody>
+                    <tbody className="admin_table">
                         {hasMounted ? (
                             this.state.students.map((student, index) => {
                                 return(
                                     <tr key={index}>
-                                        <td>
+                                        <td className="admin_cell">
                                             <Button onClick={this.toggleWindowPortal}>{student.first_name}</Button>
                                         </td>
                                     </tr>

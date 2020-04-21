@@ -1,0 +1,12 @@
+
+.admin_table {
+  background: #9e4800;
+}
+
+.admin_cell {
+  border: 1px solid white;
+}
+
+.admin_cell button {
+  width: 100%;
+}
