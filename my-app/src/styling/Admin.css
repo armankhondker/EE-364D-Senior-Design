@@ -10,3 +10,8 @@
 .admin_cell button {
   width: 100%;
 }
+
+.resume_upload_box {
+  display: flex;
+  justify-content: center;
+}

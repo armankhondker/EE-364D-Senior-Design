@@ -7,6 +7,7 @@ import Tab from 'react-bootstrap/Tab';
 import Nav from "react-bootstrap/Nav";
 import AdminHome from "../components/AdminHome";
 import AdminStudents from "../components/AdminStudents";
+import AdminResumes from "../components/AdminResumes";
 import AdminProjects from "../components/AdminProjects";
 import AdminMatch from "../components/AdminMatch";
 import AdminResults from "../components/AdminResults";
@@ -18,6 +19,7 @@ class Admin extends Component {
 		this.state = {
 			results: null,
 			students: null,
+			resumes: null,
 			projects: null,
 			loaded: false,
 			token: null,
@@ -37,6 +39,12 @@ class Admin extends Component {
 				console.log(res);
 				this.setState({ students: res.data });
 			});
+
+			await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/resumes')
+				.then(res => {
+					console.log(res);
+					this.setState({ resumes: res.data });
+				});
 
 		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/projects')
 			.then(res => {
@@ -120,8 +128,8 @@ class Admin extends Component {
 
 	render() {
 		let hasMounted = false;
-		let {students, projects, isLoggedIn} = this.state;
-		if(students !== null && projects !== null) {
+		let {students, resumes, projects, isLoggedIn} = this.state;
+		if(students !== null && resumes !== null && projects !== null) {
 			hasMounted = true;
 		}
 		let CurrentDisplay;
@@ -141,13 +149,16 @@ class Admin extends Component {
 									<Nav.Link eventKey="second">Students</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link eventKey="third">Projects</Nav.Link>
+									<Nav.Link eventKey="third">Resumes</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link eventKey="fourth">Match</Nav.Link>
+									<Nav.Link eventKey="fourth">Projects</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link eventKey="fifth">Results</Nav.Link>
+									<Nav.Link eventKey="fifth">Match</Nav.Link>
+								</Nav.Item>
+								<Nav.Item>
+									<Nav.Link eventKey="sixth">Results</Nav.Link>
 								</Nav.Item>
 							</Nav>
 						</Col>
@@ -160,12 +171,15 @@ class Admin extends Component {
 									<AdminStudents students={this.state.students}/>
 								</Tab.Pane>
 								<Tab.Pane eventKey="third">
-									<AdminProjects projects={this.state.projects}/>
+									<AdminResumes students={this.state.students} resumes={this.state.resumes}/>
 								</Tab.Pane>
 								<Tab.Pane eventKey="fourth">
-									<AdminMatch students={this.state.students} projects={this.state.projects}/>
+									<AdminProjects projects={this.state.projects}/>
 								</Tab.Pane>
 								<Tab.Pane eventKey="fifth">
+									<AdminMatch students={this.state.students} projects={this.state.projects}/>
+								</Tab.Pane>
+								<Tab.Pane eventKey="sixth">
 									<AdminResults students={this.state.students} projects={this.state.projects} results={this.state.results}  />
 								</Tab.Pane>
 							</Tab.Content>

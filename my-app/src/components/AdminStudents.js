@@ -48,7 +48,7 @@ class AdminStudents extends Component {
                                 return(
                                     <tr key={index}>
                                         <td className="admin_cell">
-                                            <Button onClick={this.toggleWindowPortal}>{student.first_name}</Button>
+                                            <Button onClick={this.toggleWindowPortal}>{student.first_name} {student.last_name}</Button>
                                         </td>
                                     </tr>
                                 );
