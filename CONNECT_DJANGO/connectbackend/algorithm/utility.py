@@ -2,7 +2,7 @@ from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
 from pdfminer.pdfpage import PDFPage
-from .api_keys import consumer_key, consumer_secret, access_token, access_token_secret
+.from api_keys import consumer_key, consumer_secret, access_token, access_token_secret # add . for aws
 from io import StringIO
 # import tweepy
 # from textblob import TextBlob

@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 from base64 import b64decode
-from .utility import convert_pdf_to_txt, engage_student_match
-from .api_keys import sendinblue_key
+.from utility import convert_pdf_to_txt, engage_student_match # add . for aws
+.from api_keys import sendinblue_key # add . for aws
 import os
 import warnings
 import pandas as pd
@@ -69,7 +69,7 @@ def run_algo(pre_matches={}, email_address=""):
             org_prematches.update({pre_matches[student['unique_id']]: {'student_id': student['unique_id'], 'name': student['first_name'] + ' ' + student['last_name']}})
             temp_dict.update({'pre_matched': True})
             temp_dict.update({'engaged': True})
-
+### Resume scoring
         # if (r != ""):
         #     for skill in temp_dict['skills']:
         #         for text_line in r:
@@ -174,7 +174,7 @@ def run_algo(pre_matches={}, email_address=""):
     for org in org_data:
         org_id = org['unique_id']
         poss_students = org['possible_students']
-        x= poss_students[0]
+        x = poss_students[0]
         org['possible_students'] = sorted(poss_students, key=lambda x: (float((x['org_df'].loc[x['org_df']['ids'] == org_id]['matchability']).astype(float))), reverse=True)
 
     ########## Run Algo
@@ -204,15 +204,25 @@ def run_algo(pre_matches={}, email_address=""):
                     i += 1
     ########## Algo done
 
-    # collec = db.students.results_result
-    # collec.drop()
     results_arr = []
     email="<p>---------------------------------</p>"
     for org in org_data:
-        temp_obj = {
-            'student_unique_id': org['match']['unique_id'],
-            'org_unique_id': org['unique_id']
-        }
+        if (org['match']['unique_id'] == -1):
+            temp_obj = {
+                'org_name': org['name'],
+                'student_name': org['match']['name'],
+                'possible_students': org['possible_students']
+            }
+        else:
+            stud = org['match']
+            org_id = org['unique_id']
+            temp_obj = {
+                'org_name': org['name'],
+                'student_name': stud['name'],
+                'org_skills': org['skills'],
+                'student_skills': stud['skills'],
+                'student_matchability': float((stud['org_df'].loc[stud['org_df']['ids'] == org_id]['matchability']).astype(float))
+            }
         results_arr.append(temp_obj)
 
         print(org['name'])
@@ -229,10 +239,10 @@ def run_algo(pre_matches={}, email_address=""):
         email += "<p>---------------------------------</p>"
 
     ####### Post to DB
-    api_link ='http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/results'
+    api_link ='http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/results/'
     params = {
         'cohort' : cohort,
-        'data': results_arr
+        'data': {'data_list': results_arr}
     }
     headers = {
         "content-type": "application/json",
