@@ -28,8 +28,16 @@ class AdminStudents extends Component {
             phone:  "",
             email: "",
             linkedin: "",
+            intentionData: [],
+            interestData: [],
+            timeCommit: "",
+            transportation: null,
+            flexible_hours: null,
+            work_remotely: null
+
 
         }
+        this.clearData = this.clearData.bind(this);
         this.handleModal = this.handleModal.bind(this);
         this.renderSurvey = this.renderSurvey.bind(this);
         this.handleFirstName = this.handleFirstName.bind(this);
@@ -38,7 +46,33 @@ class AdminStudents extends Component {
         this.handlePhone = this.handlePhone.bind(this);
         this.handleEmail = this.handleEmail.bind(this);
         this.handleLinkedin = this.handleLinkedin.bind(this);
+        this.handleIntentions = this.handleIntentions.bind(this);
+        this.handleInterests = this.handleInterests.bind(this);
+        this.handleTimeCommit = this.handleTimeCommit.bind(this);
+        this.handleTransportation = this.handleTransportation.bind(this);
+        this.handleFlexibleHours = this.handleFlexibleHours.bind(this);
+        this.handleWorkRemotely = this.handleWorkRemotely.bind(this);
 
+    }
+
+    clearData() {
+      this.setState(state => ({
+        students: this.props.students,
+        modalShow: [],
+        studentClicked: false,
+        firstName: "",
+        lastName: "",
+        eid: "",
+        phone:  "",
+        email: "",
+        linkedin: "",
+        intentionData: [],
+        interestData: [],
+        timeCommit: "",
+        transportation: null,
+        flexible_hours: null,
+        work_remotely: null
+  		}));
     }
 
     handleFirstName(e) {
@@ -83,9 +117,101 @@ class AdminStudents extends Component {
   		}));
     }
 
+    handleIntentions(student, i, e) {
+      if (this.state.intentionData.length == 0) {
+        this.setState(state => ({
+          intentionData: new Array(Object.keys(student.intentions).length),
+        }));
+      }
+      let answer = e.target.value
+      if (answer == "") {
+        answer = null
+      }
+      else {
+        answer = (answer === "True" || answer === "true")
+      }
+
+      this.setState(update(this.state, {
+       intentionData: {
+         [i] : {
+           $set: answer
+         }
+       }
+     }));
+    }
+
+    handleInterests(student, i, e) {
+      if (this.state.interestData.length == 0) {
+        this.setState(state => ({
+          interestData: new Array(Object.keys(student.interests).length),
+        }));
+      }
+      let answer = e.target.value
+      if (answer == "") {
+        answer = null
+      }
+      else {
+        answer = (answer === "True" || answer === "true")
+      }
+
+      this.setState(update(this.state, {
+       interestData: {
+         [i] : {
+           $set: answer
+         }
+       }
+     }));
+    }
+
+    handleTimeCommit(e) {
+  		var tc = e.target.value
+  		this.setState(state => ({
+  	     timeCommit: tc
+  	  }));
+  	}
+
+    handleTransportation(e) {
+      let answer = e.target.value
+      if (answer == "") {
+        answer = null
+      }
+      else {
+        answer = (answer === "True" || answer === "true")
+      }
+      this.setState(state => ({
+  			transportation: answer,
+  		}));
+    }
+
+    handleFlexibleHours(e) {
+      let answer = e.target.value
+      if (answer == "") {
+        answer = null
+      }
+      else {
+        answer = (answer === "True" || answer === "true")
+      }
+      this.setState(state => ({
+  			flexible_hours: answer,
+  		}));
+    }
+
+    handleWorkRemotely(e) {
+      let answer = e.target.value
+      if (answer == "") {
+        answer = null
+      }
+      else {
+        answer = (answer === "True" || answer === "true")
+      }
+      this.setState(state => ({
+  			work_remotely: answer,
+  		}));
+    }
+
     renderSurvey(student) {
-      let {first_name, last_name, eid, phone, email, linkedIn, intentions, interests, time_commitment, international, fin_aid, transportation, flexible_hours, work_remotely, degree, tech_courses, prof_courses, experience, tech_skills, prof_skills, other_skills, cohort} = student
-      console.log(intentions)
+      let {first_name, last_name, eid, phone, email, linkedIn, intentions, interests, time_commitment, transportation, flexible_hours, work_remotely, degree, tech_courses, prof_courses, experience, tech_skills, prof_skills, other_skills, cohort} = student
+
       return (
         <div>
           <div className="bold">(Leave the text entry blank for survey value to remain as is)</div>
@@ -120,9 +246,56 @@ class AdminStudents extends Component {
               <Form.Label>Update LinkedIn Here:</Form.Label>
               <Form.Control type="profList" onChange={this.handleLinkedin}/>
           </Form.Group>
-        </div>
+          {Object.keys(intentions).map((key, index) => {
+            return (
+              <div>{key}: {String(intentions[key])}
+              <Form.Group key={index}>
+                  <Form.Label>Update Answer Here:</Form.Label>
+                  <Form.Control type="profList" onChange={this.handleIntentions.bind(this, student, index)}/>
+              </Form.Group>
+            </div>
+            )
+          })}
+          {Object.keys(interests).map((key, index) => {
+            return (
+              <div>Interested in {key}: {String(interests[key])}
+              <Form.Group key={index}>
+                  <Form.Label>Update Answer Here:</Form.Label>
+                  <Form.Control type="profList" onChange={this.handleInterests.bind(this, student, index)}/>
+              </Form.Group>
+            </div>
+            )
+          })}
+          <div>Current time commitment: {time_commitment}</div>
+          <Form.Group controlId="TimeCommitment">
+              <Form.Label>Update Time Commitment Here:</Form.Label>
+              <Form.Control required as="select" onChange={this.handleTimeCommit}>
+                  <option></option>
+                  <option>Less than 5 Hours Per Week</option>
+                  <option>5-10 Hours Per Week</option>
+                  <option>15-20 Hours Per Week</option>
+                  <option>20-30 Hours Per Week</option>
+              </Form.Control>
+          </Form.Group>
+          <div>Transportation: {String(transportation)}</div>
+          <Form.Group controlId="Transportation">
+              <Form.Label>Update Answer Here:</Form.Label>
+              <Form.Control type="profList" onChange={this.handleTransportation.bind(this)}/>
+          </Form.Group>
+          <div>Flexible Hours: {String(flexible_hours)}</div>
+          <Form.Group controlId="FlexibleHours">
+              <Form.Label>Update Answer Here:</Form.Label>
+              <Form.Control type="profList" onChange={this.handleFlexibleHours.bind(this)}/>
+          </Form.Group>
+          <div>Work Remotely: {String(work_remotely)}</div>
+          <Form.Group controlId="WorkRemotely">
+              <Form.Label>Update Answer Here:</Form.Label>
+              <Form.Control type="profList" onChange={this.handleWorkRemotely.bind(this)}/>
+          </Form.Group>
+      </div>
       )
     }
+
 
     componentDidMount() {
         this.setState({ students: this.props.students, modalShow: new Array(this.props.students.length) });
@@ -137,7 +310,6 @@ class AdminStudents extends Component {
          }
        }
      }));
-
     }
 
     render(){
@@ -161,13 +333,15 @@ class AdminStudents extends Component {
                                           <Modal
                                              size="lg"
                                              show={this.state.modalShow[index]}
-                                             onHide={() => (this.setState(update(this.state, {
-                                         			modalShow: {
+                                             onHide={() => (
+                                              this.clearData.bind(this),
+                                              this.setState(update(this.state, {
+                                         			 modalShow: {
                                          				[index] : {
                                          					$set: false
                                          				}
-                                         			}
-                                       		   })))}
+                                         		 	}
+                                              })))}
                                              aria-labelledby="contained-modal-title-vcenter"
                                              centered
                                          >
@@ -189,14 +363,6 @@ class AdminStudents extends Component {
                     </tbody>
 
                 </table>
-                {this.state.showWindowPortal && (
-                    <NewWindowPortal>
-                        <h1>New Window for Editing Survey Responses</h1>
-                        <button onClick={() => this.setState({ showWindowPortal: false })} >
-                            Close me!
-                        </button>
-                    </NewWindowPortal>
-                )}
             </div>
         )
     }
