@@ -29,11 +29,11 @@ class AdminMatch extends Component {
     }
 
     componentDidUpdate(prevProps){
-        console.log("SELECTED PROJECTS:");
-        console.log(this.state.projectSelection);
+       // console.log("SELECTED PROJECTS:");
+      //  console.log(this.state.projectSelection);
 
-        console.log("PROJECT LIST TO PICK FROM: ");
-        console.log(this.state.projectListToPickFrom);
+      //  console.log("PROJECT LIST TO PICK FROM: ");
+      //  console.log(this.state.projectListToPickFrom);
 
     }
 

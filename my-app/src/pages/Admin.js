@@ -28,7 +28,7 @@ class Admin extends Component {
 	}
 
 	async componentDidMount() {
-        await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/matchings')
+        await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/results')
 			.then(res => {
 				console.log(res);
 				this.setState({ results: res.data });
