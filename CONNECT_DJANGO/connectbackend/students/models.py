@@ -1,7 +1,6 @@
 # from django.db import models
 from djongo import models
 from django.db import models as models2
-from django.contrib.postgres.fields import JSONField
 
 
 class Student(models.Model):

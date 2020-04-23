@@ -10,6 +10,11 @@ class MatchingSerializer(serializers.ModelSerializer):
 
 
 class ResultSerializer(serializers.ModelSerializer):
+    data = serializers.SerializerMethodField()
+
     class Meta:
         model = Result
         fields = '__all__'
+
+    def get_data(self, obj):
+        return obj.data

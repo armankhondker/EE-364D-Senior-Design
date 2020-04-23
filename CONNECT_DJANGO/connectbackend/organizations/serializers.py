@@ -5,9 +5,37 @@ from .models import Project, Skill, TechSkill, ProfSkill, TechCourse, ProfCourse
 
 # Student Serializer
 class ProjectSerializer(serializers.ModelSerializer):
+    project_categories = serializers.SerializerMethodField()
+    degree = serializers.SerializerMethodField()
+    tech_courses = serializers.SerializerMethodField()
+    prof_courses = serializers.SerializerMethodField()
+    experience = serializers.SerializerMethodField()
+    tech_skills = serializers.SerializerMethodField()
+    prof_skills = serializers.SerializerMethodField()
     class Meta:
         model = Project
         fields = '__all__'
+
+    def get_project_categories(self, obj):
+        return obj.project_categories
+
+    def get_degree(self, obj):
+        return obj.degree
+
+    def get_tech_courses(self, obj):
+        return obj.tech_courses
+
+    def get_prof_courses(self, obj):
+        return obj.prof_courses
+
+    def get_experience(self, obj):
+        return obj.experience
+
+    def get_tech_skills(self, obj):
+        return obj.tech_skills
+
+    def get_prof_skills(self, obj):
+        return obj.prof_skills
 
 
 class SkillSerializer(serializers.ModelSerializer):
