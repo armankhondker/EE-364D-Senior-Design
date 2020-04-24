@@ -67,6 +67,8 @@ function displayInfo(match) {
         {projectComponent}
         <h3>Student</h3>
         {studentComponent}
+        <h3>Matchability</h3>
+        {match.student_matchability}
     </div>;
 }
 
