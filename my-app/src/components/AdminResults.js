@@ -5,55 +5,62 @@ function displayInfo(match) {
    console.log(match);
     let studentComponent;
     let projectComponent;
+    let skills;
 
-        studentComponent = <div>
+        skills = match.student_skills;
+        studentComponent =  <div>
             <p>Name: {match.student_name}</p>
             <p>Scoring for each skill:</p>
-            <p>Communication: {match.student_skills.Communication}</p>
+            <p>Communication: {skills.Communication}</p>
+            <p>Time Management: {skills['Time Management']} </p>
+            <p>Decision Making: {skills['Decision Making']}</p>
+            <p>Leadership: {skills.Leadership}</p>
+            <p>Teamwork: {skills.Teamwork}</p>
+            <p>Literature Review: {skills['Time Management']}</p>
+            <p>Baseline Data Identification: {skills['Baseline Data Identification']}</p>
+            <p>Logic Modeling: {skills['Logic Modeling']}</p>
+            <p>Outcomes Definition: {skills['Time Management']}</p>
+            <p>Survey Administration: {skills['Survey Administration']}</p>
+            <p>Conducting Interviews: {skills['Conducting Interviews']}</p>
+            <p>Data Mining: {skills['Data Mining']}</p>
+            <p>Statistical Analysis: {skills['Statistical Analysis']}</p>
+            <p>SQL: {skills.SQL}</p>
+            <p>Machine Learning: {skills['Machine Learning']}</p>
+            <p>HTML: {skills.HTML}</p>
+            <p>CSS: {skills.CSS}</p>
+            <p>Java: {skills.Java}</p>
+            <p>Python: {skills.Python}</p>
+            <p>Tableau: {skills.Tableau}</p>
+            <p>Microsoft Office Suite: {skills['Microsoft Office Suite']}</p>
         </div>;
 
-        let skills = match.org_skills;
-
-    /*
-       <p>Time Management: </p>
-       <p>Decision Making</p>
-       <p>Leadership: </p>
-       <p>Teamwork: </p>
-       <p>Literature Review: </p>
-       <p>Baseline Data Identification: </p>
-       <p>Logic Modeling: </p>
-       <p>Outcomes Definition:</p>
-       <p>Survey Administration: </p>
-       <p>Conducting Interviews: </p>
-       <p>Data Mining: </p>
-       <p>Statistical Analysis: </p>
-       <p>SQL: </p>
-       <p>Machine Learning: </p>
-       <p>HTML: </p>
-       <p>CSS: </p>
-       <p>Java: </p>
-       <p>Python</p>
-       <p>Tableau: </p>
-       <p>Microsoft Office Suite: </p>
-       */
+        skills = match.org_skills;
 
         projectComponent = <div>
             <p>Name: {match.org_name}</p>
-            <p>Communication: {skills.Communication}</p>
-
-        </div>;
-
-
-    /*
-    let index;
-    for (index = 0; index < match.org_skills.length; index++) {
-        projectComponent =
-            <div>
-                <p>match.org_skills[index]</p>
+                <p>Scoring for each skill:</p>
+                <p>Communication: {skills.Communication}</p>
+                <p>Time Management: {skills['Time Management']} </p>
+                <p>Decision Making: {skills['Decision Making']}</p>
+                <p>Leadership: {skills.Leadership}</p>
+                <p>Teamwork: {skills.Teamwork}</p>
+                <p>Literature Review: {skills['Time Management']}</p>
+                <p>Baseline Data Identification: {skills['Baseline Data Identification']}</p>
+                <p>Logic Modeling: {skills['Logic Modeling']}</p>
+                <p>Outcomes Definition: {skills['Time Management']}</p>
+                <p>Survey Administration: {skills['Survey Administration']}</p>
+                <p>Conducting Interviews: {skills['Conducting Interviews']}</p>
+                <p>Data Mining: {skills['Data Mining']}</p>
+                <p>Statistical Analysis: {skills['Statistical Analysis']}</p>
+                <p>SQL: {skills.SQL}</p>
+                <p>Machine Learning: {skills['Machine Learning']}</p>
+                <p>HTML: {skills.HTML}</p>
+                <p>CSS: {skills.CSS}</p>
+                <p>Java: {skills.Java}</p>
+                <p>Python: {skills.Python}</p>
+                <p>Tableau: {skills.Tableau}</p>
+                <p>Microsoft Office Suite: {skills['Microsoft Office Suite']}</p>
             </div>;
-    }
-    console.log(projectComponent);
-    */
 
     return <div>
         <h3>Project</h3>
