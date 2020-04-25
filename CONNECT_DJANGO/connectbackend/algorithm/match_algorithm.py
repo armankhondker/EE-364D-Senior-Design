@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 from base64 import b64decode
-.from utility import convert_pdf_to_txt, engage_student_match # add . for aws
-.from api_keys import sendinblue_key # add . for aws
+from .utility import convert_pdf_to_txt, engage_student_match  # add . for aws
+from .api_keys import sendinblue_key  # add . for aws
 import os
 import warnings
 import pandas as pd
@@ -9,8 +9,10 @@ import pprint
 import json
 import requests
 
+
 def run_algo(pre_matches={}, email_address=""):
-    client = MongoClient("mongodb+srv://rgkadmin:H13seniordesign@cluster0-54uuh.mongodb.net/test?retryWrites=true&w=majority")
+    client = MongoClient(
+        "mongodb+srv://rgkadmin:H13seniordesign@cluster0-54uuh.mongodb.net/test?retryWrites=true&w=majority")
     db = client
     students = list(db.students.students_student.find({}))
     resumes = list(db.students.students_resume.find({}))
@@ -30,8 +32,8 @@ def run_algo(pre_matches={}, email_address=""):
 
     ############### Data Preprocessing
     for student in students:
-        cohort = student['cohort'] #define cohort
-        resume=""
+        cohort = student['cohort']  # define cohort
+        resume = ""
         r = next((item for item in resumes if item["unique_id"] == student['unique_id']), "")
         # Create pdf of resume from base64, parse text, delete resume
         if r != "":
@@ -56,7 +58,7 @@ def run_algo(pre_matches={}, email_address=""):
             'work_remotely': student['work_remotely'],
             'transportation': student['transportation'],
             'flexible_hours': student['flexible_hours'],
-            'unique_id': student['unique_id'] ,
+            'unique_id': student['unique_id'],
             'cohort': student['cohort'],
             'resume': r,
             'org_df': pd.DataFrame(columns=['ids', 'raw_scores', 'matchability']),
@@ -66,21 +68,23 @@ def run_algo(pre_matches={}, email_address=""):
             'pre_matched': False
         }
         if (student['unique_id'] in pre_matches):
-            org_prematches.update({pre_matches[student['unique_id']]: {'student_id': student['unique_id'], 'name': student['first_name'] + ' ' + student['last_name']}})
+            org_prematches.update({pre_matches[student['unique_id']]: {'student_id': student['unique_id'],
+                                                                       'name': student['first_name'] + ' ' + student[
+                                                                           'last_name']}})
             temp_dict.update({'pre_matched': True})
             temp_dict.update({'engaged': True})
-### Resume scoring
-        # if (r != ""):
-        #     for skill in temp_dict['skills']:
-        #         for text_line in r:
-        #             if skill.lower() in text_line.lower():
-                        # score = get_pdf_score(text_line)
-                        # temp_dict['skills'][skill] += score
+        ### Resume scoring
+        if (r != ""):
+            for skill in temp_dict['skills']:
+                for text_line in r:
+                    if skill.lower() in text_line.lower():
+                        score = get_pdf_score(text_line)
+                        temp_dict['skills'][skill] += score
 
         student_data.append(temp_dict)
 
     for org in orgs:
-        possible_students=[]
+        possible_students = []
         o_flexible_hours = org['flexible_hours']
         o_time_commitment = org['time_commitment']
         o_work_remotely = org['work_remotely']
@@ -114,7 +118,7 @@ def run_algo(pre_matches={}, email_address=""):
             'work_remotely': org['work_remotely'],
             'flexible_hours': org['flexible_hours'],
             'transportation': org['transportation'],
-            'unique_id': org['unique_id'] ,
+            'unique_id': org['unique_id'],
             'cohort': org['cohort'],
             'resume': r,
             'engaged': False,
@@ -134,21 +138,21 @@ def run_algo(pre_matches={}, email_address=""):
 
     ###### Score Matchability
 
-     # Score matchability
+    # Score matchability
     for org in org_data:
         org_id = org['unique_id']
         org_df = pd.DataFrame()
-        org_matchability=0
+        org_matchability = 0
         org_skills = org['skills']
         for skill in org_skills:
             org_skill = org_skills[skill]
             if org_skill < 3:
                 continue
-            mult = org_skill-2
+            mult = org_skill - 2
             if (org_skill == 4 or org_skill == 5):
-                org_matchability += mult*4
+                org_matchability += mult * 4
             else:
-                org_matchability += mult*3
+                org_matchability += mult * 3
         possible_students = org['possible_students']
         if org_matchability == 0:
             org_matchability += 1
@@ -158,24 +162,26 @@ def run_algo(pre_matches={}, email_address=""):
             for skill in org_skills:
                 org_skill = org_skills[skill]
                 if (org_skill >= 3):
-                    mult = org_skill-2
+                    mult = org_skill - 2
                     score = student_skills[skill]
-                    student_matchability += mult*score
+                    student_matchability += mult * score
             temp_df = pd.DataFrame()
             temp_df['ids'] = [org_id]
             temp_df['raw_scores'] = [student_matchability]
-            temp_df['matchability'] = [student_matchability/org_matchability]
+            temp_df['matchability'] = [student_matchability / org_matchability]
             student['org_df'] = student['org_df'].append(temp_df, ignore_index=True)
 
     ######## Sort by matchability, students sort by raw score, org scores by matchability
     for student in student_data:
-        student['org_df'] = student['org_df'].sort_values(by=['raw_scores', 'matchability'], ascending=False).reset_index(drop=True)
+        student['org_df'] = student['org_df'].sort_values(by=['raw_scores', 'matchability'],
+                                                          ascending=False).reset_index(drop=True)
 
     for org in org_data:
         org_id = org['unique_id']
         poss_students = org['possible_students']
         x = poss_students[0]
-        org['possible_students'] = sorted(poss_students, key=lambda x: (float((x['org_df'].loc[x['org_df']['ids'] == org_id]['matchability']).astype(float))), reverse=True)
+        org['possible_students'] = sorted(poss_students, key=lambda x: (
+            float((x['org_df'].loc[x['org_df']['ids'] == org_id]['matchability']).astype(float))), reverse=True)
 
     ########## Run Algo
 
@@ -183,29 +189,29 @@ def run_algo(pre_matches={}, email_address=""):
     numOrgs = len(org_data)
     index = 0
 
-    while(numEngaged < numOrgs-len(pre_matches)):
+    while (numEngaged < numOrgs - len(pre_matches)):
         for org in org_data:
             if (org['engaged'] or org['pre_matched']):
                 continue
             poss_students = org['possible_students']
             i = org['index']
-            while(True):
+            while (True):
                 if (i >= len(poss_students)):
                     org['match'] = {'name': 'NO MATCH', 'unique_id': '-1'}
-                    numEngaged +=1
+                    numEngaged += 1
                     break
                 student = poss_students[i]
                 result, numAdded = engage_student_match(student, org, org_data)
                 numEngaged += numAdded
                 if (result):
-                    org['index'] = i+1
+                    org['index'] = i + 1
                     break
                 else:
                     i += 1
     ########## Algo done
 
     results_arr = []
-    email="<p>---------------------------------</p>"
+    email = "<p>---------------------------------</p>"
     for org in org_data:
         if (org['match']['unique_id'] == -1):
             temp_obj = {
@@ -221,7 +227,8 @@ def run_algo(pre_matches={}, email_address=""):
                 'student_name': stud['name'],
                 'org_skills': org['skills'],
                 'student_skills': stud['skills'],
-                'student_matchability': float((stud['org_df'].loc[stud['org_df']['ids'] == org_id]['matchability']).astype(float))
+                'student_matchability': float(
+                    (stud['org_df'].loc[stud['org_df']['ids'] == org_id]['matchability']).astype(float))
             }
         results_arr.append(temp_obj)
 
@@ -239,14 +246,14 @@ def run_algo(pre_matches={}, email_address=""):
         email += "<p>---------------------------------</p>"
 
     ####### Post to DB
-    api_link ='http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/results/'
+    api_link = 'http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/results/'
     params = {
-        'cohort' : cohort,
+        'cohort': cohort,
         'data': {'data_list': results_arr}
     }
     headers = {
         "content-type": "application/json",
-        "accept" : "application/json",
+        "accept": "application/json",
     }
     body = json.dumps(params) if params else None
 
@@ -268,7 +275,7 @@ def run_algo(pre_matches={}, email_address=""):
     headers = {
         "content-type": "application/json",
         "api-key": sendinblue_key,
-        "accept" : "application/json",
+        "accept": "application/json",
     }
 
     body = json.dumps(body_dict) if body_dict else None
