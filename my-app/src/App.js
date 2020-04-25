@@ -17,7 +17,7 @@ class App extends Component {
   return (
     <BrowserRouter>
     <Route path ='/' render={() => (<StickNavbar />)}/>
-    <Route exact={true} path='/' render={() => (<Central />)}/>  
+    <Route exact={true} path='/' render={() => (<Central />)}/>
     <Route exact={true} path='/student' render={() => (<Student />)}/>
     <Route exact={true} path='/admin' render={() => (<Admin />)}/>
     <Route exact={true} path='/community' render={() => (<CommunityOrg />)}/>

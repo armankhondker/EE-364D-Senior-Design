@@ -1,50 +1,124 @@
 import React, { Component } from 'react';
-import Popup from "reactjs-popup";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import update from "react-addons-update";
 
 function displayInfo(match) {
-    console.log(match);
+   console.log(match);
     let studentComponent;
     let projectComponent;
+    let skills;
 
-    if(match.student_technical !== undefined) {
-        studentComponent = <div>
-            <p>Name: {match.student.name}</p>
-            <p>Technical: {match.student_technical}</p>
-            <p>Professional: {match.student_professional}</p>
-            <p>Resume ID: {match.student_resume_id}</p>
-            <p>Quadrant: {match.student_quadrant}</p>
-            <p>Availability Duration: {match.student_availability_duration} </p>
-            <p>Availability Time: {match.student_availability_time} </p>
-            <p>Work Factors: {match.student_work_factors} </p>
-            <p>Interest Buckets: {match.student_interest_buckets}</p>
-        </div>
-    } else {
-        studentComponent = <div>
-            <p>Name: {match.student}</p>
-        </div>
-    }
+        skills = match.student_skills;
+        studentComponent =  <div>
+            Name: {match.student_name}
+            <br></br>
+            <b>{match.student_name}'s generated scores for each skill</b>
+            <br></br>
+            Communication: {skills.Communication}
+            <br></br>
+            Time Management: {skills['Time Management']}
+            <br></br>
+            Decision Making: {skills['Decision Making']}
+            <br></br>
+            Leadership: {skills.Leadership}
+            <br></br>
+            Teamwork: {skills.Teamwork}
+            <br></br>
+            Literature Review: {skills['Time Management']}
+            <br></br>
+            Baseline Data Identification: {skills['Baseline Data Identification']}
+            <br></br>
+            Logic Modeling: {skills['Logic Modeling']}
+            <br></br>
+            Outcomes Definition: {skills['Time Management']}
+            <br></br>
+            Survey Administration: {skills['Survey Administration']}
+            <br></br>
+            Conducting Interviews: {skills['Conducting Interviews']}
+            <br></br>
+            Data Mining: {skills['Data Mining']}
+            <br></br>
+            Statistical Analysis: {skills['Statistical Analysis']}
+            <br></br>
+            SQL: {skills.SQL}
+            <br></br>
+            Machine Learning: {skills['Machine Learning']}
+            <br></br>
+            HTML: {skills.HTML}
+            <br></br>
+            CSS: {skills.CSS}
+            <br></br>
+            Java: {skills.Java}
+            <br></br>
+            Python: {skills.Python}
+            <br></br>
+            Tableau: {skills.Tableau}
+            <br></br>
+            Microsoft Office Suite: {skills['Microsoft Office Suite']}
+            <br></br>
+            <br></br>
+        </div>;
 
-    if(match.project_technical !== undefined) {
-        projectComponent = <div>
-            <p>Name: {match.project_org}</p>
-            <p>Primary Category: {match.project_primary}</p>
-            <p>Second Category: {match.project_secondary}</p>
-            <p>Technical: {match.project_technical}</p>
-            <p>Professional: {match.project_professional}</p>
-            <p>Quadrant: {match.project_quadrant} </p>
-        </div>
-    } else{
-        projectComponent = <div>
-            <p>Name: {match.project_org}</p>
+        skills = match.org_skills;
 
-        </div>
+        projectComponent = <div style={{textAlign: 'left'}}>
+            Name: {match.org_name}
+            <br></br>
+            <b>{match.org_name}'s generated scores for each skill</b>
+            <br></br>
+            Communication: {skills.Communication}
+            <br></br>
+            Time Management: {skills['Time Management']}
+            <br></br>
+            Decision Making: {skills['Decision Making']}
+            <br></br>
+            Leadership: {skills.Leadership}
+            <br></br>
+            Teamwork: {skills.Teamwork}
+            <br></br>
+            Literature Review: {skills['Time Management']}
+            <br></br>
+            Baseline Data Identification: {skills['Baseline Data Identification']}
+            <br></br>
+            Logic Modeling: {skills['Logic Modeling']}
+            <br></br>
+            Outcomes Definition: {skills['Time Management']}
+            <br></br>
+            Survey Administration: {skills['Survey Administration']}
+            <br></br>
+            Conducting Interviews: {skills['Conducting Interviews']}
+            <br></br>
+            Data Mining: {skills['Data Mining']}
+            <br></br>
+            Statistical Analysis: {skills['Statistical Analysis']}
+            <br></br>
+            SQL: {skills.SQL}
+            <br></br>
+            Machine Learning: {skills['Machine Learning']}
+            <br></br>
+            HTML: {skills.HTML}
+            <br></br>
+            CSS: {skills.CSS}
+            <br></br>
+            Java: {skills.Java}
+            <br></br>
+            Python: {skills.Python}
+            <br></br>
+            Tableau: {skills.Tableau}
+            <br></br>
+            Microsoft Office Suite: {skills['Microsoft Office Suite']}
+            <br></br>
+            <br></br>
+            </div>;
 
-    }
     return <div>
-        <h3>Student</h3>
-        {studentComponent}
-        <h3>Project</h3>
+        <h3>Project: {match.org_name}</h3>
         {projectComponent}
+        <h3>Student: {match.student_name}</h3>
+        {studentComponent}
+        <h3>Matchability between Project and Student</h3>
+        Matchability: {match.student_matchability}
     </div>;
 }
 
@@ -57,32 +131,85 @@ class AdminResults extends Component {
             students: null,
             projects: null,
             loaded: false,
+            formattedResults: null,
+            modalShow: [],
         }
+
+        this.clearData = this.clearData.bind(this);
+        this.handleModal = this.handleModal.bind(this);
+    }
+
+    clearData() {
+        this.setState(state => ({
+            modalShow: [],
+        }));
+    }
+
+    componentDidMount() {
+        this.setState({ results: this.props.results, modalShow: new Array(this.props.results.length) });
+    }
+
+    handleModal(i) {
+        console.log(i)
+        this.setState(update(this.state, {
+            modalShow: {
+                [i] : {
+                    $set: true
+                }
+            }
+        }));
     }
 
     render(){
+
         let hasMounted = false;
         let {students, projects,results } = this.props;
         if(students !== null && projects !== null && results !== null) {
             hasMounted = true;
         }
+
         return(
             <div>
                 {hasMounted ? (
                     this.props.results.map((value, index) => {
                         return (
-                            <div key={index}>
-                                <Popup modal
-                                       closeOnDocumentClick
-                                       trigger={<button>{value.student} -> {value.project_org}</button>}>
-                                    <div>
-                                        {displayInfo(value)}
-                                    </div>
-                                </Popup>
-                            </div>
+                            value.data.data_list.map((elem,i) => {
+                              return(
+                                  <div>
+                                      <div key={index}>
 
+
+                                          <Button onClick={this.handleModal.bind(this, i)}>{elem.org_name} -> {elem.student_name}</Button>
+                                          <Modal
+                                              size="lg"
+                                              show={this.state.modalShow[i]}
+                                              onHide={() => (
+                                                  this.clearData.bind(this),
+                                                      this.setState(update(this.state, {
+                                                          modalShow: {
+                                                              [i] : {
+                                                                  $set: false
+                                                              }
+                                                          }
+                                                      })))}
+                                              aria-labelledby="contained-modal-title-vcenter"
+                                              centered
+                                          >
+                                              <Modal.Header closeButton>
+                                                  <Modal.Title id="example-custom-modal-styling-title">
+                                                     Match: {elem.org_name} and {elem.student_name}
+                                                  </Modal.Title>
+                                              </Modal.Header>
+                                              <Modal.Body>{displayInfo(elem)}</Modal.Body>
+                                          </Modal>
+                                        </div>
+                                    </div>
+                                      )
+                            })
                         );
-                    })) : (
+                    }))
+
+                    : (
                     <p>Loading</p>
                 )
                 }
