@@ -193,8 +193,6 @@ class Admin extends Component {
 
 		return (
 			<div align="center" className="App">
-				<br/>
-				<br/>
 				{CurrentDisplay}
 			</div>
 		);
