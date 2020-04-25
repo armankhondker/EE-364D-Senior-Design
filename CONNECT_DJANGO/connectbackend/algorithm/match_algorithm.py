@@ -70,12 +70,12 @@ def run_algo(pre_matches={}, email_address=""):
             temp_dict.update({'pre_matched': True})
             temp_dict.update({'engaged': True})
 ### Resume scoring
-        # if (r != ""):
-        #     for skill in temp_dict['skills']:
-        #         for text_line in r:
-        #             if skill.lower() in text_line.lower():
-                        # score = get_pdf_score(text_line)
-                        # temp_dict['skills'][skill] += score
+        if (r != ""):
+            for skill in temp_dict['skills']:
+                for text_line in r:
+                    if skill.lower() in text_line.lower():
+                        score = get_pdf_score(text_line)
+                        temp_dict['skills'][skill] += score
 
         student_data.append(temp_dict)
 
