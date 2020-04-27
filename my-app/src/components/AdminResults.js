@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import update from "react-addons-update";
+import '../styling/Admin.css';
 
 function displayInfo(match) {
    console.log(match);
@@ -11,7 +12,6 @@ function displayInfo(match) {
 
         skills = match.student_skills;
         studentComponent =  <div>
-            Name: {match.student_name}
             <br></br>
             <b>{match.student_name}'s generated scores for each skill</b>
             <br></br>
@@ -63,7 +63,6 @@ function displayInfo(match) {
         skills = match.org_skills;
 
         projectComponent = <div style={{textAlign: 'left'}}>
-            Name: {match.org_name}
             <br></br>
             <b>{match.org_name}'s generated scores for each skill</b>
             <br></br>
@@ -170,15 +169,17 @@ class AdminResults extends Component {
 
         return(
             <div>
+                <p>Click on a matching pair to view scoring of skills</p>
+                <table style={{width:"50%", margin: "auto"}}>
+                    <tbody className="admin_table">
                 {hasMounted ? (
                     this.props.results.map((value, index) => {
                         return (
                             value.data.data_list.map((elem,i) => {
                               return(
-                                  <div>
-                                      <div key={index}>
-
-
+                                  <tr key={index}>
+                                      <td className="admin_cell">
+                                          <div>
                                           <Button onClick={this.handleModal.bind(this, i)}>{elem.org_name} -> {elem.student_name}</Button>
                                           <Modal
                                               size="lg"
@@ -202,9 +203,10 @@ class AdminResults extends Component {
                                               </Modal.Header>
                                               <Modal.Body>{displayInfo(elem)}</Modal.Body>
                                           </Modal>
-                                        </div>
-                                    </div>
-                                      )
+                                          </div>
+                                      </td>
+                                  </tr>
+                              )
                             })
                         );
                     }))
@@ -213,6 +215,8 @@ class AdminResults extends Component {
                     <p>Loading</p>
                 )
                 }
+                    </tbody>
+                </table>
             </div>
         );
     }

@@ -10,7 +10,10 @@ class MatchingSerializer(serializers.ModelSerializer):
 
 
 class ResultSerializer(serializers.ModelSerializer):
-    data = serializers.SerializerMethodField()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if 'request' in self.context and self.context['request'].method == 'GET':
+            self.fields['data'] = serializers.SerializerMethodField()
 
     class Meta:
         model = Result
