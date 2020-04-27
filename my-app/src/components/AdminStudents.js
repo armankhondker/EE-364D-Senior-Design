@@ -21,22 +21,28 @@ class AdminStudents extends Component {
         this.state = {
             students: props.students,
             modalShow: [],
-            studentClicked: false,
-            firstName: "",
-            lastName: "",
+            first_name: "",
+            last_name: "",
             eid: "",
             phone:  "",
             email: "",
-            linkedin: "",
-            intentionData: [],
-            interestData: [],
-            timeCommit: "",
+            linkedIn: "",
+            intentions: [],
+            interests: [],
+            time_commitment: "",
             transportation: null,
             flexible_hours: null,
-            work_remotely: null
-
-
+            work_remotely: null,
+            degree: "",
+            tech_courses: [],
+            prof_courses: [],
+            tech_skills: [],
+            prof_skills: [],
+            other_skills: "",
+            submit_text: "",
         }
+
+
         this.clearData = this.clearData.bind(this);
         this.handleModal = this.handleModal.bind(this);
         this.renderSurvey = this.renderSurvey.bind(this);
@@ -52,6 +58,14 @@ class AdminStudents extends Component {
         this.handleTransportation = this.handleTransportation.bind(this);
         this.handleFlexibleHours = this.handleFlexibleHours.bind(this);
         this.handleWorkRemotely = this.handleWorkRemotely.bind(this);
+        this.handleDegree = this.handleDegree.bind(this);
+        this.handleTechCourses = this.handleTechCourses.bind(this);
+        this.handleProfCourses = this.handleProfCourses.bind(this);
+        this.handleTechSkills = this.handleTechSkills.bind(this);
+        this.handleProfSkills = this.handleProfSkills.bind(this);
+        this.handleOtherSkills = this.handleOtherSkills.bind(this);
+        this.handleUpdate = this.handleUpdate.bind(this);
+        this.isDict = this.isDict.bind(this);
 
     }
 
@@ -59,33 +73,39 @@ class AdminStudents extends Component {
       this.setState(state => ({
         students: this.props.students,
         modalShow: [],
-        studentClicked: false,
-        firstName: "",
-        lastName: "",
+        first_name: "",
+        last_name: "",
         eid: "",
         phone:  "",
         email: "",
-        linkedin: "",
-        intentionData: [],
-        interestData: [],
-        timeCommit: "",
+        linkedIn: "",
+        intentions: [],
+        interests: [],
+        time_commitment: "",
         transportation: null,
         flexible_hours: null,
-        work_remotely: null
+        work_remotely: null,
+        degree: "",
+        tech_courses: [],
+        prof_courses: [],
+        tech_skills: [],
+        prof_skills: [],
+        other_skills: "",
+        submit_text: "",
   		}));
     }
 
     handleFirstName(e) {
   		var writtenText = e.target.value
   		this.setState(state => ({
-  			firstName: writtenText
+  			first_name: writtenText
   		}));
   	}
 
     handleLastName(e) {
   		var writtenText = e.target.value
   		this.setState(state => ({
-  			lastName: writtenText
+  			last_name: writtenText
   		}));
   	}
 
@@ -113,18 +133,18 @@ class AdminStudents extends Component {
     handleLinkedin(e) {
       var writtenText = e.target.value
   		this.setState(state => ({
-  			linkedin: writtenText
+  			linkedIn: writtenText
   		}));
     }
 
     handleIntentions(student, i, e) {
-      if (this.state.intentionData.length == 0) {
+      if (this.state.intentions.length === 0) {
         this.setState(state => ({
-          intentionData: new Array(Object.keys(student.intentions).length),
+          intentions: new Array(Object.keys(student.intentions).length),
         }));
       }
       let answer = e.target.value
-      if (answer == "") {
+      if (answer === "") {
         answer = null
       }
       else {
@@ -132,7 +152,7 @@ class AdminStudents extends Component {
       }
 
       this.setState(update(this.state, {
-       intentionData: {
+       intentions: {
          [i] : {
            $set: answer
          }
@@ -141,13 +161,13 @@ class AdminStudents extends Component {
     }
 
     handleInterests(student, i, e) {
-      if (this.state.interestData.length == 0) {
+      if (this.state.interests.length === 0) {
         this.setState(state => ({
-          interestData: new Array(Object.keys(student.interests).length),
+          interests: new Array(Object.keys(student.interests).length),
         }));
       }
       let answer = e.target.value
-      if (answer == "") {
+      if (answer === "") {
         answer = null
       }
       else {
@@ -155,7 +175,7 @@ class AdminStudents extends Component {
       }
 
       this.setState(update(this.state, {
-       interestData: {
+       interests: {
          [i] : {
            $set: answer
          }
@@ -166,13 +186,13 @@ class AdminStudents extends Component {
     handleTimeCommit(e) {
   		var tc = e.target.value
   		this.setState(state => ({
-  	     timeCommit: tc
+  	     time_commitment: tc
   	  }));
   	}
 
     handleTransportation(e) {
       let answer = e.target.value
-      if (answer == "") {
+      if (answer === "") {
         answer = null
       }
       else {
@@ -185,7 +205,7 @@ class AdminStudents extends Component {
 
     handleFlexibleHours(e) {
       let answer = e.target.value
-      if (answer == "") {
+      if (answer === "") {
         answer = null
       }
       else {
@@ -198,7 +218,7 @@ class AdminStudents extends Component {
 
     handleWorkRemotely(e) {
       let answer = e.target.value
-      if (answer == "") {
+      if (answer === "") {
         answer = null
       }
       else {
@@ -208,6 +228,215 @@ class AdminStudents extends Component {
   			work_remotely: answer,
   		}));
     }
+
+    handleDegree(e) {
+      var writtenText = e.target.value
+  		this.setState(state => ({
+  			degree: writtenText
+  		}));
+    }
+
+    handleTechCourses(student, i, e) {
+      if (this.state.interests.length === 0) {
+        this.setState(state => ({
+          tech_courses: new Array(Object.keys(student.tech_courses).length),
+        }));
+      }
+      let answer = e.target.value
+      if (answer === "") {
+        answer = null
+      }
+      else {
+        answer = (answer === "True" || answer === "true")
+      }
+
+      this.setState(update(this.state, {
+       tech_courses: {
+         [i] : {
+           $set: answer
+         }
+       }
+     }));
+    }
+
+    handleProfCourses(student, i, e) {
+      if (this.state.interests.length === 0) {
+        this.setState(state => ({
+          prof_courses: new Array(Object.keys(student.prof_courses).length),
+        }));
+      }
+      let answer = e.target.value
+      if (answer === "") {
+        answer = null
+      }
+      else {
+        answer = (answer === "True" || answer === "true")
+      }
+
+      this.setState(update(this.state, {
+       prof_courses: {
+         [i] : {
+           $set: answer
+         }
+       }
+     }));
+    }
+
+    handleTechSkills(student, i, e) {
+      if (this.state.tech_skills.length === 0) {
+        this.setState(state => ({
+          tech_skills: new Array(Object.keys(student.tech_skills).length),
+        }));
+      }
+  		this.setState(update(this.state, {
+  			tech_skills: {
+  				[i] : {
+  					$set: e
+  				}
+  			}
+  		}));
+  	}
+
+    handleProfSkills(student, i, e) {
+      if (this.state.prof_skills.length === 0) {
+        this.setState(state => ({
+          prof_skills: new Array(Object.keys(student.prof_skills).length),
+        }));
+      }
+  		this.setState(update(this.state, {
+  			prof_skills: {
+  				[i] : {
+  					$set: e
+  				}
+  			}
+  		}));
+  	}
+
+    handleOtherSkills(e) {
+      var writtenText = e.target.value
+  		this.setState(state => ({
+  			other_skills: writtenText
+  		}));
+    }
+
+    isDict(v) {
+      return typeof v==='object' && v!==null && !(v instanceof Array) && !(v instanceof Date);
+    }
+
+    async handleUpdate(student, e) {
+      this.setState(state => ({
+  			submit_text: "Updating..."
+  		}));
+      let submit_dict = {};
+      let keys = [
+        "first_name",
+        "last_name",
+        "eid",
+        "phone",
+        "email",
+        "linkedIn",
+        "intentions",
+        "interests",
+        "time_commitment",
+        "transportation",
+        "flexible_hours",
+        "work_remotely",
+        "degree",
+        "tech_courses",
+        "prof_courses",
+        "tech_skills",
+        "prof_skills",
+        "other_skills"
+      ]
+      let student_keys = Object.keys(student)
+
+      for (let i=0; i<student_keys.length; i++) {
+        let s_key = student_keys[i];
+        // No need to include id
+        if (s_key === "id")
+          continue;
+        // If the key wasn't in the update options, put the original data in the new dict
+        if (!keys.includes(s_key)) {
+          submit_dict[s_key] = student[s_key]
+          continue;
+        }
+        // If the data is not a dict, just update it
+        if (!this.isDict(student[s_key])) {
+          if (this.state[s_key] !== null && this.state[s_key] !== "") {
+            submit_dict[s_key] = this.state[s_key];
+          }
+          else {
+            submit_dict[s_key] = student[s_key];
+          }
+          continue;
+        }
+        // It was a dict and requires some formatting so it matches the database model
+        let student_question_dict = student[s_key];
+        let question_keys = Object.keys(student_question_dict);
+        let temp_answers={};
+        let student_data = this.state[s_key];
+
+        for (let k=0; k<question_keys.length; k++) {
+          let q_key = question_keys[k];
+          let value = ""
+          try {
+            value = student_data[k];
+          }
+          catch(error) {
+            value = student_question_dict[q_key];
+          }
+          if (value !== null && value !== undefined && value !== "") {
+            temp_answers[q_key] = value;
+          }
+          else {
+            temp_answers[q_key] = student_question_dict[q_key];
+          }
+        }
+        submit_dict[s_key] = temp_answers;
+      }
+      submit_dict['unique_id'] = `${submit_dict.eid}-SP20`
+      console.log(submit_dict);
+
+      console.log(JSON.stringify(submit_dict))
+
+
+      // IGNORE BELOW I WAS CONFUSED WHY PUT REQ WASN'T WORKING, THERE MAY BE A BIGGER ISSUE
+
+  		// await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/students/', JSON.stringify(submit_dict),
+  		// 	{
+  		// 		headers: {
+  		// 			'content-type': 'application/json',
+  		// 		},
+  		// 	})
+  		// 	.then(res => {
+  		// 		console.log(res);
+  		// 	})
+  		// 	.catch(error => {
+  		// 		console.log(error);
+  		// 	})
+
+      // await axios.delete('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/students/'+student.id+'/',
+  		// 	{
+  		// 		headers: {
+  		// 			'content-type': 'application/json',
+  		// 		},
+  		// 	})
+  		// 	.then(res => {
+  		// 		console.log(res);
+  		// 	})
+  		// 	.catch(error => {
+  		// 		console.log(error);
+  		// 	})
+
+
+        this.setState(state => ({
+    			submit_text: "Submitted"
+    		}));
+        this.clearData();
+    }
+
+
+
 
     renderSurvey(student) {
       let {first_name, last_name, eid, phone, email, linkedIn, intentions, interests, time_commitment, transportation, flexible_hours, work_remotely, degree, tech_courses, prof_courses, experience, tech_skills, prof_skills, other_skills, cohort} = student
@@ -292,6 +521,60 @@ class AdminStudents extends Component {
               <Form.Label>Update Answer Here:</Form.Label>
               <Form.Control type="profList" onChange={this.handleWorkRemotely.bind(this)}/>
           </Form.Group>
+          <div>Degree: {degree}</div>
+          <Form.Group controlId="Degree">
+              <Form.Label>Update Answer Here:</Form.Label>
+              <Form.Control type="profList" onChange={this.handleDegree.bind(this)}/>
+          </Form.Group>
+          {Object.keys(tech_courses).map((key, index) => {
+            return (
+              <div>Taken {key}: {String(tech_courses[key])}
+              <Form.Group key={index}>
+                  <Form.Label>Update Answer Here:</Form.Label>
+                  <Form.Control type="profList" onChange={this.handleTechCourses.bind(this, student, index)}/>
+              </Form.Group>
+            </div>
+            )
+          })}
+          {Object.keys(prof_courses).map((key, index) => {
+            return (
+              <div>Taken {key}: {String(prof_courses[key])}
+              <Form.Group key={index}>
+                  <Form.Label>Update Answer Here:</Form.Label>
+                  <Form.Control type="profList" onChange={this.handleProfCourses.bind(this, student, index)}/>
+              </Form.Group>
+            </div>
+            )
+          })}
+          {Object.keys(tech_skills).map((key, index) => {
+              return(
+                <div>Current {key}: {String(tech_skills[key])}
+                  <Form.Group key={index}>
+                      <Form.Label>Update Answer Here:</Form.Label>
+                      <RadioButton name={key} handleRadio={this.handleTechSkills.bind(this, student, index)}/>
+                  </Form.Group>
+                </div>
+              );
+          })}
+          {Object.keys(prof_skills).map((key, index) => {
+              return(
+                <div>Current {key}: {String(prof_skills[key])}
+                  <Form.Group key={index}>
+                      <Form.Label>Update Answer Here:</Form.Label>
+                      <RadioButton name={key} handleRadio={this.handleProfSkills.bind(this, student, index)}/>
+                  </Form.Group>
+                </div>
+              );
+          })}
+          <div>Other Skills: {other_skills}</div>
+          <Form.Group controlId="OtherSkills">
+              <Form.Label>Update Answer Here:</Form.Label>
+              <Form.Control type="profList" onChange={this.handleOtherSkills.bind(this)}/>
+          </Form.Group>
+          <Button variant="primary" onClick={this.handleUpdate.bind(this, student)}>
+              Update Student Form
+          </Button>
+          <div>{this.state.submit_text}</div>
       </div>
       )
     }
@@ -302,7 +585,6 @@ class AdminStudents extends Component {
     }
 
     handleModal(i, student, e) {
-      console.log(i)
       this.setState(update(this.state, {
        modalShow: {
          [i] : {
@@ -351,7 +633,7 @@ class AdminStudents extends Component {
                                              </Modal.Title>
                                            </Modal.Header>
                                            <Modal.Body>{this.renderSurvey(student)}</Modal.Body>
-                                          </Modal>
+                                        </Modal>
                                       </div>
                                     </td>
                                   </tr>

@@ -483,7 +483,7 @@ class StudentForm extends Component {
 			intentions: jsonIntentions,
 			interests: jsonInterests,
 			time_commitment: timeCommit,
-            international: logisticInputs[0],
+      international: logisticInputs[0],
 			fin_aid: logisticInputs[1],
 			transportation: logisticInputs[2],
 			flexible_hours: logisticInputs[3],
