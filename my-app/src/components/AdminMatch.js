@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import Button from "react-bootstrap/Button"
+import Form from 'react-bootstrap/Form';
 import Dropdown from "react-bootstrap/Dropdown";
 import ReactLoading from 'react-loading';
 import axios from "axios";
+import '../styling/Admin.css';
 
 class AdminMatch extends Component {
 
@@ -18,7 +20,9 @@ class AdminMatch extends Component {
             projectSelection : [],
             isRunning: false,
             isDone: false,
+            email: "",
         }
+        this.handleEmail = this.handleEmail.bind(this);
     }
 
     componentDidMount() {
@@ -35,6 +39,13 @@ class AdminMatch extends Component {
       //  console.log("PROJECT LIST TO PICK FROM: ");
       //  console.log(this.state.projectListToPickFrom);
 
+    }
+
+    handleEmail(e) {
+      var writtenText = e.target.value
+  		this.setState(state => ({
+  			email: writtenText
+  		}));
     }
 
     handleSelect (evtKey) {
@@ -90,7 +101,7 @@ class AdminMatch extends Component {
         }
         let params = {
           'data': data,
-          'email_address': ""
+          'email_address': this.state.email
         }
         console.log(params);
         console.log("running");
@@ -98,6 +109,7 @@ class AdminMatch extends Component {
         this.setState({ isRunning: true });
         // await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/algo')
         // await axios.get('http://localhost:8000/api/algo')
+        console.log(JSON.stringify(params))
         await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/algo', JSON.stringify(params),
             {
                 headers: {
@@ -174,6 +186,12 @@ class AdminMatch extends Component {
                             </tbody>
                         </table>
                         <br/>
+                        <div>
+                          <p>Please enter an email to send the results to:</p>
+                          <Form.Group className="emailGroup" controlId="Email">
+                              <Form.Control type="profList" onChange={this.handleEmail.bind(this)}/>
+                          </Form.Group>
+                        </div>
                         <Button size="lg" onClick={this.runMatchingAlgorithm}>
                             Run
                         </Button>

@@ -15,3 +15,12 @@
   display: flex;
   justify-content: center;
 }
+
+.emailGroup {
+  display: flex;
+  justify-content: center;
+}
+
+#Email {
+  width: 200px;
+}
