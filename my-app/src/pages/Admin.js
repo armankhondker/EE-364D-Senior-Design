@@ -52,46 +52,6 @@ class Admin extends Component {
 				this.setState({ projects: res.data });
 			});
 
-		let { results, students, projects } = this.state;
-
-		await results.forEach((result) => {
-			let studentEID = result.eid;
-			students.forEach((student) => {
-				if(student.eid === studentEID) {
-					result.first_name = student.first_name;
-					result.last_name = student.last_name;
-					result.eid = student.eid;
-					result.phone = student.phone;
-					result.email = student.email;
-					result.linkedIn = student.linkedIn;
-					result.resume_link = student.resume_link;
-					result.intentions = student.intentions;
-					result.interests = student.interests;
-					result.time_commitment = student.time_commitment;
-					result.logistics = student.logistics;
-					result.degree = student.degree;
-					result.tech_courses = student.tech_courses;
-					result.prof_courses = student.prof_courses;
-					result.experience = student.experience;
-					result.tech_skills = student.tech_skills;
-					result.prof_skills = student.prof_skills;
-					result.other_skills = student.other_skills;
-					result.created_at = student.created_at;
-
-				}
-			})
-
-			let projectName = result.project_org;
-			projects.forEach((project) => {
-				if(project.name === projectName) {
-					result.project_technical = project.technical;
-					result.project_professional = project.professional;
-					result.project_primary = project.primary;
-					result.project_secondary = project.secondary;
-					result.project_quadrant = project.quadrant;
-				}
-			})
-		})
 
 		this.setState({loaded: true})
 	}

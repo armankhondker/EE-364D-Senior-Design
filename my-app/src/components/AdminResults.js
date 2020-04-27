@@ -10,55 +10,71 @@ function displayInfo(match) {
     let projectComponent;
     let skills;
 
-        skills = match.student_skills;
-        studentComponent =  <div>
-            <br></br>
-            <b>{match.student_name}'s generated scores for each skill</b>
-            <br></br>
-            Communication: {skills.Communication}
-            <br></br>
-            Time Management: {skills['Time Management']}
-            <br></br>
-            Decision Making: {skills['Decision Making']}
-            <br></br>
-            Leadership: {skills.Leadership}
-            <br></br>
-            Teamwork: {skills.Teamwork}
-            <br></br>
-            Literature Review: {skills['Time Management']}
-            <br></br>
-            Baseline Data Identification: {skills['Baseline Data Identification']}
-            <br></br>
-            Logic Modeling: {skills['Logic Modeling']}
-            <br></br>
-            Outcomes Definition: {skills['Time Management']}
-            <br></br>
-            Survey Administration: {skills['Survey Administration']}
-            <br></br>
-            Conducting Interviews: {skills['Conducting Interviews']}
-            <br></br>
-            Data Mining: {skills['Data Mining']}
-            <br></br>
-            Statistical Analysis: {skills['Statistical Analysis']}
-            <br></br>
-            SQL: {skills.SQL}
-            <br></br>
-            Machine Learning: {skills['Machine Learning']}
-            <br></br>
-            HTML: {skills.HTML}
-            <br></br>
-            CSS: {skills.CSS}
-            <br></br>
-            Java: {skills.Java}
-            <br></br>
-            Python: {skills.Python}
-            <br></br>
-            Tableau: {skills.Tableau}
-            <br></br>
-            Microsoft Office Suite: {skills['Microsoft Office Suite']}
-            <br></br>
-            <br></br>
-        </div>;
+        if (!(match.student_name === "NO MATCH")) {
+          skills = match.student_skills;
+          studentComponent =  <div>
+              <br></br>
+              <b>{match.student_name}'s generated scores for each skill</b>
+              <br></br>
+              Communication: {skills.Communication}
+              <br></br>
+              Time Management: {skills['Time Management']}
+              <br></br>
+              Decision Making: {skills['Decision Making']}
+              <br></br>
+              Leadership: {skills.Leadership}
+              <br></br>
+              Teamwork: {skills.Teamwork}
+              <br></br>
+              Literature Review: {skills['Time Management']}
+              <br></br>
+              Baseline Data Identification: {skills['Baseline Data Identification']}
+              <br></br>
+              Logic Modeling: {skills['Logic Modeling']}
+              <br></br>
+              Outcomes Definition: {skills['Time Management']}
+              <br></br>
+              Survey Administration: {skills['Survey Administration']}
+              <br></br>
+              Conducting Interviews: {skills['Conducting Interviews']}
+              <br></br>
+              Data Mining: {skills['Data Mining']}
+              <br></br>
+              Statistical Analysis: {skills['Statistical Analysis']}
+              <br></br>
+              SQL: {skills.SQL}
+              <br></br>
+              Machine Learning: {skills['Machine Learning']}
+              <br></br>
+              HTML: {skills.HTML}
+              <br></br>
+              CSS: {skills.CSS}
+              <br></br>
+              Java: {skills.Java}
+              <br></br>
+              Python: {skills.Python}
+              <br></br>
+              Tableau: {skills.Tableau}
+              <br></br>
+              Microsoft Office Suite: {skills['Microsoft Office Suite']}
+              <br></br>
+              <br></br>
+          </div>;
+        }
+        else {
+          console.log(match)
+          studentComponent =  <div>
+              <br></br>
+              <p>The Possible Matches Were:</p>
+              <br></br>
+              {match.possible_students.map((name, index) => {
+                  return(
+                    <p>{name}</p>
+                  );
+              })}
+
+          </div>
+        }
 
         skills = match.org_skills;
 
@@ -111,14 +127,24 @@ function displayInfo(match) {
             <br></br>
             </div>;
 
-    return <div>
-        <h3>Project: {match.org_name}</h3>
-        {projectComponent}
-        <h3>Student: {match.student_name}</h3>
-        {studentComponent}
-        <h3>Matchability between Project and Student</h3>
-        Matchability: {match.student_matchability}
-    </div>;
+    if (!match.student_name === "NO MATCH") {
+      return <div>
+          <h3>Project: {match.org_name}</h3>
+          {projectComponent}
+          <h3>Student: {match.student_name}</h3>
+          {studentComponent}
+          <h3>Matchability between Project and Student</h3>
+          Matchability: {match.student_matchability}
+      </div>;
+    }
+    else {
+      return <div>
+          <h3>Project: {match.org_name}</h3>
+          {projectComponent}
+          <h3>Student: {match.student_name}</h3>
+          {studentComponent}
+      </div>;
+    }
 }
 
 class AdminResults extends Component {
@@ -173,10 +199,12 @@ class AdminResults extends Component {
                 <table style={{width:"50%", margin: "auto"}}>
                     <tbody className="admin_table">
                 {hasMounted ? (
-                    this.props.results.map((value, index) => {
+                    this.props.results.reverse().map((value, index) => {
                         return (
                             value.data.data_list.map((elem,i) => {
                               return(
+                                <div>
+                                  {i===0 ? <br></br> : <div></div>}
                                   <tr key={index}>
                                       <td className="admin_cell">
                                           <div>
@@ -206,6 +234,7 @@ class AdminResults extends Component {
                                           </div>
                                       </td>
                                   </tr>
+                                </div>
                               )
                             })
                         );
