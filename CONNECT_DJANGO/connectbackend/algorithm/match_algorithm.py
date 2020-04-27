@@ -221,7 +221,7 @@ def run_algo(pre_matches={}, email_address=""):
             temp_obj = {
                 'org_name': org['name'],
                 'student_name': org['match']['name'],
-                'possible_students': org['possible_students']
+                'possible_students': list(org['possible_students']['name'])
             }
         else:
             stud = org['match']
