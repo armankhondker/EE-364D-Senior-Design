@@ -163,7 +163,11 @@ def run_algo(pre_matches={}, email_address=""):
                 org_skill = org_skills[skill]
                 if (org_skill >= 3):
                     mult = org_skill - 2
-                    score = student_skills[skill]
+                    score=0
+                    try:
+                        score = student_skills[skill]
+                    except:
+                        print("Student did not have this skill")
                     student_matchability += mult * score
             temp_df = pd.DataFrame()
             temp_df['ids'] = [org_id]
@@ -213,7 +217,7 @@ def run_algo(pre_matches={}, email_address=""):
     results_arr = []
     email = "<p>---------------------------------</p>"
     for org in org_data:
-        if (org['match']['unique_id'] == -1):
+        if (org['match']['unique_id'] == '-1'):
             temp_obj = {
                 'org_name': org['name'],
                 'student_name': org['match']['name'],
