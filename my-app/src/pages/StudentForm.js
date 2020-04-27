@@ -11,6 +11,8 @@ class StudentForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+      submitted: false,
+      submitting: false,
 			uploading: false,
 			firstNameInput: "",
 			lastNameInput: "",
@@ -31,7 +33,7 @@ class StudentForm extends Component {
 			logisticFlags: [],
 			techCourseOptions: [],
 			techCourseInputs: [],
-            profCourseOptions: [],
+      profCourseOptions: [],
 			profCourseInputs: [],
 			degreeOptions: [],
 			degreeInputs:[],
@@ -121,7 +123,6 @@ class StudentForm extends Component {
 		reader.readAsDataURL(file);
 	  reader.onloadend = function() {
 	     base64data = reader.result;
-       console.log(base64data)
        this.setState({
    			uploading: false,
    			resumeInput: base64data
@@ -157,7 +158,6 @@ class StudentForm extends Component {
 	}
 
 	handleDegreeOption(i, e) {
-    	console.log(i);
 		var formerCheck = -1;
 		if (e.target.checked) {
 			var k=0;
@@ -429,6 +429,8 @@ class StudentForm extends Component {
 			e.preventDefault();
 			return;
 		}
+
+    this.setState({submitting: true});
         // e.preventDefault();
 
 		for(let i = 0; i < intentionOptions.length; i ++) {
@@ -503,7 +505,6 @@ class StudentForm extends Component {
       data: resumeInput
     }
 
-		console.log(JSON.stringify(params));
 		await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/students/', JSON.stringify(params),
 			{
 				headers: {
@@ -529,8 +530,25 @@ class StudentForm extends Component {
 			.catch(error => {
 				console.log(error);
 			})
+      setTimeout(
 
-	}
+        function() {
+          this.setState({
+            submitted: true,
+            submitting: false
+          });
+        }
+        .bind(this),
+        3000
+      );
+      setTimeout(
+        function() {
+          // window.location.reload(false);
+        }
+        .bind(this),
+        3000
+      );
+	  }
 
 	async handleTest() {
 		// console.log("Sending post");
@@ -566,7 +584,7 @@ class StudentForm extends Component {
         } else {
             CurrentDisplay =
                 <div className="form">
-                    <Form onSubmit={this.handleSubmit}>
+                    <Form>
                         <Form.Group controlId="nameInput">
                             <Form.Label>First Name</Form.Label>
                             <Form.Control required value={this.state.firstNameInput} onChange={this.handleFirstName} type="text"/>
@@ -762,9 +780,11 @@ class StudentForm extends Component {
                             <Form.Control type="profList" onChange={this.handleExtraSkills}/>
                         </Form.Group>
 
-                        <Button variant="primary" type="submit" onClick={this.handleSubmit}>
+                        <Button variant="primary" onClick={this.handleSubmit}>
                             Submit
                         </Button>
+                        <div className="submit_text">{this.state.submitting ? "Submitting..." : ""}</div>
+                        <div className="success_text">{this.state.submitted ? "Succesfully Submitted" : ""}</div>
 						{/*<Button variant="primary" onClick={this.handleTest}>*/}
                         {/*    Test*/}
 						{/*</Button>*/}
