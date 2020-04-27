@@ -13,6 +13,7 @@ class Login extends Component {
 			<div>
 				<br></br>
 				<h1>Admin Login</h1>
+				<br></br>
 				<Form onSubmit={this.props.handleLogin}>
 					<Form.Group as={Row} className="loginRow" controlId="formPlaintextPassword">
 						<Form.Label column sm="5" className = "form-control-plaintext" >
