@@ -631,7 +631,7 @@ class AdminProjects extends Component {
                                     <tr key={index}>
                                       <td className="admin_cell">
                                         <div>
-                                            <Button onClick={this.handleModal.bind(this, index)}>{project.contact_first_name} {project.contact_last_name}</Button>
+                                            <Button onClick={this.handleModal.bind(this, index)}>{project.project_name}</Button>
                                             <Modal
                                                size="lg"
                                                show={this.state.modalShow[index]}

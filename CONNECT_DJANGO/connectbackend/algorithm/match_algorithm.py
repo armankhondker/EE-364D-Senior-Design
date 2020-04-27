@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 from base64 import b64decode
-from .utility import convert_pdf_to_txt, engage_student_match  # add . for aws
+from .utility import get_pdf_score, convert_pdf_to_txt, engage_student_match  # add . for aws
 from .api_keys import sendinblue_key  # add . for aws
 import os
 import warnings

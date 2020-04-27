@@ -189,23 +189,20 @@ class AdminResults extends Component {
 
         let hasMounted = false;
         let {students, projects,results } = this.props;
+        let value = null;
         if(students !== null && projects !== null && results !== null) {
             hasMounted = true;
+            value = this.props.results[this.props.results.length-1];
         }
-
         return(
             <div>
                 <p>Click on a matching pair to view scoring of skills</p>
                 <table style={{width:"50%", margin: "auto"}}>
                     <tbody className="admin_table">
-                {hasMounted ? (
-                    this.props.results.reverse().map((value, index) => {
-                        return (
+                {hasMounted ?
                             value.data.data_list.map((elem,i) => {
                               return(
-                                <div>
-                                  {i===0 ? <br></br> : <div></div>}
-                                  <tr key={index}>
+                                  <tr>
                                       <td className="admin_cell">
                                           <div>
                                           <Button onClick={this.handleModal.bind(this, i)}>{elem.org_name} -> {elem.student_name}</Button>
@@ -234,11 +231,8 @@ class AdminResults extends Component {
                                           </div>
                                       </td>
                                   </tr>
-                                </div>
                               )
-                            })
-                        );
-                    }))
+                    })
 
                     : (
                     <p>Loading</p>

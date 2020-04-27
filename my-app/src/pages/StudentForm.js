@@ -121,13 +121,12 @@ class StudentForm extends Component {
 		reader.readAsDataURL(file);
 	  reader.onloadend = function() {
 	     base64data = reader.result;
-		}
-
-		this.setState({
-			uploading: false,
-			resumeInput: base64data
-		})
-
+       console.log(base64data)
+       this.setState({
+   			uploading: false,
+   			resumeInput: base64data
+   		})
+		}.bind(this);
 	}
 
 	handleTimeCommit(e) {
