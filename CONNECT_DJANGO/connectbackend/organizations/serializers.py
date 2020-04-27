@@ -5,13 +5,17 @@ from .models import Project, Skill, TechSkill, ProfSkill, TechCourse, ProfCourse
 
 # Student Serializer
 class ProjectSerializer(serializers.ModelSerializer):
-    project_categories = serializers.SerializerMethodField()
-    degree = serializers.SerializerMethodField()
-    tech_courses = serializers.SerializerMethodField()
-    prof_courses = serializers.SerializerMethodField()
-    experience = serializers.SerializerMethodField()
-    tech_skills = serializers.SerializerMethodField()
-    prof_skills = serializers.SerializerMethodField()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if 'request' in self.context and self.context['request'].method == 'GET':
+            self.fields['project_categories'] = serializers.SerializerMethodField()
+            self.fields['degree'] = serializers.SerializerMethodField()
+            self.fields['tech_courses'] = serializers.SerializerMethodField()
+            self.fields['prof_courses'] = serializers.SerializerMethodField()
+            self.fields['experience'] = serializers.SerializerMethodField()
+            self.fields['tech_skills'] = serializers.SerializerMethodField()
+            self.fields['prof_skills'] = serializers.SerializerMethodField()
+
     class Meta:
         model = Project
         fields = '__all__'

@@ -4,13 +4,16 @@ from .models import Student, Resume
 
 # Student Serializer
 class StudentSerializer(serializers.ModelSerializer):
-    intentions = serializers.SerializerMethodField()
-    interests = serializers.SerializerMethodField()
-    tech_courses = serializers.SerializerMethodField()
-    prof_courses = serializers.SerializerMethodField()
-    experience = serializers.SerializerMethodField()
-    tech_skills = serializers.SerializerMethodField()
-    prof_skills = serializers.SerializerMethodField()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if 'request' in self.context and self.context['request'].method == 'GET':
+            self.fields['intentions'] = serializers.SerializerMethodField()
+            self.fields['interests'] = serializers.SerializerMethodField()
+            self.fields['tech_courses'] = serializers.SerializerMethodField()
+            self.fields['prof_courses'] = serializers.SerializerMethodField()
+            self.fields['experience'] = serializers.SerializerMethodField()
+            self.fields['tech_skills'] = serializers.SerializerMethodField()
+            self.fields['prof_skills'] = serializers.SerializerMethodField()
 
     class Meta:
         model = Student
