@@ -10,7 +10,10 @@ class AdminHome extends Component {
 
     render(){
         return(
-            <Button onClick={this.props.handleLogout}>Log Out</Button>
+            <div>
+              <p></p>
+              <Button onClick={this.props.handleLogout}>Log Out</Button>
+            </div>
         );
     }
 }

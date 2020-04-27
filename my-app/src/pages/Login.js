@@ -7,24 +7,24 @@ import Button from "react-bootstrap/Button"
 import '../styling/Login.css';
 
 
-class Login extends Component {  
+class Login extends Component {
     render() {
 		return (
 			<div>
 				<br></br>
 				<h1>Admin Login</h1>
 				<Form onSubmit={this.props.handleLogin}>
-					<Form.Group as={Row} controlId="formPlaintextPassword">
+					<Form.Group as={Row} className="loginRow" controlId="formPlaintextPassword">
 						<Form.Label column sm="5" className = "form-control-plaintext" >
-						Username
+						Username:
 						</Form.Label>
 						<Col sm="15">
 						<Form.Control type="username" placeholder="Username" />
 						</Col>
 					</Form.Group>
-					<Form.Group as={Row} controlId="formPlaintextPassword">
+					<Form.Group as={Row} className="loginRow" controlId="formPlaintextPassword">
 						<Form.Label column sm="5" className = "form-control-plaintext">
-						Password
+						Password:
 						</Form.Label>
 						<Col sm="15">
 						<Form.Control type="password" placeholder="Password" />
@@ -39,4 +39,4 @@ class Login extends Component {
 	}
 }
 
-export default Login; 
+export default Login;
