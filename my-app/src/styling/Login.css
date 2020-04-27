@@ -2,7 +2,7 @@
 
     background: #9e4800;
     border: 1px solid white;
-    width: 5%;
+    max-width: 200px;
     color: white;
     font-size: 18px;
     font-weight: 700;
@@ -12,8 +12,10 @@
 }
   .loginButton {
       font-size: 20px;
-      width: 5%;
       font-weight: 700;
       font-family: Arial, Helvetica, sans-serif;
   }
-  
+
+  .loginRow {
+    justify-content: center;
+  }

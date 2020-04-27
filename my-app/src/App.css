@@ -95,3 +95,7 @@ p {
     right: 15px;
 
 }
+
+.nav-item {
+  border: 1px solid tan;
+}
