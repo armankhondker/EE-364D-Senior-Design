@@ -127,7 +127,7 @@ function displayInfo(match) {
             <br></br>
             </div>;
 
-    if (!match.student_name === "NO MATCH") {
+    if (!(match.student_name === "NO MATCH")) {
       return <div>
           <h3>Project: {match.org_name}</h3>
           {projectComponent}
