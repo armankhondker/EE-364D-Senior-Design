@@ -417,9 +417,9 @@ class CommunityForm extends Component {
 
 		const isFormValid = await this.validateForm();
 		if(!isFormValid) {
+		  e.preventDefault();
 			return;
 		}
-		e.preventDefault();
 
     this.setState({submitting: true});
 
@@ -464,7 +464,7 @@ class CommunityForm extends Component {
 
 		//TODO figure out resume saving
 		let params = {
-		    organization_name: orgNameInput,
+		  organization_name: orgNameInput,
 			organization_address: orgAddressInput,
 			organization_website: orgWebsiteInput,
 			contact_first_name: firstNameInput,
@@ -706,7 +706,7 @@ render() {
                             <Form.Control type="profList" onChange={this.handleExtraSkills}/>
                         </Form.Group>
 
-                        <Button variant="primary">
+                        <Button onClick={this.handleSubmit} variant="primary">
                             Submit
                         </Button>
                         <div className="submit_text">{this.state.submitting ? "Submitting..." : ""}</div>
