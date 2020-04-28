@@ -11,6 +11,8 @@ class CommunityForm extends Component {
     constructor(props) {
         super(props);
 		this.state = {
+      submitting: false,
+      submitted: false,
 			uploading: false,
 			firstNameInput: "",
 			lastNameInput: "",
@@ -419,6 +421,8 @@ class CommunityForm extends Component {
 		}
 		e.preventDefault();
 
+    this.setState({submitting: true});
+
 		for(let i = 0; i < interestOptions.length; i ++) {
 			let input = interestInputs[i];
 			if(input === null || input === undefined) input = false;
@@ -504,6 +508,17 @@ class CommunityForm extends Component {
 				console.log(error);
 			})
 
+      setTimeout(
+
+        function() {
+          this.setState({
+            submitted: true,
+            submitting: false
+          });
+        }
+        .bind(this),
+        1000
+      );
 	}
 
 
@@ -527,7 +542,7 @@ render() {
         } else {
             CurrentDisplay =
                 <div className="form">
-                    <Form onSubmit={this.handleSubmit}>
+                    <Form>
 						<Form.Group controlId="orgInput">
                             <Form.Label>Organization Name </Form.Label>
                             <Form.Control type="text" value={this.state.orgInput} onChange={this.handleOrgName}/>
@@ -691,9 +706,11 @@ render() {
                             <Form.Control type="profList" onChange={this.handleExtraSkills}/>
                         </Form.Group>
 
-                        <Button variant="primary" type="submit">
+                        <Button variant="primary">
                             Submit
                         </Button>
+                        <div className="submit_text">{this.state.submitting ? "Submitting..." : ""}</div>
+                        <div className="success_text">{this.state.submitted ? "Succesfully Submitted" : ""}</div>
                     </Form>
                     <br/>
                 </div>
