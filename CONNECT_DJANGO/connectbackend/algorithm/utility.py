@@ -71,7 +71,7 @@ def get_pdf_score(text):
     api = tweepy.API(auth)
 
     analysis = TextBlob(text)
-    if (analysis.sentiment > 0):
-        return 2*analysis.sentiment
+    if (analysis.sentiment.polarity > 0):
+        return 2*analysis.sentiment.polarity
     else:
         return 0
