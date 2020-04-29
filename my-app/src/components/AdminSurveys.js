@@ -42,6 +42,7 @@ class AdminSurveys extends Component {
         }
 
         this.updateDB = this.updateDB.bind(this);
+        this.postDB = this.postDB.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInterestEdit = this.handleInterestEdit.bind(this);
         this.handleNewInterest = this.handleNewInterest.bind(this);
@@ -70,7 +71,7 @@ class AdminSurveys extends Component {
     }
 
     async updateDB(question, api_name) {
-      if (question == "") {
+      if (question.name == "") {
         // delete api
         await axios.delete('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/'+api_name+'/'+question.id+'/',
         {
@@ -98,6 +99,22 @@ class AdminSurveys extends Component {
       }
     }
 
+    async postDB(question, api_name) {
+
+      // post to api
+      await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/'+api_name+'/', JSON.stringify(question),
+      {
+        headers: {
+          'content-type': 'application/json',
+        },
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => console.log(err));
+
+    }
+
     async handleSubmit() {
       this.setState({ submit_text: "Submitting..."});
       let {
@@ -123,49 +140,105 @@ class AdminSurveys extends Component {
         if (!intentionChanges[i])
           continue;
         let question = intentionOptions[i];
-        await this.submitQuestion(question, "intentions")
+        await this.updateDB(question, "intentions")
       }
+      //Put new intentions in db
+      for (let i=intentionChanges.length; i<intentionOptions.length; i++) {
+        let question = intentionOptions[i];
+        if (question.name=="")
+          continue;
+        await this.postDB(question, "intentions")
+      }
+
       for (let i=0; i<interestChanges.length; i++) {
         if (!interestChanges[i])
           continue;
         let question = interestOptions[i];
-        await this.submitQuestion(question, "interests")
+        await this.updateDB(question, "interests")
       }
+      for (let i=interestChanges.length; i<interestOptions.length; i++) {
+        let question = interestOptions[i];
+        if (question.name=="")
+          continue;
+        await this.postDB(question, "interests")
+      }
+
       for (let i=0; i<logisticChanges.length; i++) {
         if (!logisticChanges[i])
           continue;
         let question = logisticQuestions[i];
-        await this.submitQuestion(question, "logistics")
+        await this.updateDB(question, "logistics")
       }
+      for (let i=logisticChanges.length; i<logisticQuestions.length; i++) {
+        let question = logisticQuestions[i];
+        if (question.name=="")
+          continue;
+        await this.postDB(question, "logistics")
+      }
+
       for (let i=0; i<degreeChanges.length; i++) {
         if (!degreeChanges[i])
           continue;
         let question = degreeOptions[i];
-        await this.submitQuestion(question, "degrees")
+        await this.updateDB(question, "degrees")
       }
+      for (let i=degreeChanges.length; i<degreeOptions.length; i++) {
+        let question = degreeOptions[i];
+        if (question.name=="")
+          continue;
+        await this.postDB(question, "degrees")
+      }
+
       for (let i=0; i<techCourseChanges.length; i++) {
         if (!techCourseChanges[i])
           continue;
         let question = techCourseOptions[i];
-        await this.submitQuestion(question, "tech-courses")
+        await this.updateDB(question, "tech-courses")
       }
+      for (let i=techCourseChanges.length; i<techCourseOptions.length; i++) {
+        let question = techCourseOptions[i];
+        if (question.name=="")
+          continue;
+        await this.postDB(question, "tech-courses")
+      }
+
       for (let i=0; i<profCourseChanges.length; i++) {
         if (!profCourseChanges[i])
           continue;
         let question = profCourseOptions[i];
-        await this.submitQuestion(question, "prof-courses")
+        await this.updateDB(question, "prof-courses")
       }
+      for (let i=profCourseChanges.length; i<profCourseOptions.length; i++) {
+        let question = profCourseOptions[i];
+        if (question.name=="")
+          continue;
+        await this.postDB(question, "prof-courses")
+      }
+
       for (let i=0; i<techSkillChanges.length; i++) {
         if (!techSkillChanges[i])
           continue;
         let question = techSkillOptions[i];
-        await this.submitQuestion(question, "tech-skills")
+        await this.updateDB(question, "tech-skills")
       }
+      for (let i=techSkillChanges.length; i<techSkillOptions.length; i++) {
+        let question = techSkillOptions[i];
+        if (question.name=="")
+          continue;
+        await this.postDB(question, "tech-skills")
+      }
+
       for (let i=0; i<profSkillChanges.length; i++) {
         if (!profSkillChanges[i])
           continue;
         let question = profSkillOptions[i];
-        await this.submitQuestion(question, "prof-skills")
+        await this.updateDB(question, "prof-skills")
+      }
+      for (let i=profSkillChanges.length; i<profSkillOptions.length; i++) {
+        let question = profSkillOptions[i];
+        if (question.name=="")
+          continue;
+        await this.postDB(question, "prof-skills")
       }
 
       this.setState({
@@ -262,8 +335,6 @@ class AdminSurveys extends Component {
 
     handleIntentionEdit(i, e) {
       let question = e.target.value;
-      console.log(question)
-      console.log(i)
       if (i < this.state.intentionChanges.length) {
         this.setState(update(this.state, {
          intentionChanges: {
@@ -273,7 +344,7 @@ class AdminSurveys extends Component {
          },
          intentionOptions: {
            [i] : {
-             $set: {'name': question}
+             $set: {'name': question, 'id': this.state.intentionOptions[i].id}
            }
          },
         }));
@@ -317,7 +388,7 @@ class AdminSurveys extends Component {
          },
          interestOptions: {
            [i] : {
-             $set: {'name': question}
+             $set: {'name': question, 'id': this.state.interestOptions[i].id}
            }
          },
         }));
@@ -359,7 +430,7 @@ class AdminSurveys extends Component {
          },
          degreeOptions: {
            [i] : {
-             $set: {'name': question}
+             $set: {'name': question, 'id': this.state.degreeOptions[i].id}
            }
          },
         }));
@@ -401,7 +472,7 @@ class AdminSurveys extends Component {
          },
          logisticQuestions: {
            [i] : {
-             $set: {'name': question}
+             $set: {'name': question, 'id': this.state.logisticQuestions[i].id}
            }
          },
         }));
@@ -448,7 +519,7 @@ class AdminSurveys extends Component {
          },
          techCourseOptions: {
            [i] : {
-             $set: {'name': question[0], 'courseId': question[1]}
+             $set: {'name': question[0], 'courseId': question[1], 'id': this.state.techCourseOptions[i].id}
            }
          },
         }));
@@ -501,7 +572,7 @@ class AdminSurveys extends Component {
          },
          profCourseOptions: {
            [i] : {
-             $set: {'name': question[0], 'courseId': question[1]}
+             $set: {'name': question[0], 'courseId': question[1], 'id': this.state.profCourseOptions[i].id}
            }
          },
         }));
@@ -546,17 +617,23 @@ class AdminSurveys extends Component {
            [i] : {
              $set: true
            }
+         },
+         techSkillOptions: {
+           [i] : {
+             $set: {'name': question, 'id': this.state.techSkillOptions[i].id}
+           }
          }
         }));
       }
-      this.setState(update(this.state, {
-       techSkillOptions: {
-         [i] : {
-           $set: {'name': question}
-         }
-       }
-      }));
-
+      else {
+        this.setState(update(this.state, {
+          techSkillOptions: {
+            [i] : {
+              $set: {'name': question}
+            }
+          }
+        }));
+      }
     }
 
     handleNewTechSkill(e) {
@@ -576,23 +653,30 @@ class AdminSurveys extends Component {
 
     handleProfSkillEdit(i, e) {
       let question = e.target.value;
+
       if (i<this.state.profSkillChanges.length) {
         this.setState(update(this.state, {
          profSkillChanges: {
            [i] : {
              $set: true
            }
+         },
+         profSkillOptions: {
+           [i] : {
+             $set: {'name': question, 'id': this.state.profSkillOptions[i].id}
+           }
          }
         }));
       }
-      this.setState(update(this.state, {
-       profSkillOptions: {
-         [i] : {
-           $set: {'name': question}
-         }
-       }
-      }));
-
+      else {
+        this.setState(update(this.state, {
+          profSkillOptions: {
+            [i] : {
+              $set: {'name': question}
+            }
+          }
+        }));
+      }
     }
 
     handleNewProfSkill(e) {
