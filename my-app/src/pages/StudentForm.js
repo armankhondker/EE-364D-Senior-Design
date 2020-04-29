@@ -278,7 +278,7 @@ class StudentForm extends Component {
 				console.log(res);
 				this.setState({
 					intentionOptions: res.data,
-                    intentionInputs: new Array(res.data.length),
+          intentionInputs: new Array(res.data.length),
 				});
 			})
 			.catch(err => console.log(err));
@@ -288,7 +288,7 @@ class StudentForm extends Component {
 				console.log(res);
 				this.setState({
 					interestOptions: res.data,
-                    interestInputs: new Array(res.data.length),
+          interestInputs: new Array(res.data.length),
 				});
 			})
 			.catch(err => console.log(err));
@@ -301,7 +301,7 @@ class StudentForm extends Component {
 				this.setState({
 					logisticQuestions: res.data,
 					logisticInputs: new Array(5),
-                    logisticFlags: flags,
+          logisticFlags: flags,
 				});
 			})
 			.catch(err => console.log(err));
@@ -311,7 +311,7 @@ class StudentForm extends Component {
 				console.log(res);
 				this.setState({
 					degreeOptions: res.data,
-                    degreeInputs: new Array(res.data.length),
+          degreeInputs: new Array(res.data.length),
 				});
 			})
 			.catch(err => console.log(err));
@@ -541,13 +541,16 @@ class StudentForm extends Component {
         .bind(this),
         3000
       );
-      setTimeout(
-        function() {
-          // window.location.reload(false);
-        }
-        .bind(this),
-        3000
-      );
+
+      //// didnt work right - stuff didnt fully upload
+      // setTimeout(
+      //   function() {
+      //     window.location.reload(false);
+      //   }
+      //   .bind(this),
+      //   3000
+      // );
+
 	  }
 
 	async handleTest() {

@@ -6,6 +6,7 @@ import axios from 'axios';
 import Tab from 'react-bootstrap/Tab';
 import Nav from "react-bootstrap/Nav";
 import AdminHome from "../components/AdminHome";
+import AdminSurveys from "../components/AdminSurveys";
 import AdminStudents from "../components/AdminStudents";
 import AdminResumes from "../components/AdminResumes";
 import AdminProjects from "../components/AdminProjects";
@@ -106,19 +107,22 @@ class Admin extends Component {
 									<Nav.Link eventKey="first">Home</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link eventKey="second">Students</Nav.Link>
+									<Nav.Link eventKey="second">Surveys</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link eventKey="third">Resumes</Nav.Link>
+									<Nav.Link eventKey="third">Students</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link eventKey="fourth">Projects</Nav.Link>
+									<Nav.Link eventKey="fourth">Resumes</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link eventKey="fifth">Match</Nav.Link>
+									<Nav.Link eventKey="fifth">Projects</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link eventKey="sixth">Results</Nav.Link>
+									<Nav.Link eventKey="sixth">Match</Nav.Link>
+								</Nav.Item>
+								<Nav.Item>
+									<Nav.Link eventKey="seventh">Results</Nav.Link>
 								</Nav.Item>
 							</Nav>
 						</Col>
@@ -128,18 +132,21 @@ class Admin extends Component {
 									<AdminHome handleLogout={this.handleLogout.bind(this)}/>
 								</Tab.Pane>
 								<Tab.Pane eventKey="second">
-									<AdminStudents students={this.state.students}/>
+									<AdminSurveys/>
 								</Tab.Pane>
 								<Tab.Pane eventKey="third">
-									<AdminResumes students={this.state.students} resumes={this.state.resumes}/>
+									<AdminStudents students={this.state.students}/>
 								</Tab.Pane>
 								<Tab.Pane eventKey="fourth">
-									<AdminProjects projects={this.state.projects}/>
+									<AdminResumes students={this.state.students} resumes={this.state.resumes}/>
 								</Tab.Pane>
 								<Tab.Pane eventKey="fifth">
-									<AdminMatch students={this.state.students} projects={this.state.projects}/>
+									<AdminProjects projects={this.state.projects}/>
 								</Tab.Pane>
 								<Tab.Pane eventKey="sixth">
+									<AdminMatch students={this.state.students} projects={this.state.projects}/>
+								</Tab.Pane>
+								<Tab.Pane eventKey="seventh">
 									<AdminResults students={this.state.students} projects={this.state.projects} results={this.state.results}  />
 								</Tab.Pane>
 							</Tab.Content>

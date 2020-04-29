@@ -24,3 +24,7 @@
 #Email {
   width: 200px;
 }
+
+.surveyEditingPage textarea {
+  width: 95%;
+}
