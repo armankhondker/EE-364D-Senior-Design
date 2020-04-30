@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Arman from '../assets/Arman_Profile_Pic.JPG'
+import Arman from '../assets/Arman_Profile_Pic.jpg'
 import Josh from '../assets/Josh_Profile_Pic.jpg'
 import Punit from '../assets/Punit_Profile_Pic.jpg'
 import ThienSon from '../assets/ThienSon_Profile_Pic.jpg';
