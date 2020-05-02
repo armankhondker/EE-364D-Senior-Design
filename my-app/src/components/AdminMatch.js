@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import Button from "react-bootstrap/Button"
+import Form from 'react-bootstrap/Form';
 import Dropdown from "react-bootstrap/Dropdown";
 import ReactLoading from 'react-loading';
 import axios from "axios";
+import '../styling/Admin.css';
 
 class AdminMatch extends Component {
 
@@ -13,12 +15,14 @@ class AdminMatch extends Component {
         this.runMatchingAlgorithm = this.runMatchingAlgorithm.bind(this);
 
         this.state = {
-            projects: props.projects,
-            projectListToPickFrom: props.projects,
+            projects: props.projects, // whole list of projects
+            projectListToPickFrom: props.projects, // projects to pick from in drop down menu
             projectSelection : [],
             isRunning: false,
             isDone: false,
+            email: "",
         }
+        this.handleEmail = this.handleEmail.bind(this);
     }
 
     componentDidMount() {
@@ -29,12 +33,21 @@ class AdminMatch extends Component {
     }
 
     componentDidUpdate(prevProps){
-        console.log("SELECTED PROJECTS:");
-        console.log(this.state.projectSelection);
+       // console.log("SELECTED PROJECTS:");
+       // console.log(this.state.projectSelection);
 
-        console.log("PROJECT LIST TO PICK FROM: ");
-        console.log(this.state.projectListToPickFrom);
+       // console.log("PROJECT LIST TO PICK FROM: ");
+      //  console.log(this.state.projectListToPickFrom);
 
+       // console.log("this.state.projects on Match tab");
+       // console.log(this.state.projects);
+    }
+
+    handleEmail(e) {
+      var writtenText = e.target.value
+  		this.setState(state => ({
+  			email: writtenText
+  		}));
     }
 
     handleSelect (evtKey) {
@@ -61,7 +74,7 @@ class AdminMatch extends Component {
         // from list of projects available to select
         let foundProject = false;
         let iProject;
-        let res = this.state.projectListToPickFrom.find(element => element.name === evtKey.project);
+        let res = this.state.projectListToPickFrom.find(element => element.project_name === evtKey.projectName);
 
         if(res != null){
             foundProject = true;
@@ -78,19 +91,36 @@ class AdminMatch extends Component {
         if(result === undefined || result === null) {
             return 'Auto';
         } else {
-            return result.project;
+            return result.projectName;
         }
     }
 
     async runMatchingAlgorithm() {
+        let {projectSelection} = this.state;
+        let data = {};
+        for(let i = 0; i < projectSelection.length; i ++) {
+            data[projectSelection[i].studentUID] = projectSelection[i].projectUID;
+        }
+        let params = {
+          'data': data,
+          'email_address': this.state.email
+        }
+        console.log(params);
         console.log("running");
         window.scrollTo(0,0);
         this.setState({ isRunning: true });
-        await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/algo')
+        // await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/algo')
         // await axios.get('http://localhost:8000/api/algo')
+        console.log(JSON.stringify(params))
+        await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/algo', JSON.stringify(params),
+            {
+                headers: {
+                    'content-type': 'application/json',
+                },
+            })
             .then(res => {
                 console.log(res);
-                if(res.status === 200) {
+                if(res.status === 201) {
                    this.setState({ isDone: true });
                 }
                 this.setState({ isRunning: false });
@@ -120,7 +150,7 @@ class AdminMatch extends Component {
                                 {this.props.students.map((val, ind) => {
                                     return (
                                         <tr key={ind}>
-                                            <td><Button style={{width: "200px"}}>{val.name}</Button></td>
+                                            <td><Button style={{width: "200px"}}>{val.first_name + ' ' + val.last_name}</Button></td>
                                             <td>
                                                 <Dropdown>
                                                     <Dropdown>
@@ -128,20 +158,23 @@ class AdminMatch extends Component {
                                                             {this.findSelection(ind)}
                                                         </Dropdown.Toggle>
                                                         <Dropdown.Menu
-                                                            style={{'max-height': '350px', 'overflow-y': 'auto'}}>
+                                                            style={{'maxHeight': '350px', 'overflowY': 'auto'}}>
                                                             {this.state.projectListToPickFrom.map((proj, index) => {
                                                                 return (
                                                                     <Dropdown.Item
                                                                         eventKey={proj.name}
                                                                         href={`#/action-${index}`}
                                                                         onSelect={() => this.handleSelect({
-                                                                            student: val.name,
-                                                                            project: proj.name,
+                                                                            studentID: val.id,
+                                                                            studentUID: val.unique_id,
+                                                                            projectID: proj.id,
+                                                                            projectUID: proj.unique_id,
+                                                                            projectName: proj.project_name,
                                                                             index: ind
                                                                         })}
                                                                         key={index}
                                                                     >
-                                                                        {proj.name}
+                                                                        {proj.project_name}
                                                                     </Dropdown.Item>
                                                                 )
                                                             })}
@@ -155,6 +188,12 @@ class AdminMatch extends Component {
                             </tbody>
                         </table>
                         <br/>
+                        <div>
+                          <p>Please enter an email to send the results to:</p>
+                          <Form.Group className="emailGroup" controlId="Email">
+                              <Form.Control type="profList" onChange={this.handleEmail.bind(this)}/>
+                          </Form.Group>
+                        </div>
                         <Button size="lg" onClick={this.runMatchingAlgorithm}>
                             Run
                         </Button>

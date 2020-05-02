@@ -1,0 +1,30 @@
+
+.admin_table {
+  background: #9e4800;
+}
+
+.admin_cell {
+  border: 1px solid white;
+}
+
+.admin_cell button {
+  width: 100%;
+}
+
+.resume_upload_box {
+  display: flex;
+  justify-content: center;
+}
+
+.emailGroup {
+  display: flex;
+  justify-content: center;
+}
+
+#Email {
+  width: 200px;
+}
+
+.surveyEditingPage textarea {
+  width: 95%;
+}

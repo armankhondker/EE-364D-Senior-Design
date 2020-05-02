@@ -6,7 +6,9 @@ import axios from 'axios';
 import Tab from 'react-bootstrap/Tab';
 import Nav from "react-bootstrap/Nav";
 import AdminHome from "../components/AdminHome";
+import AdminSurveys from "../components/AdminSurveys";
 import AdminStudents from "../components/AdminStudents";
+import AdminResumes from "../components/AdminResumes";
 import AdminProjects from "../components/AdminProjects";
 import AdminMatch from "../components/AdminMatch";
 import AdminResults from "../components/AdminResults";
@@ -18,6 +20,7 @@ class Admin extends Component {
 		this.state = {
 			results: null,
 			students: null,
+			resumes: null,
 			projects: null,
 			loaded: false,
 			token: null,
@@ -26,7 +29,7 @@ class Admin extends Component {
 	}
 
 	async componentDidMount() {
-        await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/matchings')
+        await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/results')
 			.then(res => {
 				console.log(res);
 				this.setState({ results: res.data });
@@ -38,40 +41,18 @@ class Admin extends Component {
 				this.setState({ students: res.data });
 			});
 
+			await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/resumes')
+				.then(res => {
+					console.log(res);
+					this.setState({ resumes: res.data });
+				});
+
 		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/projects')
 			.then(res => {
 				console.log(res);
 				this.setState({ projects: res.data });
 			});
 
-		let { results, students, projects } = this.state;
-
-		await results.forEach((result) => {
-			let studentName = result.student;
-			students.forEach((student) => {
-				if(student.name === studentName) {
-					result.student_technical = student.technical;
-					result.student_professional = student.professional;
-					result.student_resume_id = student.resume_id;
-					result.student_quadrant = student.quadrant;
-					result.student_availability_duration = student.availability_duration;
-					result.student_availability_time = student.availability_time;
-					result.student_work_factors = student.work_factors;
-					result.student_interest_buckets = student.interest_buckets;
-				}
-			})
-
-			let projectName = result.project_org;
-			projects.forEach((project) => {
-				if(project.name === projectName) {
-					result.project_technical = project.technical;
-					result.project_professional = project.professional;
-					result.project_primary = project.primary;
-					result.project_secondary = project.secondary;
-					result.project_quadrant = project.quadrant;
-				}
-			})
-		})
 
 		this.setState({loaded: true})
 	}
@@ -108,8 +89,8 @@ class Admin extends Component {
 
 	render() {
 		let hasMounted = false;
-		let {students, projects, isLoggedIn} = this.state;
-		if(students !== null && projects !== null) {
+		let {students, resumes, projects, isLoggedIn} = this.state;
+		if(students !== null && resumes !== null && projects !== null) {
 			hasMounted = true;
 		}
 		let CurrentDisplay;
@@ -126,16 +107,22 @@ class Admin extends Component {
 									<Nav.Link eventKey="first">Home</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link eventKey="second">Students</Nav.Link>
+									<Nav.Link eventKey="second">Surveys</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link eventKey="third">Projects</Nav.Link>
+									<Nav.Link eventKey="third">Students</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link eventKey="fourth">Match</Nav.Link>
+									<Nav.Link eventKey="fourth">Resumes</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link eventKey="fifth">Results</Nav.Link>
+									<Nav.Link eventKey="fifth">Projects</Nav.Link>
+								</Nav.Item>
+								<Nav.Item>
+									<Nav.Link eventKey="sixth">Match</Nav.Link>
+								</Nav.Item>
+								<Nav.Item>
+									<Nav.Link eventKey="seventh">Results</Nav.Link>
 								</Nav.Item>
 							</Nav>
 						</Col>
@@ -145,15 +132,21 @@ class Admin extends Component {
 									<AdminHome handleLogout={this.handleLogout.bind(this)}/>
 								</Tab.Pane>
 								<Tab.Pane eventKey="second">
-									<AdminStudents students={this.state.students}/>
+									<AdminSurveys/>
 								</Tab.Pane>
 								<Tab.Pane eventKey="third">
-									<AdminProjects projects={this.state.projects}/>
+									<AdminStudents students={this.state.students}/>
 								</Tab.Pane>
 								<Tab.Pane eventKey="fourth">
-									<AdminMatch students={this.state.students} projects={this.state.projects}/>
+									<AdminResumes students={this.state.students} resumes={this.state.resumes}/>
 								</Tab.Pane>
 								<Tab.Pane eventKey="fifth">
+									<AdminProjects projects={this.state.projects}/>
+								</Tab.Pane>
+								<Tab.Pane eventKey="sixth">
+									<AdminMatch students={this.state.students} projects={this.state.projects}/>
+								</Tab.Pane>
+								<Tab.Pane eventKey="seventh">
 									<AdminResults students={this.state.students} projects={this.state.projects} results={this.state.results}  />
 								</Tab.Pane>
 							</Tab.Content>
@@ -167,8 +160,6 @@ class Admin extends Component {
 
 		return (
 			<div align="center" className="App">
-				<br/>
-				<br/>
 				{CurrentDisplay}
 			</div>
 		);

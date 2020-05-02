@@ -1,213 +1,291 @@
 from pymongo import MongoClient
-from .utility import engageStudentMatch
+from base64 import b64decode
+from .utility import get_pdf_score, convert_pdf_to_txt, engage_student_match  # add . for aws
+from .api_keys import sendinblue_key  # add . for aws
+import os
 import warnings
+import pandas as pd
+import pprint
+import json
+import requests
 
 
-def run():
-    warnings.filterwarnings("ignore", category=DeprecationWarning)
-
+def run_algo(pre_matches={}, email_address=""):
     client = MongoClient(
         "mongodb+srv://rgkadmin:H13seniordesign@cluster0-54uuh.mongodb.net/test?retryWrites=true&w=majority")
     db = client
-    s = db.students.student_data.find({})
-    o = db.organizations.project_rankings.find({})
-    students = list(s)
-    orgs = list(o)
-    print('List works')
+    students = list(db.students.students_student.find({}))
+    resumes = list(db.students.students_resume.find({}))
+    orgs = list(db.students.organizations_project.find({}))
+    cohort = ""
+    student_data = []
+    org_data = []
+    time_commitment_dict = {
+        'Less than 5 Hours Per Week': 0,
+        '5-10 Hours Per Week': 1,
+        '15-20 Hours Per Week': 2,
+        '20-30 Hours Per Week': 3
+    }
+    ###### Handle pre_matches
 
-    orgToStudents = []
-    studentToOrgs = []
-    # Assign students that are interested in org
-    for org in orgs:
-        p1 = org['Primary Project Type']
-        p2 = org['Secondary Project Type']
-        p1.replace(" ", "")
-        p2.replace(" ", "")
-        tmp = []
-        org['engaged'] = False
-        org['index'] = 0
-        for student in students:
-            interests = student['Buckets of interest']
-            if (p1 in interests and p1 != "") or (p2 in interests and p2 != ""):
-                tmp.append(student)
-        orgToStudents.append({'org': org, 'students': tmp})
+    org_prematches = {}
 
-    # Assign orgs that student is interested in
+    ############### Data Preprocessing
     for student in students:
-        interests = student['Buckets of interest']
-        tmp = []
-        student['engaged'] = False
-        for org in orgs:
-            p1 = org['Primary Project Type']
-            p2 = org['Secondary Project Type']
-            p1.replace(" ", "")
-            p2.replace(" ", "")
-            interests = student['Buckets of interest']
-            if (p1 in interests and p1 != "") or (p2 in interests and p2 != ""):
-                tmp.append(org)
-        studentToOrgs.append({'student': student, 'orgs': tmp})
+        cohort = student['cohort']  # define cohort
+        resume = ""
+        r = next((item for item in resumes if item["unique_id"] == student['unique_id']), "")
+        # Create pdf of resume from base64, parse text, delete resume
+        if r != "":
+            data_uri = r['data']
+            header, encoded = data_uri.split(",", 1)
+            data = b64decode(encoded)
+            pdf_name = r['unique_id'] + ".pdf"
+            with open(pdf_name, "wb") as f:
+                f.write(data)
+            r = convert_pdf_to_txt('./' + pdf_name)
+            r = r.replace("\t", " ")
+            r = r.split("\n")
+            try:
+                os.remove('./' + pdf_name)
+            except OSError as e:
+                print("Error: %s : %s" % (file_path, e.strerror))
 
-    # Bucket students into qualified groups for each org
-    for org in orgToStudents:
-        tech = org['org']
-        prof = org['org']
-        tech = float(tech['Technical '])
-        prof = float(prof['Professional'])
-        qualified = []
-        profq = []
-        techq = []
-        unq = []
-        for student in org['students']:
-            st = float(student['Technical'])
-            sp = float(student['Professional'])
-            if st >= tech and sp >= prof:
-                qualified.append(student)
-            elif st >= tech:
-                techq.append(student)
-            elif sp >= prof:
-                profq.append(student)
+        temp_dict = {
+            'name': student['first_name'] + ' ' + student['last_name'],
+            'skills': {**student['prof_skills'], **student['tech_skills']},
+            'time_commitment': student['time_commitment'],
+            'work_remotely': student['work_remotely'],
+            'transportation': student['transportation'],
+            'flexible_hours': student['flexible_hours'],
+            'unique_id': student['unique_id'],
+            'cohort': student['cohort'],
+            'resume': r,
+            'org_df': pd.DataFrame(columns=['ids', 'raw_scores', 'matchability']),
+            'engaged': False,
+            'index': 0,
+            'org_rank': -1,
+            'pre_matched': False
+        }
+        if (student['unique_id'] in pre_matches):
+            org_prematches.update({pre_matches[student['unique_id']]: {'student_id': student['unique_id'],
+                                                                       'name': student['first_name'] + ' ' + student[
+                                                                           'last_name']}})
+            temp_dict.update({'pre_matched': True})
+            temp_dict.update({'engaged': True})
+        ### Resume scoring
+        if (r != ""):
+            for skill in temp_dict['skills']:
+                for text_line in r:
+                    if skill.lower() in text_line.lower():
+                        score = get_pdf_score(text_line)
+                        temp_dict['skills'][skill] += score
+
+        student_data.append(temp_dict)
+
+    for org in orgs:
+        possible_students = []
+        o_flexible_hours = org['flexible_hours']
+        o_time_commitment = org['time_commitment']
+        o_work_remotely = org['work_remotely']
+        o_transporation = org['transportation']
+
+        # Deal Breakers
+        for student in student_data:
+            s_flexible_hours = student['flexible_hours']
+            s_time_commitment = student['time_commitment']
+            s_work_remotely = student['work_remotely']
+            s_transportation = student['transportation']
+            s_pre_matched = student['pre_matched']
+            if (s_pre_matched):
+                continue
+            elif (not s_work_remotely and o_work_remotely):
+                continue
+            elif (s_flexible_hours and not o_flexible_hours):
+                continue
+            elif (time_commitment_dict[s_time_commitment] < time_commitment_dict[o_time_commitment]):
+                continue
+            elif (not s_transportation and o_transporation):
+                continue
             else:
-                unq.append(student)
-        # Sorts within buckets by whichever category is more important
-        # Will need to change this to be more detailed
-        if tech >= prof:
-            qualified.sort(key=lambda student: float(student['Technical']), reverse=True)
-            profq.sort(key=lambda student: float(student['Technical']), reverse=True)
-            techq.sort(key=lambda student: float(student['Technical']), reverse=True)
-            unq.sort(key=lambda student: float(student['Technical']), reverse=True)
-            org['sortedStudents'] = qualified + techq + profq + unq
+                possible_students.append(student)
 
-        else:
-            qualified.sort(key=lambda student: float(student['Professional']), reverse=True)
-            profq.sort(key=lambda student: float(student['Professional']), reverse=True)
-            techq.sort(key=lambda student: float(student['Professional']), reverse=True)
-            unq.sort(key=lambda student: float(student['Professional']), reverse=True)
-            org['sortedStudents'] = qualified + profq + techq + unq
+        # Init dict
+        temp_dict = {
+            'name': org['project_name'],
+            'skills': {**org['prof_skills'], **org['tech_skills']},
+            'time_commitment': org['time_commitment'],
+            'work_remotely': org['work_remotely'],
+            'flexible_hours': org['flexible_hours'],
+            'transportation': org['transportation'],
+            'unique_id': org['unique_id'],
+            'cohort': org['cohort'],
+            'resume': r,
+            'engaged': False,
+            'index': 0,
+            'possible_students': possible_students,
+            'match': {'name': 'NO MATCH', 'unique_id': '-1'},
+            'pre_matched': False
+        }
+        if (org['unique_id'] in org_prematches):
+            sid = org_prematches[org['unique_id']]['student_id']
+            sname = sid = org_prematches[org['unique_id']]['name']
+            temp_dict.update({'match': {'name': sname, 'unique_id': sid}})
+            temp_dict.update({'pre_matched': True})
+            temp_dict.update({'engaged': True})
+        org_data.append(temp_dict)
+    #############################################
 
-    # Score qualification for each student
-    for dict in studentToOrgs:
-        student = dict['student']
-        tech = float(student['Technical'])
-        prof = float(student['Professional'])
-        orgs = dict['orgs']
-        qualified = []
-        profq = []
-        techq = []
-        unq = []
-        for org in orgs:
-            oTech = float(org['Technical '])
-            oProf = float(org['Professional'])
-            if tech >= oTech and prof >= oProf:
-                qualified.append(org)
-            elif tech >= oTech:
-                techq.append(org)
-            elif prof >= oProf:
-                profq.append(org)
+    ###### Score Matchability
+
+    # Score matchability
+    for org in org_data:
+        org_id = org['unique_id']
+        org_df = pd.DataFrame()
+        org_matchability = 0
+        org_skills = org['skills']
+        for skill in org_skills:
+            org_skill = org_skills[skill]
+            if org_skill < 3:
+                continue
+            mult = org_skill - 2
+            if (org_skill == 4 or org_skill == 5):
+                org_matchability += mult * 4
             else:
-                unq.append(org)
-        if tech >= prof:
-            qualified.sort(key=lambda org: float(org['Technical ']), reverse=True)
-            profq.sort(key=lambda org: float(org['Technical ']), reverse=True)
-            techq.sort(key=lambda org: float(org['Technical ']), reverse=True)
-            unq.sort(key=lambda org: float(org['Technical ']), reverse=True)
-            student['sortedOrgs'] = qualified + techq + profq + unq
-        else:
-            qualified.sort(key=lambda org: float(org['Professional']), reverse=True)
-            profq.sort(key=lambda org: float(org['Professional']), reverse=True)
-            techq.sort(key=lambda org: float(org['Professional']), reverse=True)
-            unq.sort(key=lambda org: float(org['Professional']), reverse=True)
-            student['sortedOrgs'] = qualified + techq + profq + unq
+                org_matchability += mult * 3
+        possible_students = org['possible_students']
+        if org_matchability == 0:
+            org_matchability += 1
+        for student in possible_students:
+            student_matchability = 0
+            student_skills = student['skills']
+            for skill in org_skills:
+                org_skill = org_skills[skill]
+                if (org_skill >= 3):
+                    mult = org_skill - 2
+                    score=0
+                    try:
+                        score = student_skills[skill]
+                    except:
+                        print("Student did not have this skill")
+                    student_matchability += mult * score
+            temp_df = pd.DataFrame()
+            temp_df['ids'] = [org_id]
+            temp_df['raw_scores'] = [student_matchability]
+            temp_df['matchability'] = [student_matchability / org_matchability]
+            student['org_df'] = student['org_df'].append(temp_df, ignore_index=True)
+
+    ######## Sort by matchability, students sort by raw score, org scores by matchability
+    for student in student_data:
+        student['org_df'] = student['org_df'].sort_values(by=['raw_scores', 'matchability'],
+                                                          ascending=False).reset_index(drop=True)
+
+    for org in org_data:
+        org_id = org['unique_id']
+        poss_students = org['possible_students']
+        x = poss_students[0]
+        org['possible_students'] = sorted(poss_students, key=lambda x: (
+            float((x['org_df'].loc[x['org_df']['ids'] == org_id]['matchability']).astype(float))), reverse=True)
+
+    ########## Run Algo
 
     numEngaged = 0
-    numOrgs = len(orgToStudents)
+    numOrgs = len(org_data)
     index = 0
-    while numEngaged < numOrgs:
-        for dict in orgToStudents:
-            org = dict['org']
-            if org['engaged'] == True:
+
+    while (numEngaged < numOrgs - len(pre_matches)):
+        for org in org_data:
+            if (org['engaged'] or org['pre_matched']):
                 continue
-            student_list = dict['sortedStudents']
+            poss_students = org['possible_students']
             i = org['index']
             while (True):
-                if i >= len(student_list):
-                    org['match'] = "NO MATCH FOUND -- NEED TO FIX"
+                if (i >= len(poss_students)):
+                    org['match'] = {'name': 'NO MATCH', 'unique_id': '-1'}
                     numEngaged += 1
                     break
-                student = student_list[i]
-                result, numAdded = engageStudentMatch(student, org)
+                student = poss_students[i]
+                result, numAdded = engage_student_match(student, org, org_data)
                 numEngaged += numAdded
-                if result:
+                if (result):
                     org['index'] = i + 1
                     break
                 else:
                     i += 1
+    ########## Algo done
 
-    qualified = 0
-    averageTechScoreAboveOrg = 0
-    averageProfScoreAboveOrg = 0
-    averageTechScore = 0
-    averageProfScore = 0
+    results_arr = []
+    email = "<p>---------------------------------</p>"
+    for org in org_data:
+        if (org['match']['unique_id'] == '-1'):
+            temp_obj = {
+                'org_name': org['name'],
+                'student_name': org['match']['name'],
+                'org_skills': org['skills'],
+                'possible_students': [d['name'] for d in org['possible_students']],
+            }
+        else:
+            stud = org['match']
+            org_id = org['unique_id']
+            temp_obj = {
+                'org_name': org['name'],
+                'student_name': stud['name'],
+                'org_skills': org['skills'],
+                'student_skills': stud['skills'],
+                'student_matchability': float(
+                    (stud['org_df'].loc[stud['org_df']['ids'] == org_id]['matchability']).astype(float))
+            }
+        results_arr.append(temp_obj)
 
-    print("Length of orgs: " + str(len(orgToStudents)))
-    print("Number of students: " + str(len(students)))
-    print("##################################################")
-    collection = db.students.algo_results
-    collection.drop()
-    for x in orgToStudents:
-        org = x['org']
-        index = org['index']
-        tech = org['Technical ']
-        prof = org['Professional']
-        students = x['sortedStudents']
-        st = students[index - 1]
-        realMatches = db.students.results_matching.find({"project_org": str(org['Org/Project'])})
-        # realMatch = list()
-        stech = st['Technical']
-        sprof = st['Professional']
-        st = float(stech)
-        ot = float(tech)
-        sp = float(sprof)
-        op = float(prof)
-        if st >= ot and sp >= op:
-            qualified += 1
-        averageTechScore += st
-        averageProfScore += sp
-        averageTechScoreAboveOrg += (st - ot)
-        averageProfScoreAboveOrg += (sp - op)
-        print("Org: " + org['Org/Project'] + " | Org tech: " + tech + " | Org Prof: " + prof)
-        print("Ranked Match Index: " + str(index))
-        print("Matched by algo with: ")
-        print("Name: " + org['match'] + " | Student tech: " + stech + " | Student prof: " + sprof)
-        print("Matched by connect with: ")
-        obj = {}
-        obj['org'] = org['Org/Project']
-        obj['orgTechScore'] = tech
-        obj['orgProfScore'] = prof
-        obj['match'] = org['match']
-        obj['matchTechScore'] = stech
-        obj['matchProfScore'] = sprof
-        collection.insert_one(obj)
-        for y in realMatches:
-            match = y['student']
-            studentData = db.students.student_data.find({'Name': match})
-            if studentData.count() > 0:
-                data = studentData[0]
-                print(
-                    "Name: " + match + " | tech score: " + data['Technical'] + " | prof score: " + data['Professional'])
-            else:
-                print("No data for student")
-        if realMatches.count() == 0:
-            print("Org name did not match in our database")
-        print("##################################################")
+        print(org['name'])
+        print(" matched with ")
+        print(org['match']['name'])
+        email += "<p>" + org['name'] + " matched with " + org['match']['name'] + "</p>"
+        if (org['match']['name'] == 'NO MATCH'):
+            print("Possible Students:")
+            email += "<p>Possible Students:</p>"
+            for s in org['possible_students']:
+                print(s['name'])
+                email += "<p>" + s['name'] + "</p>"
+        print("---------------------------------")
+        email += "<p>---------------------------------</p>"
 
-    averageTechScoreAboveOrg = (averageTechScoreAboveOrg / numOrgs)
-    averageProfScoreAboveOrg = (averageProfScoreAboveOrg / numOrgs)
-    averageTechScore = (averageTechScore / numOrgs)
-    averageProfScore = (averageProfScore / numOrgs)
-    print("STATS:")
-    print(str(qualified) + " out of " + str(numOrgs) + " matches were qualified")
-    print("Average Tech Score of matched student: " + str(averageTechScore))
-    print("Average Prof Score of matched student: " + str(averageProfScore))
-    print("Average Tech Score - Org Score: " + str(averageTechScoreAboveOrg))
-    print("Average Prof Score - Org Score: " + str(averageProfScoreAboveOrg))
+    ####### Post to DB
+    api_link = 'http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/results/'
+    params = {
+        'cohort': cohort,
+        'data': {'data_list': results_arr}
+    }
+    headers = {
+        "content-type": "application/json",
+        "accept": "application/json",
+    }
+    body = json.dumps(params) if params else None
 
+    response = requests.post(
+        api_link, data=body, headers=headers
+    )
+
+    if (email_address == ""):
+        email_address = "jpaper01@gmail.com"
+    #### Send email
+    api_link = "https://api.sendinblue.com/v3/smtp/email"
+    body_dict = {
+        "sender": {"name": "RGKConnect", "email": "rgkconnectmatching@gmail.com"},
+        "subject": "Current matching",
+        "to": [{"email": email_address}],
+        "htmlContent": email,
+    }
+
+    headers = {
+        "content-type": "application/json",
+        "api-key": sendinblue_key,
+        "accept": "application/json",
+    }
+
+    body = json.dumps(body_dict) if body_dict else None
+
+    response = requests.post(
+        api_link, data=body, headers=headers
+    )
+    pprint.pprint(response.json())

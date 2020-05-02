@@ -10,18 +10,20 @@ import About from './pages/About'
 import StickNavbar from "./pages/StickyNavbar";
 import StudentForm from './pages/StudentForm';
 import Login from './pages/Login.js'
+import CommunityForm from "./pages/CommunityForm";
 
 class App extends Component {
   render(){
   return (
     <BrowserRouter>
     <Route path ='/' render={() => (<StickNavbar />)}/>
-    <Route exact={true} path='/' render={() => (<Central />)}/>  
+    <Route exact={true} path='/' render={() => (<Central />)}/>
     <Route exact={true} path='/student' render={() => (<Student />)}/>
     <Route exact={true} path='/admin' render={() => (<Admin />)}/>
     <Route exact={true} path='/community' render={() => (<CommunityOrg />)}/>
     <Route exact={true} path='/about' render={() => (<About />)}/>
     <Route exact={true} path='/studentform' render={() => (<StudentForm />)}/>
+    <Route exact={true} path='/communityform' render={() => (<CommunityForm/>)}/>
     <Route exact={true} path='/login' render={() => (<Login />)}/>
 
     </BrowserRouter>

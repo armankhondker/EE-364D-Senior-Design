@@ -6,7 +6,7 @@ class CommunityOrg extends Component {
 		return (
 			<div className="App" align="center">
 				<br></br>
-				<h1>Community Organizations Page</h1>
+				<h1>Community Organizations</h1>
 				<br></br>
 				<p> <b> Please fill out the following survey if your community organization has a project they would like to have matched. </b> </p>
 				<a href="/communityform">Organization Survey</a>
