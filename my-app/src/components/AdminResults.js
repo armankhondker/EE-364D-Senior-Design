@@ -5,7 +5,7 @@ import update from "react-addons-update";
 import '../styling/Admin.css';
 
 function displayInfo(match) {
-   console.log(match);
+   // console.log(match);
     let studentComponent;
     let projectComponent;
     let skills;
@@ -62,7 +62,7 @@ function displayInfo(match) {
           </div>;
         }
         else {
-          console.log(match)
+          // console.log(match)
           studentComponent =  <div>
               <br></br>
               <p>The Possible Matches Were:</p>
@@ -175,7 +175,7 @@ class AdminResults extends Component {
     }
 
     handleModal(i) {
-        console.log(i)
+        // console.log(i)
         this.setState(update(this.state, {
             modalShow: {
                 [i] : {

@@ -3,23 +3,20 @@ import Button from "react-bootstrap/Button"
 import Modal from 'react-bootstrap/Modal'
 import ModalHeader from 'react-bootstrap/Modal'
 import ModalBody from 'react-bootstrap/Modal'
-import NewWindowPortal from "../components/NewWindowPortal.js";
 import '../styling/Admin.css';
 import Form from 'react-bootstrap/Form';
 import RadioButton from "./RadioButton";
 import LoadingAnimation from "../components/LoadingAnimation";
 import update from 'react-addons-update';
-import Popup from "reactjs-popup";
 import '../App.css';
 import axios from "axios";
 
 class AdminProjects extends Component {
 
-
       constructor(props) {
           super(props);
           this.state = {
-              projects: props.projects,
+              projects: null,
               modalShow: [],
               contact_first_name: "",
               contact_last_name: "",
@@ -43,7 +40,6 @@ class AdminProjects extends Component {
               other_skills: "",
               submit_text: "",
           }
-
 
           this.clearData = this.clearData.bind(this);
           this.handleModal = this.handleModal.bind(this);
@@ -69,10 +65,22 @@ class AdminProjects extends Component {
           this.handleOtherSkills = this.handleOtherSkills.bind(this);
           this.handleUpdate = this.handleUpdate.bind(this);
           this.isDict = this.isDict.bind(this);
-
       }
 
-      clearData() {
+      async componentDidMount() {
+          await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/projects')
+              .then(res => {
+                  console.log(res);
+                  this.setState({projects: res.data});
+              });
+      }
+
+    componentDidUpdate(prevProps){
+        // console.log("this.state.projects on projects tab");
+        // console.log(this.state.projects);
+    }
+
+    clearData() {
         this.setState(state => ({
           projects: this.props.projects,
           modalShow: [],
@@ -592,16 +600,11 @@ class AdminProjects extends Component {
             </Form.Group>
             <br></br>
             <Button variant="primary" onClick={this.handleUpdate.bind(this, project)}>
-                Update Student Form
+                Update Project Form
             </Button>
             <div>{this.state.submit_text}</div>
         </div>
         )
-      }
-
-
-      componentDidMount() {
-          this.setState({ projects: this.props.projects });
       }
 
       handleModal(i, e) {
@@ -622,11 +625,13 @@ class AdminProjects extends Component {
 
           return(
               <div>
-                  <p>Click on a project to edit the project survey information</p>
+                  <p>Click on a project to edit the project survey information. </p>
+                  <p>Please note that you might need to refresh the page in order to view survey updates. </p>
                   <table style={{width:"50%", margin: "auto"}}>
                       <tbody className="admin_table">
                           {hasMounted ? (
                               this.state.projects.map((project, index) => {
+                                  console.log("this.state.projects on projects tab : " + this.state.projects);
                                   return(
                                     <tr key={index}>
                                       <td className="admin_cell">
