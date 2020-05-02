@@ -1,5 +1,5 @@
 # EE-364D-Senior-Design
-Source code for H13' senior design honors project involving a matching algorithm web application for the RGK CONNECT Program.
+Source code for H13' senior design honors project involving a matching algorithm web application for the CONNECT Program.
 
 ## About
 RGK Connect Matching is a web application designed to display the matchings between students and organizations for the LBJ School's CONNECT Program.
