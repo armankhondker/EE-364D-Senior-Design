@@ -592,6 +592,7 @@ class AdminStudents extends Component {
         return(
             <div>
                 <p>Click on a student to edit student survey information</p>
+                <p>Please note that you might need to refresh the page in order to view survey updates. </p>
                 <table style={{width:"50%", margin: "auto"}}>
                     <tbody className="admin_table">
                         {hasMounted ? (
