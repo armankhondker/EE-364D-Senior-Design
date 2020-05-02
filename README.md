@@ -4,7 +4,7 @@ Source code for our senior design honors project involving a matching algorithm 
 ## About
 RGK Connect Matching is a web application designed to display the matchings between students and organizations for the LBJ School's CONNECT Program.
 
-Please watch the appliation demo and overview below for more details: 
+Please watch the appliation demo and overview below for more details: <br />
 https://www.youtube.com/watch?v=5N9kPuocRUw
 
 ## CONNECT Program Overview 
