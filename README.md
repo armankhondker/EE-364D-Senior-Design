@@ -1,3 +1,5 @@
+![build-passing](https://img.shields.io/badge/build-passing-brightgreen) ![test-passing](https://img.shields.io/badge/test-passing-brightgreen)
+
 # EE-364D-Senior-Design
 Source code for our senior design honors project involving a matching algorithm web application for the CONNECT Program.
 
