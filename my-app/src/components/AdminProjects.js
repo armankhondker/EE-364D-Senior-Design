@@ -68,7 +68,7 @@ class AdminProjects extends Component {
       }
 
       async componentDidMount() {
-          await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/projects')
+          await axios.get(process.env.REACT_APP_API_URL + 'projects')
               .then(res => {
                   console.log(res);
                   this.setState({projects: res.data});
@@ -426,7 +426,7 @@ class AdminProjects extends Component {
         }
         submit_dict['unique_id'] = `${submit_dict.organization_name.replace(/\s+/g, '')}-${submit_dict.project_name.replace(/\s+/g, '')}-SP20`
         console.log(JSON.stringify(submit_dict))
-    		await axios.put('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/projects/'+project['id']+'/', JSON.stringify(submit_dict),
+    		await axios.put(process.env.REACT_APP_API_URL + 'projects/'+project['id']+'/', JSON.stringify(submit_dict),
     			{
     				headers: {
     					'content-type': 'application/json',

@@ -396,7 +396,7 @@ class AdminStudents extends Component {
       }
       submit_dict['unique_id'] = `${submit_dict.eid}-SP20`
 
-  		await axios.put('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/students/'+student['id']+'/', JSON.stringify(submit_dict),
+  		await axios.put(process.env.REACT_APP_API_URL + 'students/'+student['id']+'/', JSON.stringify(submit_dict),
   			{
   				headers: {
   					'content-type': 'application/json',

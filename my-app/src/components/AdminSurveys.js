@@ -73,7 +73,7 @@ class AdminSurveys extends Component {
     async updateDB(question, api_name) {
       if (question.name == "") {
         // delete api
-        await axios.delete('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/'+api_name+'/'+question.id+'/',
+        await axios.delete(process.env.REACT_APP_API_URL + ''+api_name+'/'+question.id+'/',
         {
           headers: {
             'content-type': 'application/json',
@@ -86,7 +86,7 @@ class AdminSurveys extends Component {
       }
       else {
         // update api
-        await axios.put('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/'+api_name+'/'+question.id+'/', JSON.stringify(question),
+        await axios.put(process.env.REACT_APP_API_URL + ''+api_name+'/'+question.id+'/', JSON.stringify(question),
         {
           headers: {
             'content-type': 'application/json',
@@ -102,7 +102,7 @@ class AdminSurveys extends Component {
     async postDB(question, api_name) {
 
       // post to api
-      await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/'+api_name+'/', JSON.stringify(question),
+      await axios.post(process.env.REACT_APP_API_URL + ''+api_name+'/', JSON.stringify(question),
       {
         headers: {
           'content-type': 'application/json',
@@ -250,7 +250,7 @@ class AdminSurveys extends Component {
     //post new questions
 
     async componentDidMount() {
-        axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/intentions')
+        axios.get(process.env.REACT_APP_API_URL + 'intentions')
         .then(res => {
           console.log(res);
           this.setState({
@@ -261,7 +261,7 @@ class AdminSurveys extends Component {
         })
         .catch(err => console.log(err));
 
-       axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/interests')
+       axios.get(process.env.REACT_APP_API_URL + 'interests')
         .then(res => {
           console.log(res);
           this.setState({
@@ -271,7 +271,7 @@ class AdminSurveys extends Component {
         })
         .catch(err => console.log(err));
 
-       axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/logistics')
+       axios.get(process.env.REACT_APP_API_URL + 'logistics')
         .then(res => {
           console.log(res);
           this.setState({
@@ -281,7 +281,7 @@ class AdminSurveys extends Component {
         })
         .catch(err => console.log(err));
 
-       axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/degrees')
+       axios.get(process.env.REACT_APP_API_URL + 'degrees')
         .then(res => {
           console.log(res);
           this.setState({
@@ -291,7 +291,7 @@ class AdminSurveys extends Component {
         })
         .catch(err => console.log(err));
 
-       axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/tech-courses')
+       axios.get(process.env.REACT_APP_API_URL + 'tech-courses')
         .then(res => {
           console.log(res);
           this.setState({
@@ -301,7 +301,7 @@ class AdminSurveys extends Component {
         })
         .catch(err => console.log(err));
 
-       axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/prof-courses')
+       axios.get(process.env.REACT_APP_API_URL + 'prof-courses')
         .then(res => {
           console.log(res);
           this.setState({
@@ -312,7 +312,7 @@ class AdminSurveys extends Component {
         .catch(err => console.log(err));
 
 
-       axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/tech-skills')
+       axios.get(process.env.REACT_APP_API_URL + 'tech-skills')
         .then(res => {
           console.log(res);
           this.setState({
@@ -322,7 +322,7 @@ class AdminSurveys extends Component {
         })
         .catch(err => console.log(err));
 
-       axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/prof-skills')
+       axios.get(process.env.REACT_APP_API_URL + 'prof-skills')
         .then(res => {
           console.log(res);
           this.setState({
