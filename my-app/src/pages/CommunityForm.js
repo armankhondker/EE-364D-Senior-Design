@@ -11,6 +11,7 @@ class CommunityForm extends Component {
     constructor(props) {
         super(props);
 		this.state = {
+			enabled: true,
       submitting: false,
       submitted: false,
 			uploading: false,
@@ -261,7 +262,16 @@ class CommunityForm extends Component {
 	}
 
 	async componentDidMount() {
-		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/intentions')
+		axios.get(process.env.REACT_APP_API_URL + 'settings/1/')
+			.then(res => {
+				console.log(res);
+				this.setState({
+					enabled: res.data.organization_form_enabled,
+				});
+			})
+			.catch(err => console.log(err));
+
+		axios.get(process.env.REACT_APP_API_URL + 'intentions')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -271,7 +281,7 @@ class CommunityForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/interests')
+		axios.get(process.env.REACT_APP_API_URL + 'interests')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -281,7 +291,7 @@ class CommunityForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		// axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/logistics')
+		// axios.get(process.env.REACT_APP_API_URL + 'logistics')
 		// 	.then(res => {
 		// 		console.log(res);
 				let flags = new Array(3);
@@ -294,7 +304,7 @@ class CommunityForm extends Component {
 			// })
 			// .catch(err => console.log(err));
 
-		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/degrees')
+		axios.get(process.env.REACT_APP_API_URL + 'degrees')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -304,7 +314,7 @@ class CommunityForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/experiences')
+		axios.get(process.env.REACT_APP_API_URL + 'experiences')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -314,7 +324,7 @@ class CommunityForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/tech-courses')
+		axios.get(process.env.REACT_APP_API_URL + 'tech-courses')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -324,7 +334,7 @@ class CommunityForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/prof-courses')
+		axios.get(process.env.REACT_APP_API_URL + 'prof-courses')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -335,7 +345,7 @@ class CommunityForm extends Component {
 			.catch(err => console.log(err));
 
 
-		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/tech-skills')
+		axios.get(process.env.REACT_APP_API_URL + 'tech-skills')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -345,7 +355,7 @@ class CommunityForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/prof-skills')
+		axios.get(process.env.REACT_APP_API_URL + 'prof-skills')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -490,7 +500,7 @@ class CommunityForm extends Component {
 		}
 
 		console.log(JSON.stringify(params));
-		await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/projects/', JSON.stringify(params),
+		await axios.post(process.env.REACT_APP_API_URL + 'projects/', JSON.stringify(params),
 			{
 				headers: {
 					'content-type': 'application/json',
@@ -526,7 +536,7 @@ class CommunityForm extends Component {
 render() {
 	let hasMounted = false;
 		let {interestOptions, logisticQuestions, degreeOptions, techCourseOptions,
-			profCourseOptions, techSkillOptions, profSkillOptions} = this.state;
+			profCourseOptions, techSkillOptions, profSkillOptions, enabled} = this.state;
 		if(interestOptions.length && logisticQuestions.length && degreeOptions.length &&
 			techCourseOptions.length && profCourseOptions.length && techSkillOptions.length &&
 			profSkillOptions.length
@@ -540,157 +550,180 @@ render() {
                     <LoadingAnimation/>;
                 </div>
         } else {
-            CurrentDisplay =
-                <div className="form">
-                    <Form>
-						<Form.Group controlId="orgInput">
-                            <Form.Label>Organization Name </Form.Label>
-                            <Form.Control type="text" value={this.state.orgInput} onChange={this.handleOrgName}/>
-                        </Form.Group>
-						<Form.Group controlId="orgInput">
-							<Form.Label>Organization Address</Form.Label>
-							<Form.Control type="text" value={this.state.orgAddressInput} onChange={this.handleOrgAddress}/>
-						</Form.Group>
-						<Form.Group controlId="orgInput">
-							<Form.Label>Organization Website</Form.Label>
-							<Form.Control type="text" value={this.state.orgWebsiteInput} onChange={this.handleOrgWebsite}/>
-						</Form.Group>
-						<Form.Group controlId="nameInput">
-							<Form.Label>First Name</Form.Label>
-                            <Form.Control required value={this.state.firstNameInput} onChange={this.handleFirstName} type="text"/>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Last Name</Form.Label>
-                            <Form.Control required value={this.state.lastNameInput} onChange={this.handleLastName} type="text"/>
-                        </Form.Group>
-                        <Form.Group controlId="phoneInput">
-                            <Form.Label>Phone #</Form.Label>
-                            <Form.Control required type="tel" value={this.state.phoneInput} onChange={this.handlePhone} placeholder="5125558888"/>
-                        </Form.Group>
-                        <Form.Group controlId="emailInput">
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control required type="email" value={this.state.emailInput} onChange={this.handleEmail} placeholder="example@utexas.edu"/>
-                        </Form.Group>
-						<Form.Group controlId="orgInput">
-							<Form.Label>Project Name</Form.Label>
-							<Form.Control type="text" value={this.state.projNameInput} onChange={this.handleProjName}/>
-						</Form.Group>
-						<Form.Group controlId="projDesc">
-							<Form.Label>Project Description (1000 Character limit)</Form.Label>
-							<Form.Control as="textarea" value={this.state.projDescInput} onChange={this.handleProjDesc} rows="5"/>
-							<Form.Label>Character Count: {this.state.projDescInput.length}</Form.Label>
-						</Form.Group>
+			if(enabled) {
+				CurrentDisplay =
+					<div className="form">
+						<Form onSubmit={this.handleSubmit}>
+							<Form.Group controlId="orgInput">
+								<Form.Label>Organization Name </Form.Label>
+								<Form.Control type="text" value={this.state.orgInput} onChange={this.handleOrgName}/>
+							</Form.Group>
+							<Form.Group controlId="orgInput">
+								<Form.Label>Organization Address</Form.Label>
+								<Form.Control type="text" value={this.state.orgAddressInput}
+											  onChange={this.handleOrgAddress}/>
+							</Form.Group>
+							<Form.Group controlId="orgInput">
+								<Form.Label>Organization Website</Form.Label>
+								<Form.Control type="text" value={this.state.orgWebsiteInput}
+											  onChange={this.handleOrgWebsite}/>
+							</Form.Group>
+							<Form.Group controlId="nameInput">
+								<Form.Label>First Name</Form.Label>
+								<Form.Control required value={this.state.firstNameInput} onChange={this.handleFirstName}
+											  type="text"/>
+							</Form.Group>
+							<Form.Group>
+								<Form.Label>Last Name</Form.Label>
+								<Form.Control required value={this.state.lastNameInput} onChange={this.handleLastName}
+											  type="text"/>
+							</Form.Group>
+							<Form.Group controlId="phoneInput">
+								<Form.Label>Phone #</Form.Label>
+								<Form.Control required type="tel" value={this.state.phoneInput}
+											  onChange={this.handlePhone} placeholder="5125558888"/>
+							</Form.Group>
+							<Form.Group controlId="emailInput">
+								<Form.Label>Email</Form.Label>
+								<Form.Control required type="email" value={this.state.emailInput}
+											  onChange={this.handleEmail} placeholder="example@utexas.edu"/>
+							</Form.Group>
+							<Form.Group controlId="orgInput">
+								<Form.Label>Project Name</Form.Label>
+								<Form.Control type="text" value={this.state.projNameInput}
+											  onChange={this.handleProjName}/>
+							</Form.Group>
+							<Form.Group controlId="projDesc">
+								<Form.Label>Project Description (1000 Character limit)</Form.Label>
+								<Form.Control as="textarea" value={this.state.projDescInput}
+											  onChange={this.handleProjDesc} rows="5"/>
+								<Form.Label>Character Count: {this.state.projDescInput.length}</Form.Label>
+							</Form.Group>
 
-						<br/>
+							<br/>
 
-                        <Form.Label>Identify the categories your project falls under. (Check all that
-                            apply)</Form.Label>
+							<Form.Label>Identify the categories your project falls under. (Check all that
+								apply)</Form.Label>
+
 							{this.state.interestOptions.map((option, index) => {
-								return(
-										<Form.Group key={index}>
-												<Form.Check label={option.name} onChange={this.handleInterest.bind(this, index)}/>
-										</Form.Group>
-									)
+								return (
+									<Form.Group key={index}>
+										<Form.Check label={option.name}
+													onChange={this.handleInterest.bind(this, index)}/>
+									</Form.Group>
+								)
 							})}
 
-                        <Form.Group controlId="timeCommit">
-                            <Form.Label>Realistically, how much time do you expect your student to commit per week working on your assigned
-                                project? </Form.Label>
-                            <Form.Control required as="select" onChange={this.handleTimeCommit}>
-                                <option></option>
-                                <option>Less than 5 Hours Per Week</option>
-                                <option>5-10 Hours Per Week</option>
-                                <option>15-20 Hours Per Week</option>
-                                <option>20-30 Hours Per Week</option>
-                            </Form.Control>
-                        </Form.Group>
+							<Form.Group controlId="timeCommit">
+								<Form.Label>Realistically, how much time do you expect your student to commit per week
+									working on your assigned
+									project? </Form.Label>
+								<Form.Control required as="select" onChange={this.handleTimeCommit}>
+									<option></option>
+									<option>Less than 5 Hours Per Week</option>
+									<option>5-10 Hours Per Week</option>
+									<option>15-20 Hours Per Week</option>
+									<option>20-30 Hours Per Week</option>
+								</Form.Control>
+							</Form.Group>
 
-						<br></br>
+							<br></br>
 
-						{this.state.logisticQuestions.map((question, index) => {
-							if (this.state.logisticFlags[index]) {
-								return (
-									<Form.Group key={index}>
+							{this.state.logisticQuestions.map((question, index) => {
+								if (this.state.logisticFlags[index]) {
+									return (
+										<Form.Group key={index}>
 											<Form.Label>{question}</Form.Label>
-												<Form.Check type="Radio" label="Yes" checked={this.state.logisticInputs[index]} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
-												<Form.Check type="Radio" label="No" checked={!this.state.logisticInputs[index]} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
-									</Form.Group>
-								)
-							}
-							else {
-								return (
-									<Form.Group key={index}>
+											<Form.Check type="Radio" label="Yes"
+														checked={this.state.logisticInputs[index]}
+														onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
+											<Form.Check type="Radio" label="No"
+														checked={!this.state.logisticInputs[index]}
+														onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
+										</Form.Group>
+									)
+								} else {
+									return (
+										<Form.Group key={index}>
 											<Form.Label>{question}</Form.Label>
-											<Form.Check type="Radio" label="Yes" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
-											<Form.Check type="Radio" label="No" checked={false} onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
-									</Form.Group>
-								)
-							}
-						})}
+											<Form.Check type="Radio" label="Yes" checked={false}
+														onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
+											<Form.Check type="Radio" label="No" checked={false}
+														onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
+										</Form.Group>
+									)
+								}
+							})}
 
-						<Form.Group controlId="CoursesTaken">
-							<Form.Label>Identify each of the following technical oriented courses that would be helpful for completing your project. </Form.Label>
+							<Form.Group controlId="CoursesTaken">
+								<Form.Label>Identify each of the following technical oriented courses that would be
+									helpful for completing your project. </Form.Label>
 								{this.state.techCourseOptions.map((course, index) => {
 									if (index % 10 === 0 && index > 0) {
 										return (
 											<div key={index}>
 												<br></br>
-												<Form.Check label={`${course.name} (${course.courseId})`} onChange={this.handleTechCourseInputs.bind(this, index)}/>
+												<Form.Check label={`${course.name} (${course.courseId})`}
+															onChange={this.handleTechCourseInputs.bind(this, index)}/>
 											</div>
-									    )
-									}
-									else
+										)
+									} else
 										return (
-											<Form.Check key={index} label={`${course.name} (${course.courseId})`} onChange={this.handleTechCourseInputs.bind(this, index)}/>
+											<Form.Check key={index} label={`${course.name} (${course.courseId})`}
+														onChange={this.handleTechCourseInputs.bind(this, index)}/>
 										)
 								})}
-						</Form.Group>
-						<Form.Group controlId="CoursesTaken">
-							<Form.Label>Identify each of the following professional oriented courses that would be helpful for completing your project. </Form.Label>
-							{this.state.profCourseOptions.map((course, index) => {
-								if (index % 10 === 0 && index > 0) {
-									return (
-										<div key={index}>
-											<br></br>
-											<Form.Check label={`${course.name} (${course.courseId})`} onChange={this.handleProfCourseInputs.bind(this, index)}/>
-										</div>
-									)
-								}
-								else
-									return (
-										<Form.Check key={index} label={`${course.name} (${course.courseId})`} onChange={this.handleProfCourseInputs.bind(this, index)}/>
-									)
+							</Form.Group>
+							<Form.Group controlId="CoursesTaken">
+								<Form.Label>Identify each of the following professional oriented courses that would be
+									helpful for completing your project. </Form.Label>
+								{this.state.profCourseOptions.map((course, index) => {
+									if (index % 10 === 0 && index > 0) {
+										return (
+											<div key={index}>
+												<br></br>
+												<Form.Check label={`${course.name} (${course.courseId})`}
+															onChange={this.handleProfCourseInputs.bind(this, index)}/>
+											</div>
+										)
+									} else
+										return (
+											<Form.Check key={index} label={`${course.name} (${course.courseId})`}
+														onChange={this.handleProfCourseInputs.bind(this, index)}/>
+										)
+								})}
+							</Form.Group>
+
+							<Form.Label>Please rate how relevant the following technical skills are to your project
+								using the scale below:</Form.Label>
+							<br/>
+							<div>1: Not Relevant</div>
+							<div>2: Slightly Relevant</div>
+							<div>3: Moderately Relevant</div>
+							<div>4: Very Relevant</div>
+							<div>5: Extremely Relevant</div>
+							<br/>
+							{this.state.techSkillOptions.map((skill, index) => {
+								let formattedSkill = skill.name.replace(/\s+/g, '');
+								return (
+									<Form.Group key={index}>
+										<Form.Label>{skill.name}</Form.Label>
+										<RadioButton name={formattedSkill}
+													 handleRadio={this.handleTechSkills.bind(this, index)}/>
+									</Form.Group>
+								);
 							})}
-						</Form.Group>
 
-						<Form.Label>Please rate how relevant the following technical skills are to your project using the scale below:</Form.Label>
-						<br/>
-						<div>1: Not Relevant</div>
-						<div>2: Slightly Relevant</div>
-						<div>3: Moderately Relevant</div>
-						<div>4: Very Relevant</div>
-						<div>5: Extremely Relevant</div>
-						<br/>
-                        {this.state.techSkillOptions.map((skill, index) => {
-                            let formattedSkill = skill.name.replace(/\s+/g, '');
-                            return(
-                                <Form.Group key={index}>
-                                    <Form.Label>{skill.name}</Form.Label>
-                                    <RadioButton name={formattedSkill} handleRadio={this.handleTechSkills.bind(this, index)}/>
-                                </Form.Group>
-                            );
-                        })}
-
-						<Form.Label>Please rate how relevant the following professional skills are to your project using the scale below:</Form.Label>
-						<br/>
-						<div>1: Not Relevant</div>
-						<div>2: Slightly Relevant</div>
-						<div>3: Moderately Relevant</div>
-						<div>4: Very Relevant</div>
-						<div>5: Extremely Relevant</div>
-						<br/>
-
-						{this.state.profSkillOptions.map((skill, index) => {
+							<Form.Label>Please rate how relevant the following professional skills are to your project
+								using the scale below:</Form.Label>
+							<br/>
+							<div>1: Not Relevant</div>
+							<div>2: Slightly Relevant</div>
+							<div>3: Moderately Relevant</div>
+							<div>4: Very Relevant</div>
+							<div>5: Extremely Relevant</div>
+							<br/>
+          {this.state.profSkillOptions.map((skill, index) => {
 							let formattedSkill = skill.name.replace(/\s+/g, '');
 							return(
 								<Form.Group key={index}>
@@ -714,9 +747,21 @@ render() {
                     </Form>
                     <br/>
                 </div>
-        }
+						
+			} else {
+				CurrentDisplay =
+					<div>
+						<p>
+							<b>
+								Sorry, we are not taking any submissions for this form at this time.
+							</b>
+						</p>
+					</div>
+			}
+		}
 
-        return (
+
+	return (
             <div>
                 <br/><br/><br/><br/>
                 {CurrentDisplay}

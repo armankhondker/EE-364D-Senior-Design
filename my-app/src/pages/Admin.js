@@ -12,6 +12,7 @@ import AdminResumes from "../components/AdminResumes";
 import AdminProjects from "../components/AdminProjects";
 import AdminMatch from "../components/AdminMatch";
 import AdminResults from "../components/AdminResults";
+import AdminSettings from "../components/AdminSettings";
 import Login from "./Login";
 
 class Admin extends Component {
@@ -29,25 +30,25 @@ class Admin extends Component {
 	}
 
 	async componentDidMount() {
-        await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/results')
+        await axios.get(process.env.REACT_APP_API_URL + 'results')
 			.then(res => {
 				console.log(res);
 				this.setState({ results: res.data });
 			});
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/students')
+		await axios.get(process.env.REACT_APP_API_URL + 'students')
 			.then(res => {
 				console.log(res);
 				this.setState({ students: res.data });
 			});
 
-			await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/resumes')
+			await axios.get(process.env.REACT_APP_API_URL + 'resumes')
 				.then(res => {
 					console.log(res);
 					this.setState({ resumes: res.data });
 				});
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/projects')
+		await axios.get(process.env.REACT_APP_API_URL + 'projects')
 			.then(res => {
 				console.log(res);
 				this.setState({ projects: res.data });
@@ -124,6 +125,9 @@ class Admin extends Component {
 								<Nav.Item>
 									<Nav.Link eventKey="seventh">Results</Nav.Link>
 								</Nav.Item>
+								<Nav.Item>
+									<Nav.Link eventKey="seventh">Settings</Nav.Link>
+								</Nav.Item>
 							</Nav>
 						</Col>
 						<Col sm={9}>
@@ -148,6 +152,9 @@ class Admin extends Component {
 								</Tab.Pane>
 								<Tab.Pane eventKey="seventh">
 									<AdminResults students={this.state.students} projects={this.state.projects} results={this.state.results}  />
+								</Tab.Pane>
+								<Tab.Pane eventKey="seventh">
+									<AdminSettings/>
 								</Tab.Pane>
 							</Tab.Content>
 						</Col>
