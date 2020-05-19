@@ -99,3 +99,10 @@ p {
 .nav-item {
   border: 1px solid tan;
 }
+
+.flexrow {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

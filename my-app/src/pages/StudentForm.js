@@ -518,7 +518,7 @@ class StudentForm extends Component {
 				console.log(error);
 			})
 
-    await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/resumes/', JSON.stringify(resume_params),
+		await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/resumes/', JSON.stringify(resume_params),
 			{
 				headers: {
 					'content-type': 'application/json',

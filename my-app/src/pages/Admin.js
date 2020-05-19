@@ -11,6 +11,7 @@ import AdminResumes from "../components/AdminResumes";
 import AdminProjects from "../components/AdminProjects";
 import AdminMatch from "../components/AdminMatch";
 import AdminResults from "../components/AdminResults";
+import AdminSettings from "../components/AdminSettings";
 import Login from "./Login";
 
 class Admin extends Component {
@@ -160,6 +161,9 @@ class Admin extends Component {
 								<Nav.Item>
 									<Nav.Link eventKey="sixth">Results</Nav.Link>
 								</Nav.Item>
+								<Nav.Item>
+									<Nav.Link eventKey="seventh">Settings</Nav.Link>
+								</Nav.Item>
 							</Nav>
 						</Col>
 						<Col sm={9}>
@@ -181,6 +185,9 @@ class Admin extends Component {
 								</Tab.Pane>
 								<Tab.Pane eventKey="sixth">
 									<AdminResults students={this.state.students} projects={this.state.projects} results={this.state.results}  />
+								</Tab.Pane>
+								<Tab.Pane eventKey="seventh">
+									<AdminSettings/>
 								</Tab.Pane>
 							</Tab.Content>
 						</Col>
