@@ -126,7 +126,7 @@ class Admin extends Component {
 									<Nav.Link eventKey="seventh">Results</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link eventKey="seventh">Settings</Nav.Link>
+									<Nav.Link eventKey="eighth">Settings</Nav.Link>
 								</Nav.Item>
 							</Nav>
 						</Col>
@@ -153,7 +153,7 @@ class Admin extends Component {
 								<Tab.Pane eventKey="seventh">
 									<AdminResults students={this.state.students} projects={this.state.projects} results={this.state.results}  />
 								</Tab.Pane>
-								<Tab.Pane eventKey="seventh">
+								<Tab.Pane eventKey="eighth">
 									<AdminSettings/>
 								</Tab.Pane>
 							</Tab.Content>
