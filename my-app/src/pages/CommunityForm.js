@@ -269,7 +269,7 @@ class CommunityForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/intentions')
+		axios.get(process.env.REACT_APP_API_URL + 'intentions')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -279,7 +279,7 @@ class CommunityForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/interests')
+		axios.get(process.env.REACT_APP_API_URL + 'interests')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -289,7 +289,7 @@ class CommunityForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		// axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/logistics')
+		// axios.get(process.env.REACT_APP_API_URL + 'logistics')
 		// 	.then(res => {
 		// 		console.log(res);
 				let flags = new Array(3);
@@ -302,7 +302,7 @@ class CommunityForm extends Component {
 			// })
 			// .catch(err => console.log(err));
 
-		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/degrees')
+		axios.get(process.env.REACT_APP_API_URL + 'degrees')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -312,7 +312,7 @@ class CommunityForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/experiences')
+		axios.get(process.env.REACT_APP_API_URL + 'experiences')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -322,7 +322,7 @@ class CommunityForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/tech-courses')
+		axios.get(process.env.REACT_APP_API_URL + 'tech-courses')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -332,7 +332,7 @@ class CommunityForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/prof-courses')
+		axios.get(process.env.REACT_APP_API_URL + 'prof-courses')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -343,7 +343,7 @@ class CommunityForm extends Component {
 			.catch(err => console.log(err));
 
 
-		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/tech-skills')
+		axios.get(process.env.REACT_APP_API_URL + 'tech-skills')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -353,7 +353,7 @@ class CommunityForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/prof-skills')
+		axios.get(process.env.REACT_APP_API_URL + 'prof-skills')
 			.then(res => {
 				console.log(res);
 				this.setState({
@@ -496,7 +496,7 @@ class CommunityForm extends Component {
 		}
 
 		console.log(JSON.stringify(params));
-		await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/projects/', JSON.stringify(params),
+		await axios.post(process.env.REACT_APP_API_URL + 'projects/', JSON.stringify(params),
 			{
 				headers: {
 					'content-type': 'application/json',

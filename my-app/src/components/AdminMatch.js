@@ -110,7 +110,7 @@ class AdminMatch extends Component {
         // await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/algo')
         // await axios.get('http://localhost:8000/api/algo')
         console.log(JSON.stringify(params))
-        await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/algo', JSON.stringify(params),
+        await axios.post(process.env.REACT_APP_API_URL + 'algo', JSON.stringify(params),
             {
                 headers: {
                     'content-type': 'application/json',

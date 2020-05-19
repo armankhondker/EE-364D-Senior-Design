@@ -29,25 +29,25 @@ class Admin extends Component {
 	}
 
 	async componentDidMount() {
-        await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/results')
+        await axios.get(process.env.REACT_APP_API_URL + 'results')
 			.then(res => {
 				console.log(res);
 				this.setState({ results: res.data });
 			});
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/students')
+		await axios.get(process.env.REACT_APP_API_URL + 'students')
 			.then(res => {
 				console.log(res);
 				this.setState({ students: res.data });
 			});
 
-			await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/resumes')
+			await axios.get(process.env.REACT_APP_API_URL + 'resumes')
 				.then(res => {
 					console.log(res);
 					this.setState({ resumes: res.data });
 				});
 
-		await axios.get('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/projects')
+		await axios.get(process.env.REACT_APP_API_URL + 'projects')
 			.then(res => {
 				console.log(res);
 				this.setState({ projects: res.data });
