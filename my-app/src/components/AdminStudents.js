@@ -395,38 +395,19 @@ class AdminStudents extends Component {
         submit_dict[s_key] = temp_answers;
       }
       submit_dict['unique_id'] = `${submit_dict.eid}-SP20`
-      console.log(submit_dict);
 
-      console.log(JSON.stringify(submit_dict))
-
-
-      // IGNORE BELOW I WAS CONFUSED WHY PUT REQ WASN'T WORKING, THERE MAY BE A BIGGER ISSUE
-
-  		// await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/students/', JSON.stringify(submit_dict),
-  		// 	{
-  		// 		headers: {
-  		// 			'content-type': 'application/json',
-  		// 		},
-  		// 	})
-  		// 	.then(res => {
-  		// 		console.log(res);
-  		// 	})
-  		// 	.catch(error => {
-  		// 		console.log(error);
-  		// 	})
-
-      // await axios.delete('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/students/'+student.id+'/',
-  		// 	{
-  		// 		headers: {
-  		// 			'content-type': 'application/json',
-  		// 		},
-  		// 	})
-  		// 	.then(res => {
-  		// 		console.log(res);
-  		// 	})
-  		// 	.catch(error => {
-  		// 		console.log(error);
-  		// 	})
+  		await axios.put('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/students/'+student['id']+'/', JSON.stringify(submit_dict),
+  			{
+  				headers: {
+  					'content-type': 'application/json',
+  				},
+  			})
+  			.then(res => {
+  				console.log(res);
+  			})
+  			.catch(error => {
+  				console.log(error);
+  			})
 
 
         this.setState(state => ({
@@ -471,10 +452,11 @@ class AdminStudents extends Component {
               <Form.Control type="profList" onChange={this.handleEmail}/>
           </Form.Group>
           <div>Current LinkedIn: {linkedIn}</div>
-          <Form.Group controlId="Email">
+          <Form.Group controlId="linkedIn">
               <Form.Label>Update LinkedIn Here:</Form.Label>
               <Form.Control type="profList" onChange={this.handleLinkedin}/>
           </Form.Group>
+          <br></br>
           {Object.keys(intentions).map((key, index) => {
             return (
               <div>{key}: {String(intentions[key])}
@@ -485,6 +467,7 @@ class AdminStudents extends Component {
             </div>
             )
           })}
+          <br></br>
           {Object.keys(interests).map((key, index) => {
             return (
               <div>Interested in {key}: {String(interests[key])}
@@ -495,6 +478,7 @@ class AdminStudents extends Component {
             </div>
             )
           })}
+          <br></br>
           <div>Current time commitment: {time_commitment}</div>
           <Form.Group controlId="TimeCommitment">
               <Form.Label>Update Time Commitment Here:</Form.Label>
@@ -526,6 +510,7 @@ class AdminStudents extends Component {
               <Form.Label>Update Answer Here:</Form.Label>
               <Form.Control type="profList" onChange={this.handleDegree.bind(this)}/>
           </Form.Group>
+          <br></br>
           {Object.keys(tech_courses).map((key, index) => {
             return (
               <div>Taken {key}: {String(tech_courses[key])}
@@ -536,6 +521,7 @@ class AdminStudents extends Component {
             </div>
             )
           })}
+          <br></br>
           {Object.keys(prof_courses).map((key, index) => {
             return (
               <div>Taken {key}: {String(prof_courses[key])}
@@ -546,6 +532,7 @@ class AdminStudents extends Component {
             </div>
             )
           })}
+          <br></br>
           {Object.keys(tech_skills).map((key, index) => {
               return(
                 <div>Current {key}: {String(tech_skills[key])}
@@ -556,6 +543,7 @@ class AdminStudents extends Component {
                 </div>
               );
           })}
+          <br></br>
           {Object.keys(prof_skills).map((key, index) => {
               return(
                 <div>Current {key}: {String(prof_skills[key])}
@@ -566,6 +554,7 @@ class AdminStudents extends Component {
                 </div>
               );
           })}
+          <br></br>
           <div>Other Skills: {other_skills}</div>
           <Form.Group controlId="OtherSkills">
               <Form.Label>Update Answer Here:</Form.Label>
@@ -584,7 +573,7 @@ class AdminStudents extends Component {
         this.setState({ students: this.props.students, modalShow: new Array(this.props.students.length) });
     }
 
-    handleModal(i, student, e) {
+    handleModal(i, e) {
       this.setState(update(this.state, {
        modalShow: {
          [i] : {
@@ -603,6 +592,7 @@ class AdminStudents extends Component {
         return(
             <div>
                 <p>Click on a student to edit student survey information</p>
+                <p>Please note that you might need to refresh the page in order to view survey updates. </p>
                 <table style={{width:"50%", margin: "auto"}}>
                     <tbody className="admin_table">
                         {hasMounted ? (

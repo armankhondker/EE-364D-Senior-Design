@@ -12,6 +12,8 @@ class StudentForm extends Component {
         super(props);
         this.state = {
         	enabled: true,
+      submitted: false,
+      submitting: false,
 			uploading: false,
 			firstNameInput: "",
 			lastNameInput: "",
@@ -32,7 +34,7 @@ class StudentForm extends Component {
 			logisticFlags: [],
 			techCourseOptions: [],
 			techCourseInputs: [],
-            profCourseOptions: [],
+      profCourseOptions: [],
 			profCourseInputs: [],
 			degreeOptions: [],
 			degreeInputs:[],
@@ -122,13 +124,11 @@ class StudentForm extends Component {
 		reader.readAsDataURL(file);
 	  reader.onloadend = function() {
 	     base64data = reader.result;
-		}
-
-		this.setState({
-			uploading: false,
-			resumeInput: base64data
-		})
-
+       this.setState({
+   			uploading: false,
+   			resumeInput: base64data
+   		})
+		}.bind(this);
 	}
 
 	handleTimeCommit(e) {
@@ -159,7 +159,6 @@ class StudentForm extends Component {
 	}
 
 	handleDegreeOption(i, e) {
-    	console.log(i);
 		var formerCheck = -1;
 		if (e.target.checked) {
 			var k=0;
@@ -289,7 +288,7 @@ class StudentForm extends Component {
 				console.log(res);
 				this.setState({
 					intentionOptions: res.data,
-                    intentionInputs: new Array(res.data.length),
+          intentionInputs: new Array(res.data.length),
 				});
 			})
 			.catch(err => console.log(err));
@@ -299,7 +298,7 @@ class StudentForm extends Component {
 				console.log(res);
 				this.setState({
 					interestOptions: res.data,
-                    interestInputs: new Array(res.data.length),
+          interestInputs: new Array(res.data.length),
 				});
 			})
 			.catch(err => console.log(err));
@@ -312,7 +311,7 @@ class StudentForm extends Component {
 				this.setState({
 					logisticQuestions: res.data,
 					logisticInputs: new Array(5),
-                    logisticFlags: flags,
+          logisticFlags: flags,
 				});
 			})
 			.catch(err => console.log(err));
@@ -322,7 +321,7 @@ class StudentForm extends Component {
 				console.log(res);
 				this.setState({
 					degreeOptions: res.data,
-                    degreeInputs: new Array(res.data.length),
+          degreeInputs: new Array(res.data.length),
 				});
 			})
 			.catch(err => console.log(err));
@@ -440,6 +439,8 @@ class StudentForm extends Component {
 			e.preventDefault();
 			return;
 		}
+
+    this.setState({submitting: true});
         // e.preventDefault();
 
 		for(let i = 0; i < intentionOptions.length; i ++) {
@@ -540,8 +541,28 @@ class StudentForm extends Component {
 			.catch(error => {
 				console.log(error);
 			})
+      setTimeout(
 
-	}
+        function() {
+          this.setState({
+            submitted: true,
+            submitting: false
+          });
+        }
+        .bind(this),
+        3000
+      );
+
+      //// didnt work right - stuff didnt fully upload
+      // setTimeout(
+      //   function() {
+      //     window.location.reload(false);
+      //   }
+      //   .bind(this),
+      //   3000
+      // );
+
+	  }
 
 	async handleTest() {
 		// console.log("Sending post");
@@ -576,43 +597,37 @@ class StudentForm extends Component {
                 </div>
         } else {
         	if(enabled) {
-				CurrentDisplay =
-					<div className="form">
-						<Form onSubmit={this.handleSubmit}>
-							<Form.Group controlId="nameInput">
-								<Form.Label>First Name</Form.Label>
-								<Form.Control required value={this.state.firstNameInput} onChange={this.handleFirstName}
-											  type="text"/>
-							</Form.Group>
-							<Form.Group>
-								<Form.Label>Last Name</Form.Label>
-								<Form.Control required value={this.state.lastNameInput} onChange={this.handleLastName}
-											  type="text"/>
-							</Form.Group>
-							<Form.Group>
-								<Form.Label>EID</Form.Label>
-								<Form.Control required value={this.state.eidInput} onChange={this.handleEID}
-											  type="text"/>
-							</Form.Group>
-							<Form.Group controlId="phoneInput">
-								<Form.Label>Phone #</Form.Label>
-								<Form.Control required type="tel" value={this.state.phoneInput}
-											  onChange={this.handlePhone} placeholder="5125558888"/>
-							</Form.Group>
-							<Form.Group controlId="emailInput">
-								<Form.Label>Email</Form.Label>
-								<Form.Control required type="email" value={this.state.emailInput}
-											  onChange={this.handleEmail} placeholder="example@utexas.edu"/>
-							</Form.Group>
-							<Form.Group controlId="linkedinInput">
-								<Form.Label>LinkedIn (preferred, but not required)</Form.Label>
-								<Form.Control type="text" value={this.state.linkedinInput}
-											  onChange={this.handleLinkedin}/>
-							</Form.Group>
-							<div className="mb-3">
-								<Form.File id="resumeInput">
-									<Form.File.Label>Please upload a PDF of your resume.</Form.File.Label>
-									<Form.File.Input required accept=".pdf,.PDF" onChange={this.handleResumeUpload}/>
+            CurrentDisplay =
+                <div className="form">
+                    <Form>
+                        <Form.Group controlId="nameInput">
+                            <Form.Label>First Name</Form.Label>
+                            <Form.Control required value={this.state.firstNameInput} onChange={this.handleFirstName} type="text"/>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Last Name</Form.Label>
+                            <Form.Control required value={this.state.lastNameInput} onChange={this.handleLastName} type="text"/>
+                        </Form.Group>
+						<Form.Group>
+							<Form.Label>EID</Form.Label>
+							<Form.Control required value={this.state.eidInput} onChange={this.handleEID} type="text"/>
+						</Form.Group>
+						<Form.Group controlId="phoneInput">
+							<Form.Label>Phone #</Form.Label>
+                            <Form.Control required type="tel" value={this.state.phoneInput} onChange={this.handlePhone} placeholder="5125558888"/>
+                        </Form.Group>
+                        <Form.Group controlId="emailInput">
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control required type="email" value={this.state.emailInput} onChange={this.handleEmail} placeholder="example@utexas.edu"/>
+                        </Form.Group>
+                        <Form.Group controlId="linkedinInput">
+                            <Form.Label>LinkedIn (preferred, but not required)</Form.Label>
+                            <Form.Control type="text" value={this.state.linkedinInput} onChange={this.handleLinkedin}/>
+                        </Form.Group>
+						<div className="mb-3">
+							<Form.File id="resumeInput">
+							  <Form.File.Label>Please upload a PDF of your resume.</Form.File.Label>
+							  <Form.File.Input required accept=".pdf,.PDF" onChange={this.handleResumeUpload}/>
 									{this.state.uploading ? <p>Uploading...</p> : <p></p>}
 								</Form.File>
 							</div>
@@ -783,33 +798,32 @@ class StudentForm extends Component {
 							<div>5: Extremely Experienced</div>
 							<br/>
 							{this.state.profSkillOptions.map((skill, index) => {
-								let formattedSkill = skill.name.replace(/\s+/g, '');
-								return (
-									<Form.Group key={index}>
-										<Form.Label>{skill.name}</Form.Label>
-										<RadioButton name={formattedSkill}
-													 handleRadio={this.handleProfSkills.bind(this, index)}/>
-									</Form.Group>
-								);
-							})}
-							<Form.Group controlId="ExtraSkills">
-								<Form.Label>Do you have other relevant skills that may be helpful for us to know about
-									(i.e.
-									other languages spoken, coding, analytical software, professional skills, etc.)? -
-									List
-									them here!</Form.Label>
-								<Form.Control type="profList" onChange={this.handleExtraSkills}/>
-							</Form.Group>
+							let formattedSkill = skill.name.replace(/\s+/g, '');
+							return(
+								<Form.Group key={index}>
+									<Form.Label>{skill.name}</Form.Label>
+									<RadioButton name={formattedSkill} handleRadio={this.handleProfSkills.bind(this, index)}/>
+								</Form.Group>
+							);
+						})}
+                        <Form.Group controlId="ExtraSkills">
+                            <Form.Label>Do you have other relevant skills that may be helpful for us to know about (i.e.
+                                other languages spoken, coding, analytical software, professional skills, etc.)? - List
+                                them here!</Form.Label>
+                            <Form.Control type="profList" onChange={this.handleExtraSkills}/>
+                        </Form.Group>
 
-							<Button variant="primary" type="submit" onClick={this.handleSubmit}>
-								Submit
-							</Button>
-							{/*<Button variant="primary" onClick={this.handleTest}>*/}
-							{/*    Test*/}
-							{/*</Button>*/}
-						</Form>
-						<br/>
-					</div>
+                        <Button variant="primary" onClick={this.handleSubmit}>
+                            Submit
+                        </Button>
+                        <div className="submit_text">{this.state.submitting ? "Submitting..." : ""}</div>
+                        <div className="success_text">{this.state.submitted ? "Succesfully Submitted" : ""}</div>
+						{/*<Button variant="primary" onClick={this.handleTest}>*/}
+                        {/*    Test*/}
+						{/*</Button>*/}
+					</Form>
+					<br/>
+				</div>
 			} else {
         		CurrentDisplay =
 					<div>
@@ -820,8 +834,6 @@ class StudentForm extends Component {
 						</p>
 					</div>
 			}
-        }
-
         return (
             <div>
                 <br/><br/><br/><br/>

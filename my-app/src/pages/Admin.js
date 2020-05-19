@@ -6,6 +6,7 @@ import axios from 'axios';
 import Tab from 'react-bootstrap/Tab';
 import Nav from "react-bootstrap/Nav";
 import AdminHome from "../components/AdminHome";
+import AdminSurveys from "../components/AdminSurveys";
 import AdminStudents from "../components/AdminStudents";
 import AdminResumes from "../components/AdminResumes";
 import AdminProjects from "../components/AdminProjects";
@@ -53,46 +54,6 @@ class Admin extends Component {
 				this.setState({ projects: res.data });
 			});
 
-		let { results, students, projects } = this.state;
-
-		await results.forEach((result) => {
-			let studentEID = result.eid;
-			students.forEach((student) => {
-				if(student.eid === studentEID) {
-					result.first_name = student.first_name;
-					result.last_name = student.last_name;
-					result.eid = student.eid;
-					result.phone = student.phone;
-					result.email = student.email;
-					result.linkedIn = student.linkedIn;
-					result.resume_link = student.resume_link;
-					result.intentions = student.intentions;
-					result.interests = student.interests;
-					result.time_commitment = student.time_commitment;
-					result.logistics = student.logistics;
-					result.degree = student.degree;
-					result.tech_courses = student.tech_courses;
-					result.prof_courses = student.prof_courses;
-					result.experience = student.experience;
-					result.tech_skills = student.tech_skills;
-					result.prof_skills = student.prof_skills;
-					result.other_skills = student.other_skills;
-					result.created_at = student.created_at;
-
-				}
-			})
-
-			let projectName = result.project_org;
-			projects.forEach((project) => {
-				if(project.name === projectName) {
-					result.project_technical = project.technical;
-					result.project_professional = project.professional;
-					result.project_primary = project.primary;
-					result.project_secondary = project.secondary;
-					result.project_quadrant = project.quadrant;
-				}
-			})
-		})
 
 		this.setState({loaded: true})
 	}
@@ -147,19 +108,22 @@ class Admin extends Component {
 									<Nav.Link eventKey="first">Home</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link eventKey="second">Students</Nav.Link>
+									<Nav.Link eventKey="second">Surveys</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link eventKey="third">Resumes</Nav.Link>
+									<Nav.Link eventKey="third">Students</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link eventKey="fourth">Projects</Nav.Link>
+									<Nav.Link eventKey="fourth">Resumes</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link eventKey="fifth">Match</Nav.Link>
+									<Nav.Link eventKey="fifth">Projects</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
-									<Nav.Link eventKey="sixth">Results</Nav.Link>
+									<Nav.Link eventKey="sixth">Match</Nav.Link>
+								</Nav.Item>
+								<Nav.Item>
+									<Nav.Link eventKey="seventh">Results</Nav.Link>
 								</Nav.Item>
 								<Nav.Item>
 									<Nav.Link eventKey="seventh">Settings</Nav.Link>
@@ -172,18 +136,21 @@ class Admin extends Component {
 									<AdminHome handleLogout={this.handleLogout.bind(this)}/>
 								</Tab.Pane>
 								<Tab.Pane eventKey="second">
-									<AdminStudents students={this.state.students}/>
+									<AdminSurveys/>
 								</Tab.Pane>
 								<Tab.Pane eventKey="third">
-									<AdminResumes students={this.state.students} resumes={this.state.resumes}/>
+									<AdminStudents students={this.state.students}/>
 								</Tab.Pane>
 								<Tab.Pane eventKey="fourth">
-									<AdminProjects projects={this.state.projects}/>
+									<AdminResumes students={this.state.students} resumes={this.state.resumes}/>
 								</Tab.Pane>
 								<Tab.Pane eventKey="fifth">
-									<AdminMatch students={this.state.students} projects={this.state.projects}/>
+									<AdminProjects projects={this.state.projects}/>
 								</Tab.Pane>
 								<Tab.Pane eventKey="sixth">
+									<AdminMatch students={this.state.students} projects={this.state.projects}/>
+								</Tab.Pane>
+								<Tab.Pane eventKey="seventh">
 									<AdminResults students={this.state.students} projects={this.state.projects} results={this.state.results}  />
 								</Tab.Pane>
 								<Tab.Pane eventKey="seventh">

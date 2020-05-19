@@ -12,6 +12,8 @@ class CommunityForm extends Component {
         super(props);
 		this.state = {
 			enabled: true,
+      submitting: false,
+      submitted: false,
 			uploading: false,
 			firstNameInput: "",
 			lastNameInput: "",
@@ -425,9 +427,11 @@ class CommunityForm extends Component {
 
 		const isFormValid = await this.validateForm();
 		if(!isFormValid) {
+		  e.preventDefault();
 			return;
 		}
-		e.preventDefault();
+
+    this.setState({submitting: true});
 
 		for(let i = 0; i < interestOptions.length; i ++) {
 			let input = interestInputs[i];
@@ -470,7 +474,7 @@ class CommunityForm extends Component {
 
 		//TODO figure out resume saving
 		let params = {
-		    organization_name: orgNameInput,
+		  organization_name: orgNameInput,
 			organization_address: orgAddressInput,
 			organization_website: orgWebsiteInput,
 			contact_first_name: firstNameInput,
@@ -514,6 +518,17 @@ class CommunityForm extends Component {
 				console.log(error);
 			})
 
+      setTimeout(
+
+        function() {
+          this.setState({
+            submitted: true,
+            submitting: false
+          });
+        }
+        .bind(this),
+        1000
+      );
 	}
 
 
@@ -589,6 +604,7 @@ render() {
 
 							<Form.Label>Identify the categories your project falls under. (Check all that
 								apply)</Form.Label>
+
 							{this.state.interestOptions.map((option, index) => {
 								return (
 									<Form.Group key={index}>
@@ -707,32 +723,31 @@ render() {
 							<div>4: Very Relevant</div>
 							<div>5: Extremely Relevant</div>
 							<br/>
+          {this.state.profSkillOptions.map((skill, index) => {
+							let formattedSkill = skill.name.replace(/\s+/g, '');
+							return(
+								<Form.Group key={index}>
+									<Form.Label>{skill.name}</Form.Label>
+									<RadioButton name={formattedSkill} handleRadio={this.handleProfSkills.bind(this, index)}/>
+								</Form.Group>
+							);
+						})}
+						<Form.Group controlId="ExtraSkills">
+							<Form.Label>What other relevant skills that may be helpful for your candidate to have (i.e.
+								other languages spoken, coding, analytical software, professional skills, etc.)? - List
+                                them here!</Form.Label>
+                            <Form.Control type="profList" onChange={this.handleExtraSkills}/>
+                        </Form.Group>
 
-							{this.state.profSkillOptions.map((skill, index) => {
-								let formattedSkill = skill.name.replace(/\s+/g, '');
-								return (
-									<Form.Group key={index}>
-										<Form.Label>{skill.name}</Form.Label>
-										<RadioButton name={formattedSkill}
-													 handleRadio={this.handleProfSkills.bind(this, index)}/>
-									</Form.Group>
-								);
-							})}
-							<Form.Group controlId="ExtraSkills">
-								<Form.Label>What other relevant skills that may be helpful for your candidate to have
-									(i.e.
-									other languages spoken, coding, analytical software, professional skills, etc.)? -
-									List
-									them here!</Form.Label>
-								<Form.Control type="profList" onChange={this.handleExtraSkills}/>
-							</Form.Group>
-
-							<Button variant="primary" type="submit">
-								Submit
-							</Button>
-						</Form>
-						<br/>
-					</div>
+                        <Button onClick={this.handleSubmit} variant="primary">
+                            Submit
+                        </Button>
+                        <div className="submit_text">{this.state.submitting ? "Submitting..." : ""}</div>
+                        <div className="success_text">{this.state.submitted ? "Succesfully Submitted" : ""}</div>
+                    </Form>
+                    <br/>
+                </div>
+						
 			} else {
 				CurrentDisplay =
 					<div>
@@ -744,6 +759,7 @@ render() {
 					</div>
 			}
 		}
+
 
 	return (
             <div>

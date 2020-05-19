@@ -96,6 +96,15 @@ p {
 
 }
 
+.success_text {
+  color: green;
+}
+
+.submit_text, .success_text {
+  top: 5px;
+  position: relative;
+}
+
 .nav-item {
   border: 1px solid tan;
 }
