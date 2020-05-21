@@ -139,7 +139,7 @@ class AdminResumes extends Component {
       return (
         <div>
           <p></p>
-          <a href={resume_link} target="_blank">Click Here To View Resume</a>
+
           <p></p>
           <a href={resume_link} download={student.first_name + "_" + student.last_name + "_resume.pdf"}>Click Here To Download Resume</a>
           <p></p>
