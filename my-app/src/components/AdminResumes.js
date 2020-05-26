@@ -45,7 +45,7 @@ class AdminResumes extends Component {
            unique_id: unique_id,
            data: base64data
          }
-         await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/resumes/', JSON.stringify(resume_params),
+         await axios.post(process.env.REACT_APP_API_URL + 'resumes/', JSON.stringify(resume_params),
      		 {
      				headers: {
      					'content-type': 'application/json',
@@ -81,7 +81,7 @@ class AdminResumes extends Component {
            unique_id: unique_id,
            data: base64data
          }
-         await axios.put('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/resumes/'+resume_id+'/', JSON.stringify(resume_params),
+         await axios.put(process.env.REACT_APP_API_URL + 'resumes/'+resume_id+'/', JSON.stringify(resume_params),
      		 {
      				headers: {
      					'content-type': 'application/json',
@@ -139,7 +139,7 @@ class AdminResumes extends Component {
       return (
         <div>
           <p></p>
-          <a href={resume_link} target="_blank">Click Here To View Resume</a>
+
           <p></p>
           <a href={resume_link} download={student.first_name + "_" + student.last_name + "_resume.pdf"}>Click Here To Download Resume</a>
           <p></p>

@@ -251,7 +251,8 @@ def run_algo(pre_matches={}, email_address=""):
         email += "<p>---------------------------------</p>"
 
     ####### Post to DB
-    api_link = 'http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/results/'
+#     api_link = 'http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api/results/'
+    api_link = 'http://djangobackend-env.eba-wgnanhqn.us-west-2.elasticbeanstalk.com/api/results/'
     params = {
         'cohort': cohort,
         'data': {'data_list': results_arr}
