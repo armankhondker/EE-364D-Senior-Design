@@ -65,7 +65,8 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 
 `npm run build && npm run deploy` 
 
-Also install aws cli and run `aws configure` with the aws credentials before deployment 
+Before deployment the first time - 
+Install the aws cli and run `aws configure` and type in the aws credentials that are in the csv we provided 
 
 ### `npm run build` fails to minify
 
