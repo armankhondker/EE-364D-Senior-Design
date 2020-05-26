@@ -17,7 +17,7 @@ CONNECT is a platform focused on connecting organizations in the community who h
 
 ## Development Team 
 
-* **Arman Khondker** - *Front End Development Lead*
+* **Arman Khondker** - *Front End Development and Natural Language Processing Lead*
 * **Desiree Tang** - *Project Lead*
 * **Josh Papermaster** - *Algorithm Development Lead*
 * **Punit Patel** - *Report Lead*
