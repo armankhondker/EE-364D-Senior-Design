@@ -33,7 +33,7 @@ class About extends Component {
                <br></br>
                Major: Electrical and Computer Engineering
                <br></br>
-			   Responsibilites: Front End Development Lead
+			   Responsibilites: Front End Development and Natural Language Processing Lead
                <br></br>
 					</ul>
 			
