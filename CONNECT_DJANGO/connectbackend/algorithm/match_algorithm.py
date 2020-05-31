@@ -14,10 +14,15 @@ def run_algo(pre_matches={}, email_address=""):
     client = MongoClient(
         "mongodb+srv://rgkadmin:H13seniordesign@cluster0-54uuh.mongodb.net/test?retryWrites=true&w=majority")
     db = client
-    students = list(db.students.students_student.find({}))
+    settings = list(db.students.admins_settings.find({}))
+    cohort = settings[0]['current_cohort']
+    students = list(db.students.students_student.find({
+        'cohort': cohort
+    }))
     resumes = list(db.students.students_resume.find({}))
-    orgs = list(db.students.organizations_project.find({}))
-    cohort = ""
+    orgs = list(db.students.organizations_project.find({
+        'cohort': cohort
+    }))
     student_data = []
     org_data = []
     time_commitment_dict = {
@@ -32,7 +37,6 @@ def run_algo(pre_matches={}, email_address=""):
 
     ############### Data Preprocessing
     for student in students:
-        cohort = student['cohort']  # define cohort
         resume = ""
         r = next((item for item in resumes if item["unique_id"] == student['unique_id']), "")
         # Create pdf of resume from base64, parse text, delete resume
