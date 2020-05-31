@@ -26,6 +26,7 @@ class Admin extends Component {
 			loaded: false,
 			token: null,
 			isLoggedIn: false,
+            settings: null,
 		}
 	}
 
@@ -54,6 +55,11 @@ class Admin extends Component {
 				this.setState({ projects: res.data });
 			});
 
+		await axios.get(process.env.REACT_APP_API_URL + 'settings')
+			.then(res => {
+				console.log(res);
+				this.setState({ settings: res.data });
+			});
 
 		this.setState({loaded: true})
 	}
@@ -66,7 +72,7 @@ class Admin extends Component {
 			password: event.target[1].value,
 		};
 
-		await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api-token-auth/', params)
+		await axios.post('http://djangobackend-env.eba-wgnanhqn.us-west-2.elasticbeanstalk.com/api-token-auth/', params)
 		// await axios.post('http://localhost:8000/api-token-auth/', params)
 			.then(res => {
 				console.log(res);
