@@ -82,7 +82,8 @@ class AdminSettings extends Component {
             .then(res => {
                 console.log(res);
                 if(res.status === 200) {
-                    window.alert("Settings Saved");
+                    window.alert("Settings Saved. Please allow a couple of seconds for the tabs to be updated.");
+                    this.props.callBack();
                 }
             })
             .catch(error => {
