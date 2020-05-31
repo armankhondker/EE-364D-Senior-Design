@@ -174,6 +174,10 @@ class AdminResults extends Component {
         this.setState({ results: this.props.results, modalShow: new Array(this.props.results.length) });
     }
 
+    componentWillReceiveProps(nextProps, nextContext) {
+        this.setState({ results: nextProps.results, modalShow: new Array(nextProps.results.length) });
+    }
+
     handleModal(i) {
         // console.log(i)
         this.setState(update(this.state, {
@@ -194,54 +198,60 @@ class AdminResults extends Component {
             hasMounted = true;
             value = this.props.results[this.props.results.length-1];
         }
-        return(
-            <div>
-                <p>Click on a matching pair to view scoring of skills</p>
-                <table style={{width:"50%", margin: "auto"}}>
-                    <tbody className="admin_table">
-                {hasMounted ?
+        if(value !== undefined) {
+            return(
+                <div>
+                    <p>Click on a matching pair to view scoring of skills</p>
+                    <table style={{width:"50%", margin: "auto"}}>
+                        <tbody className="admin_table">
+                        {hasMounted ?
                             value.data.data_list.map((elem,i) => {
-                              return(
-                                  <tr>
-                                      <td className="admin_cell">
-                                          <div>
-                                          <Button onClick={this.handleModal.bind(this, i)}>{elem.org_name} -> {elem.student_name}</Button>
-                                          <Modal
-                                              size="lg"
-                                              show={this.state.modalShow[i]}
-                                              onHide={() => (
-                                                  this.clearData.bind(this),
-                                                      this.setState(update(this.state, {
-                                                          modalShow: {
-                                                              [i] : {
-                                                                  $set: false
-                                                              }
-                                                          }
-                                                      })))}
-                                              aria-labelledby="contained-modal-title-vcenter"
-                                              centered
-                                          >
-                                              <Modal.Header closeButton>
-                                                  <Modal.Title id="example-custom-modal-styling-title">
-                                                     Match: {elem.org_name} and {elem.student_name}
-                                                  </Modal.Title>
-                                              </Modal.Header>
-                                              <Modal.Body>{displayInfo(elem)}</Modal.Body>
-                                          </Modal>
-                                          </div>
-                                      </td>
-                                  </tr>
-                              )
-                    })
+                                return(
+                                    <tr>
+                                        <td className="admin_cell">
+                                            <div>
+                                                <Button onClick={this.handleModal.bind(this, i)}>{elem.org_name} -> {elem.student_name}</Button>
+                                                <Modal
+                                                    size="lg"
+                                                    show={this.state.modalShow[i]}
+                                                    onHide={() => (
+                                                        this.clearData.bind(this),
+                                                            this.setState(update(this.state, {
+                                                                modalShow: {
+                                                                    [i] : {
+                                                                        $set: false
+                                                                    }
+                                                                }
+                                                            })))}
+                                                    aria-labelledby="contained-modal-title-vcenter"
+                                                    centered
+                                                >
+                                                    <Modal.Header closeButton>
+                                                        <Modal.Title id="example-custom-modal-styling-title">
+                                                            Match: {elem.org_name} and {elem.student_name}
+                                                        </Modal.Title>
+                                                    </Modal.Header>
+                                                    <Modal.Body>{displayInfo(elem)}</Modal.Body>
+                                                </Modal>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                )
+                            })
 
-                    : (
-                    <p>Loading</p>
-                )
-                }
-                    </tbody>
-                </table>
-            </div>
-        );
+                            : (
+                                <p>Loading</p>
+                            )
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            );
+        } else {
+            return (
+                <div>No results</div>
+            )
+        }
     }
 }
 

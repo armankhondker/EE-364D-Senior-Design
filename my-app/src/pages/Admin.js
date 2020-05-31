@@ -26,36 +26,81 @@ class Admin extends Component {
 			loaded: false,
 			token: null,
 			isLoggedIn: false,
+            settings: null,
 		}
+
+		this.update = this.update.bind(this);
 	}
 
 	async componentDidMount() {
-        await axios.get(process.env.REACT_APP_API_URL + 'results')
+		await axios.get(process.env.REACT_APP_API_URL + 'settings')
 			.then(res => {
 				console.log(res);
+				this.setState({ settings: res.data });
+			});
+
+        axios.get(process.env.REACT_APP_API_URL + 'results')
+			.then(res => {
+				console.log(res);
+				res.data = res.data.filter(result => result.cohort === this.state.settings[0].current_cohort);
 				this.setState({ results: res.data });
 			});
 
-		await axios.get(process.env.REACT_APP_API_URL + 'students')
+		axios.get(process.env.REACT_APP_API_URL + 'students')
 			.then(res => {
 				console.log(res);
+				res.data = res.data.filter(student => student.cohort === this.state.settings[0].current_cohort);
 				this.setState({ students: res.data });
 			});
 
-			await axios.get(process.env.REACT_APP_API_URL + 'resumes')
-				.then(res => {
-					console.log(res);
-					this.setState({ resumes: res.data });
-				});
-
-		await axios.get(process.env.REACT_APP_API_URL + 'projects')
+		axios.get(process.env.REACT_APP_API_URL + 'resumes')
 			.then(res => {
 				console.log(res);
+				this.setState({ resumes: res.data });
+			});
+
+		axios.get(process.env.REACT_APP_API_URL + 'projects')
+			.then(res => {
+				console.log(res);
+				res.data = res.data.filter(project => project.cohort === this.state.settings[0].current_cohort);
 				this.setState({ projects: res.data });
 			});
 
 
 		this.setState({loaded: true})
+	}
+
+	async update() {
+		// this.setState({update: "yes"});
+		await axios.get(process.env.REACT_APP_API_URL + 'settings')
+			.then(res => {
+				console.log(res);
+				this.setState({ settings: res.data });
+			});
+
+		axios.get(process.env.REACT_APP_API_URL + 'students')
+			.then(res => {
+				console.log(res);
+				res.data = res.data.filter(student => student.cohort === this.state.settings[0].current_cohort);
+				this.setState({ students: res.data });
+			});
+
+		axios.get(process.env.REACT_APP_API_URL + 'projects')
+			.then(res => {
+				console.log(res);
+				res.data = res.data.filter(project => project.cohort === this.state.settings[0].current_cohort);
+				this.setState({ projects: res.data });
+			});
+
+
+		axios.get(process.env.REACT_APP_API_URL + 'results')
+			.then(res => {
+				console.log(res);
+				res.data = res.data.filter(result => result.cohort === this.state.settings[0].current_cohort);
+				this.setState({ results: res.data });
+			});
+
+		await console.log("Updated");
 	}
 
 	handleLogin = async (event) => {
@@ -66,7 +111,7 @@ class Admin extends Component {
 			password: event.target[1].value,
 		};
 
-		await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api-token-auth/', params)
+		await axios.post('http://djangobackend-env.eba-wgnanhqn.us-west-2.elasticbeanstalk.com/api-token-auth/', params)
 		// await axios.post('http://localhost:8000/api-token-auth/', params)
 			.then(res => {
 				console.log(res);
@@ -154,7 +199,7 @@ class Admin extends Component {
 									<AdminResults students={this.state.students} projects={this.state.projects} results={this.state.results}  />
 								</Tab.Pane>
 								<Tab.Pane eventKey="eighth">
-									<AdminSettings/>
+									<AdminSettings callBack={this.update}/>
 								</Tab.Pane>
 							</Tab.Content>
 						</Col>
