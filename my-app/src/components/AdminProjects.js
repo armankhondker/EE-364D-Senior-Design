@@ -16,7 +16,7 @@ class AdminProjects extends Component {
       constructor(props) {
           super(props);
           this.state = {
-              projects: null,
+              projects: props.projects,
               modalShow: [],
               contact_first_name: "",
               contact_last_name: "",
@@ -67,13 +67,17 @@ class AdminProjects extends Component {
           this.isDict = this.isDict.bind(this);
       }
 
-      async componentDidMount() {
-          await axios.get(process.env.REACT_APP_API_URL + 'projects')
-              .then(res => {
-                  console.log(res);
-                  this.setState({projects: res.data});
-              });
+      componentDidMount() {
+          // await axios.get(process.env.REACT_APP_API_URL + 'projects')
+          //     .then(res => {
+          //         console.log(res);
+          //         this.setState({projects: res.data});
+          //     });
       }
+
+    componentWillReceiveProps(nextProps, nextContext) {
+          this.setState({ projects: nextProps.projects });
+    }
 
     componentDidUpdate(prevProps){
         // console.log("this.state.projects on projects tab");
