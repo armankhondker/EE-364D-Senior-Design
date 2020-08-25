@@ -12,8 +12,9 @@ class StudentForm extends Component {
         super(props);
         this.state = {
         	enabled: true,
-      submitted: false,
-      submitting: false,
+			submitted: false,
+			submitting: false,
+            currentCohort: "",
 			uploading: false,
 			firstNameInput: "",
 			lastNameInput: "",
@@ -279,6 +280,7 @@ class StudentForm extends Component {
 				console.log(res);
 				this.setState({
 					enabled: res.data.student_form_enabled,
+					currentCohort: res.data.current_cohort
 				});
 			})
 			.catch(err => console.log(err));
@@ -423,7 +425,7 @@ class StudentForm extends Component {
       timeCommit, intentionOptions, intentionInputs, interestOptions, interestInputs,
 			logisticInputs, techCourseOptions, techCourseInputs, profCourseOptions, profCourseInputs,
 			degreeOption, experienceQuestions, experienceInputs, techSkillOptions,
-			techSkillInputs, profSkillOptions, profSkillInputs, extraSkills
+			techSkillInputs, profSkillOptions, profSkillInputs, extraSkills, currentCohort
 		} = this.state;
 
 		let jsonIntentions = {};
@@ -506,12 +508,12 @@ class StudentForm extends Component {
 			tech_skills: jsonTechSkills,
 			prof_skills: jsonProfSkills,
 			other_skills: extraSkills,
-			cohort: 'SP20',
-			unique_id: `${eidInput}-SP20`
+			cohort: currentCohort,
+			unique_id: `${eidInput}-${currentCohort}`
 		}
 
     let resume_params = {
-      unique_id: `${eidInput}-SP20`,
+      unique_id: `${eidInput}-${currentCohort}`,
       data: resumeInput
     }
 

@@ -72,6 +72,7 @@ class AdminStudents extends Component {
     clearData() {
       this.setState(state => ({
         students: this.props.students,
+        currentCohort: "",
         modalShow: [],
         first_name: "",
         last_name: "",
@@ -394,7 +395,7 @@ class AdminStudents extends Component {
         }
         submit_dict[s_key] = temp_answers;
       }
-      submit_dict['unique_id'] = `${submit_dict.eid}-SP20`
+      submit_dict['unique_id'] = `${submit_dict.eid}-${this.state.currentCohort}`
 
   		await axios.put(process.env.REACT_APP_API_URL + 'students/'+student['id']+'/', JSON.stringify(submit_dict),
   			{
@@ -571,6 +572,15 @@ class AdminStudents extends Component {
 
     componentDidMount() {
         this.setState({ students: this.props.students, modalShow: new Array(this.props.students.length) });
+
+        axios.get(process.env.REACT_APP_API_URL + 'settings/1/')
+            .then(res => {
+                console.log(res);
+                this.setState({
+                    currentCohort: res.data.current_cohort
+                });
+            })
+            .catch(err => console.log(err));
     }
 
     handleModal(i, e) {

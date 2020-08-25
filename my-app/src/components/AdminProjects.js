@@ -424,7 +424,7 @@ class AdminProjects extends Component {
           }
           submit_dict[s_key] = temp_answers;
         }
-        submit_dict['unique_id'] = `${submit_dict.organization_name.replace(/\s+/g, '')}-${submit_dict.project_name.replace(/\s+/g, '')}-SP20`
+        submit_dict['unique_id'] = `${submit_dict.organization_name.replace(/\s+/g, '')}-${submit_dict.project_name.replace(/\s+/g, '')}-${this.state.currentCohort}`
         console.log(JSON.stringify(submit_dict))
     		await axios.put(process.env.REACT_APP_API_URL + 'projects/'+project['id']+'/', JSON.stringify(submit_dict),
     			{

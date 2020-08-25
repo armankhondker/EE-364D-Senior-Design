@@ -12,8 +12,9 @@ class CommunityForm extends Component {
         super(props);
 		this.state = {
 			enabled: true,
-      submitting: false,
-      submitted: false,
+			submitting: false,
+			submitted: false,
+            currentCohort: "",
 			uploading: false,
 			firstNameInput: "",
 			lastNameInput: "",
@@ -267,6 +268,7 @@ class CommunityForm extends Component {
 				console.log(res);
 				this.setState({
 					enabled: res.data.organization_form_enabled,
+					currentCohort: res.data.current_cohort,
 				});
 			})
 			.catch(err => console.log(err));
@@ -414,7 +416,7 @@ class CommunityForm extends Component {
 			logisticInputs,
 			techCourseOptions, techCourseInputs, profCourseOptions, profCourseInputs,
 			degreeInputs, degreeOptions, experienceQuestions, experienceInputs, techSkillOptions,
-			techSkillInputs, profSkillOptions, profSkillInputs, extraSkills
+			techSkillInputs, profSkillOptions, profSkillInputs, extraSkills, currentCohort
 		} = this.state;
 
 		let	jsonInterests = {};
@@ -495,8 +497,8 @@ class CommunityForm extends Component {
 			tech_skills: jsonTechSkills,
 			prof_skills: jsonProfSkills,
 			other_skills: extraSkills,
-			cohort: 'SP20',
-			unique_id: `${orgNameInput.replace(/\s+/g, '')}-${projNameInput.replace(/\s+/g, '')}-SP20`
+			cohort: currentCohort,
+			unique_id: `${orgNameInput.replace(/\s+/g, '')}-${projNameInput.replace(/\s+/g, '')}-${currentCohort}`
 		}
 
 		console.log(JSON.stringify(params));
