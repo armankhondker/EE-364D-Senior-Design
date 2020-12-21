@@ -595,55 +595,61 @@ render() {
 					<div className="form">
 						<Form onSubmit={this.handleSubmit}>
 							<Form.Group controlId="orgInput">
-								<Form.Label>Organization Name </Form.Label>
+								<Form.Label><b>Organization Name </b></Form.Label>
 								<Form.Control type="text" value={this.state.orgInput} onChange={this.handleOrgName}/>
 							</Form.Group>
+							<br/>
 							<Form.Group controlId="orgInput">
-								<Form.Label>Organization Address</Form.Label>
+								<Form.Label><b>Organization Address</b></Form.Label>
 								<Form.Control type="text" value={this.state.orgAddressInput}
 											  onChange={this.handleOrgAddress}/>
 							</Form.Group>
+							<br/>
 							<Form.Group controlId="orgInput">
-								<Form.Label>Organization Website</Form.Label>
+								<Form.Label><b>Organization Website</b></Form.Label>
 								<Form.Control type="text" value={this.state.orgWebsiteInput}
 											  onChange={this.handleOrgWebsite}/>
 							</Form.Group>
+							<br/>
 							<Form.Group controlId="nameInput">
-								<Form.Label>First Name</Form.Label>
+								<Form.Label><b>First Name</b></Form.Label>
 								<Form.Control required value={this.state.firstNameInput} onChange={this.handleFirstName}
 											  type="text"/>
 							</Form.Group>
+							<br/>
 							<Form.Group>
-								<Form.Label>Last Name</Form.Label>
+								<Form.Label><b>Last Name</b></Form.Label>
 								<Form.Control required value={this.state.lastNameInput} onChange={this.handleLastName}
 											  type="text"/>
 							</Form.Group>
+							<br/>
 							<Form.Group controlId="phoneInput">
-								<Form.Label>Phone #</Form.Label>
+								<Form.Label><b>Phone #</b></Form.Label>
 								<Form.Control required type="tel" value={this.state.phoneInput}
 											  onChange={this.handlePhone} placeholder="5125558888"/>
 							</Form.Group>
+							<br/>
 							<Form.Group controlId="emailInput">
-								<Form.Label>Email</Form.Label>
+								<Form.Label><b>Email</b></Form.Label>
 								<Form.Control required type="email" value={this.state.emailInput}
 											  onChange={this.handleEmail} placeholder="example@utexas.edu"/>
 							</Form.Group>
+							<br/>
 							<Form.Group controlId="orgInput">
-								<Form.Label>Project Name</Form.Label>
+								<Form.Label><b>Project Name</b></Form.Label>
 								<Form.Control type="text" value={this.state.projNameInput}
 											  onChange={this.handleProjName}/>
 							</Form.Group>
+							<br/>
 							<Form.Group controlId="projDesc">
-								<Form.Label>Project Description (1000 Character limit)</Form.Label>
+								<Form.Label><b>Project Description (1000 Character limit)</b></Form.Label>
 								<Form.Control as="textarea" value={this.state.projDescInput}
 											  onChange={this.handleProjDesc} rows="5"/>
-								<Form.Label>Character Count: {this.state.projDescInput.length}</Form.Label>
+								<Form.Label><b>Character Count: {this.state.projDescInput.length}</b></Form.Label>
 							</Form.Group>
-
 							<br/>
-
-							<Form.Label>Identify the categories your project falls under. (Check all that
-								apply)</Form.Label>
+							<Form.Label><b>Identify the categories your project falls under. (Check all that
+								apply)</b></Form.Label>
 
 							{this.state.interestOptions.map((option, index) => {
 								return (
@@ -654,10 +660,11 @@ render() {
 								)
 							})}
 
+							<br/>
 							<Form.Group controlId="timeCommit">
-								<Form.Label>Realistically, how much time do you expect your student to commit per week
+								<Form.Label><b>Realistically, how much time do you expect your student to commit per week
 									working on your assigned
-									project? </Form.Label>
+									project? </b></Form.Label>
 								<Form.Control required as="select" onChange={this.handleTimeCommit}>
 									<option/>
 									<option>Less than 5 Hours Per Week</option>
@@ -675,7 +682,7 @@ render() {
 								if (this.state.logisticFlags[index]) {
 									return (
 										<Form.Group key={index}>
-											<Form.Label>{question}</Form.Label>
+											<Form.Label><b>{question}</b></Form.Label>
 											<Form.Check type="Radio" label="Yes"
 														checked={this.state.logisticInputs[index]}
 														onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
@@ -687,7 +694,7 @@ render() {
 								} else {
 									return (
 										<Form.Group key={index}>
-											<Form.Label>{question}</Form.Label>
+											<Form.Label><b>{question}</b></Form.Label>
 											<Form.Check type="Radio" label="Yes" checked={false}
 														onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
 											<Form.Check type="Radio" label="No" checked={false}
@@ -696,10 +703,11 @@ render() {
 									)
 								}
 							})}
+							<br/>
 
 							<Form.Group controlId="CoursesTaken">
-								<Form.Label>Identify each of the following technical oriented courses that would be
-									helpful for completing your project. </Form.Label>
+								<Form.Label><b>Identify each of the following technical oriented courses that would be
+									helpful for completing your project. </b></Form.Label>
 								{this.state.techCourseOptions.map((course, index) => {
 									if (index % 10 === 0 && index > 0) {
 										return (
@@ -716,9 +724,10 @@ render() {
 										)
 								})}
 							</Form.Group>
+							<br/>
 							<Form.Group controlId="CoursesTaken">
-								<Form.Label>Identify each of the following professional oriented courses that would be
-									helpful for completing your project. </Form.Label>
+								<Form.Label><b>Identify each of the following professional oriented courses that would be
+									helpful for completing your project. </b></Form.Label>
 								{this.state.profCourseOptions.map((course, index) => {
 									if (index % 10 === 0 && index > 0) {
 										return (
@@ -735,9 +744,10 @@ render() {
 										)
 								})}
 							</Form.Group>
+							<br/>
 
-							<Form.Label>Please rate how relevant the following technical skills are to your project
-								using the scale below:</Form.Label>
+							<Form.Label><b>Please rate how relevant the following technical skills are to your project
+								using the scale below:</b></Form.Label>
 							<br/>
 							<div>1: Not Relevant</div>
 							<div>2: Slightly Relevant</div>
@@ -749,15 +759,16 @@ render() {
 								let formattedSkill = skill.name.replace(/\s+/g, '');
 								return (
 									<Form.Group key={index}>
-										<Form.Label>{skill.name}</Form.Label>
+										<Form.Label><b>{skill.name}</b></Form.Label>
 										<RadioButton name={formattedSkill}
 													 handleRadio={this.handleTechSkills.bind(this, index)}/>
+									 	<br/>
 									</Form.Group>
 								);
 							})}
 
-							<Form.Label>Please rate how relevant the following professional skills are to your project
-								using the scale below:</Form.Label>
+							<Form.Label><b>Please rate how relevant the following professional skills are to your project
+								using the scale below:</b></Form.Label>
 							<br/>
 							<div>1: Not Relevant</div>
 							<div>2: Slightly Relevant</div>
@@ -765,21 +776,24 @@ render() {
 							<div>4: Very Relevant</div>
 							<div>5: Extremely Relevant</div>
 							<br/>
-          {this.state.profSkillOptions.map((skill, index) => {
+						  {this.state.profSkillOptions.map((skill, index) => {
 							let formattedSkill = skill.name.replace(/\s+/g, '');
 							return(
 								<Form.Group key={index}>
-									<Form.Label>{skill.name}</Form.Label>
+									<Form.Label><b>{skill.name}</b></Form.Label>
 									<RadioButton name={formattedSkill} handleRadio={this.handleProfSkills.bind(this, index)}/>
+									<br/>
 								</Form.Group>
 							);
 						})}
 						<Form.Group controlId="ExtraSkills">
-							<Form.Label>What other relevant skills that may be helpful for your candidate to have (i.e.
+							<Form.Label><b>What other relevant skills that may be helpful for your candidate to have (i.e.
 								other languages spoken, coding, analytical software, professional skills, etc.)? - List
-                                them here!</Form.Label>
-                            <Form.Control type="profList" onChange={this.handleExtraSkills}/>
-                        </Form.Group>
+                                them here! (500 Character Limit)</b></Form.Label>
+							<Form.Control as="textarea" value={this.state.extraSkills}
+										  onChange={this.handleExtraSkills} rows="5"/>
+							<Form.Label><b>Character Count: {this.state.extraSkills.length}</b></Form.Label>
+						</Form.Group>
 
                         <Button onClick={this.handleSubmit} variant="primary">
                             Submit

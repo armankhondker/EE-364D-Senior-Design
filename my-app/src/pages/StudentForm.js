@@ -631,38 +631,44 @@ class StudentForm extends Component {
 					<div className="form">
 						<Form>
 							<Form.Group controlId="nameInput">
-								<Form.Label>First Name</Form.Label>
+								<Form.Label><b>First Name</b></Form.Label>
 								<Form.Control required value={this.state.firstNameInput} onChange={this.handleFirstName}
 											  type="text"/>
 							</Form.Group>
+							<br/>
 							<Form.Group>
-								<Form.Label>Last Name</Form.Label>
+								<Form.Label><b>Last Name</b></Form.Label>
 								<Form.Control required value={this.state.lastNameInput} onChange={this.handleLastName}
 											  type="text"/>
 							</Form.Group>
+							<br/>
 							<Form.Group>
-								<Form.Label>EID</Form.Label>
+								<Form.Label><b>EID</b></Form.Label>
 								<Form.Control required value={this.state.eidInput} onChange={this.handleEID}
 											  type="text"/>
 							</Form.Group>
+							<br/>
 							<Form.Group controlId="phoneInput">
-								<Form.Label>Phone #</Form.Label>
+								<Form.Label><b>Phone #</b></Form.Label>
 								<Form.Control required type="tel" value={this.state.phoneInput}
 											  onChange={this.handlePhone} placeholder="5125558888"/>
 							</Form.Group>
+							<br/>
 							<Form.Group controlId="emailInput">
-								<Form.Label>Email</Form.Label>
+								<Form.Label><b>Email</b></Form.Label>
 								<Form.Control required type="email" value={this.state.emailInput}
 											  onChange={this.handleEmail} placeholder="example@utexas.edu"/>
 							</Form.Group>
+							<br/>
 							<Form.Group controlId="linkedinInput">
-								<Form.Label>LinkedIn (preferred, but not required)</Form.Label>
+								<Form.Label><b>LinkedIn (preferred, but not required)</b></Form.Label>
 								<Form.Control type="text" value={this.state.linkedinInput}
 											  onChange={this.handleLinkedin}/>
 							</Form.Group>
+							<br/>
 							<div className="mb-3">
 								<Form.File id="resumeInput">
-									<Form.File.Label>Please upload a PDF of your resume.</Form.File.Label>
+									<Form.File.Label><b>Please upload a PDF of your resume.</b></Form.File.Label>
 									<Form.File.Input required accept=".pdf,.PDF" onChange={this.handleResumeUpload}/>
 									{this.state.uploading ? <p>Uploading...</p> : <p/>}
 								</Form.File>
@@ -670,8 +676,8 @@ class StudentForm extends Component {
 
 							<br/>
 
-							<Form.Label>Why are you interested in working on a project? (Check all that
-								apply </Form.Label>
+							<Form.Label><b>Why are you interested in working on a project? (Check all that
+								apply </b></Form.Label>
 							{this.state.intentionOptions.map((option, index) => {
 								return (
 									<Form.Group key={index}>
@@ -681,8 +687,9 @@ class StudentForm extends Component {
 								)
 							})}
 
-							<Form.Label>Identify each of the project categories you are interested in. (Check all that
-								apply)</Form.Label>
+							<br/>
+							<Form.Label><b>Identify each of the project categories you are interested in. (Check all that
+								apply)</b></Form.Label>
 							{this.state.interestOptions.map((option, index) => {
 								return (
 									<Form.Group key={index}>
@@ -692,9 +699,10 @@ class StudentForm extends Component {
 								)
 							})}
 
+							<br/>
 							<Form.Group controlId="timeCommit">
-								<Form.Label>Realistically, how much time can you commit per week to working on a
-									project? </Form.Label>
+								<Form.Label><b>Realistically, how much time can you commit per week to working on a
+									project? </b></Form.Label>
 								<Form.Control required as="select" onChange={this.handleTimeCommit}>
 									<option/>
 									<option>Less than 5 Hours Per Week</option>
@@ -712,30 +720,33 @@ class StudentForm extends Component {
 								if (this.state.logisticFlags[index]) {
 									return (
 										<Form.Group key={index}>
-											<Form.Label>{question.name}</Form.Label>
+											<Form.Label><b>{question.name}</b></Form.Label>
 											<Form.Check type="Radio" label="Yes"
 														checked={this.state.logisticInputs[index]}
 														onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
 											<Form.Check type="Radio" label="No"
 														checked={!this.state.logisticInputs[index]}
 														onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
+											<br/>
 										</Form.Group>
 									)
 								} else {
 									return (
 										<Form.Group key={index}>
-											<Form.Label>{question.name}</Form.Label>
+											<Form.Label><b>{question.name}</b></Form.Label>
 											<Form.Check type="Radio" label="Yes"
 														onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
 											<Form.Check type="Radio" label="No"
 														onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
+											<br/>
 										</Form.Group>
 									)
 								}
 							})}
 
+							<br/>
 							<Form.Group controlId="degree">
-								<Form.Label>Which degree program are you currently enrolled in?</Form.Label>
+								<Form.Label><b>Which degree program are you currently enrolled in?</b></Form.Label>
 								{this.state.degreeOptions.map((option, index) => {
 									return (
 										<Form.Group key={index}>
@@ -746,16 +757,17 @@ class StudentForm extends Component {
 									)
 								})}
 							</Form.Group>
+							<br/>
 							<Form.Group controlId="CoursesTaken">
-								<Form.Label>Identify each of the following technical courses you have
-									taken/completed. </Form.Label>
+								<Form.Label><b>Identify each of the following technical courses you have
+									taken/completed. </b></Form.Label>
 								{this.state.techCourseOptions.map((course, index) => {
 									if (index % 10 === 0 && index > 0) {
 										return (
 											<div>
 												<br/>
-												<Form.Label>Identify each of the following courses you have
-													taken/completed. </Form.Label>
+												<Form.Label><b>Identify each of the following courses you have
+													taken/completed. </b></Form.Label>
 												<Form.Check label={course.name + " " + course.courseId}
 															onChange={this.handleTechCourseInputs.bind(this, index)}/>
 											</div>
@@ -767,16 +779,17 @@ class StudentForm extends Component {
 										)
 								})}
 							</Form.Group>
+							<br/>
 							<Form.Group controlId="CoursesTaken">
-								<Form.Label>Identify each of the following professional courses you have
-									taken/completed. </Form.Label>
+								<Form.Label><b>Identify each of the following professional courses you have
+									taken/completed. </b></Form.Label>
 								{this.state.profCourseOptions.map((course, index) => {
 									if (index % 10 === 0 && index > 0) {
 										return (
 											<div>
 												<br/>
-												<Form.Label>Identify each of the following courses you have
-													taken/completed. </Form.Label>
+												<Form.Label><b>Identify each of the following courses you have
+													taken/completed. </b></Form.Label>
 												<Form.Check label={course.name + " " + course.courseId}
 															onChange={this.handleProfCourseInputs.bind(this, index)}/>
 											</div>
@@ -792,7 +805,7 @@ class StudentForm extends Component {
 							{/*	{this.state.experienceQuestions.map((question, index) => {*/}
 							{/*		return(*/}
 							{/*			<Form.Group key={index}>*/}
-							{/*				<Form.Label>{question.name}</Form.Label>*/}
+							{/*				<Form.Label><b>{question.name}</b></Form.Label>*/}
 							{/*				<Form.Control required as="select" onChange={this.handleExperienceQuestions.bind(this,index)}>*/}
 							{/*					<option></option>*/}
 							{/*					<option>No Experience</option>*/}
@@ -805,8 +818,9 @@ class StudentForm extends Component {
 							{/*	})}*/}
 							{/*</Form.Group>*/}
 
-							<Form.Label>Please rate your experience in the following technical skills using the scale
-								below:</Form.Label>
+							<br/>
+							<Form.Label><b>Please rate your experience in the following technical skills using the scale
+								below:</b></Form.Label>
 							<br/>
 							<div>1: No Experience</div>
 							<div>2: Can Learn</div>
@@ -818,16 +832,16 @@ class StudentForm extends Component {
 								let formattedSkill = skill.name.replace(/\s+/g, '');
 								return (
 									<Form.Group key={index}>
-										<Form.Label>{skill.name}</Form.Label>
+										<Form.Label><b>{skill.name}</b></Form.Label>
 										<RadioButton name={formattedSkill}
 													 handleRadio={this.handleTechSkills.bind(this, index)}/>
+										<br/>
 									</Form.Group>
 								);
 							})}
 
-
-							<Form.Label>Please rate your experience in the following professional skills using the scale
-								below:</Form.Label>
+							<Form.Label><b>Please rate your experience in the following professional skills using the scale
+								below:</b></Form.Label>
 							<br/>
 							<div>1: No Experience</div>
 							<div>2: Can Learn</div>
@@ -839,22 +853,23 @@ class StudentForm extends Component {
 								let formattedSkill = skill.name.replace(/\s+/g, '');
 								return (
 									<Form.Group key={index}>
-										<Form.Label>{skill.name}</Form.Label>
+										<Form.Label><b>{skill.name}</b></Form.Label>
 										<RadioButton name={formattedSkill}
 													 handleRadio={this.handleProfSkills.bind(this, index)}/>
+										<br/>
 									</Form.Group>
 								);
 							})}
 							<Form.Group controlId="ExtraSkills">
-								<Form.Label>Do you have other relevant skills that may be helpful for us to know about
+								<Form.Label><b>Do you have other relevant skills that may be helpful for us to know about
 									(i.e.
 									other languages spoken, coding, analytical software, professional skills, etc.)? -
 									List
-									them here! (500 Character limit)</Form.Label>
+									them here! (500 Character limit)</b></Form.Label>
 								{/*<Form.Control type="profList" onChange={this.handleExtraSkills}/>*/}
 								<Form.Control as="textarea" value={this.state.extraSkills}
 											  onChange={this.handleExtraSkills} rows="5"/>
-								<Form.Label>Character Count: {this.state.extraSkills.length}</Form.Label>
+								<Form.Label><b>Character Count: {this.state.extraSkills.length}</b></Form.Label>
 							</Form.Group>
 
 							<Button variant="primary" onClick={this.handleSubmit}>
