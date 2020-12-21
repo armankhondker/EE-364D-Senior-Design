@@ -579,6 +579,10 @@ class AdminStudents extends Component {
             .catch(err => console.log(err));
     }
 
+    componentWillReceiveProps(nextProps, nextContext) {
+        this.setState({ students: nextProps.students, modalShow: new Array(nextProps.students.length) });
+    }
+
     handleModal(i, e) {
         this._e = e;
         this.setState(update(this.state, {
