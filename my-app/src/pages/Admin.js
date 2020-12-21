@@ -111,8 +111,9 @@ class Admin extends Component {
 			password: event.target[1].value,
 		};
 
-		await axios.post('http://djangobackend-env.eba-wgnanhqn.us-west-2.elasticbeanstalk.com/api-token-auth/', params)
-		// await axios.post('http://localhost:8000/api-token-auth/', params)
+
+		// await axios.post('http://django-env.emqvqmazrh.us-west-2.elasticbeanstalk.com/api-token-auth/', params)
+		await axios.post(process.env.REACT_APP_AUTH_URL, params)
 			.then(res => {
 				console.log(res);
 				if(res.status === 200) {

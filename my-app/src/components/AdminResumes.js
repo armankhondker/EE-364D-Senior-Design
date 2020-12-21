@@ -110,13 +110,13 @@ class AdminResumes extends Component {
 
     displayResume(student) {
       if (this.state.resumes == null && this.state.students == null && !this.state.rendered)
-        return <div></div>
+        return <div/>
       let stud_id = student.unique_id;
       let resumes = this.state.resumes;
       let stud_resume = null
       for (let i=0; i<resumes.length; i++) {
         let resume = resumes[i]
-        if (resume.unique_id == stud_id) {
+        if (resume.unique_id === stud_id) {
           stud_resume = resume;
         }
       }
@@ -128,7 +128,7 @@ class AdminResumes extends Component {
               <Form.File id="resumeInput">
                 <Form.File.Label>Please upload a PDF of the resume.</Form.File.Label>
                 <Form.File.Input required accept=".pdf,.PDF" onChange={this.uploadResume.bind(this, student)}/>
-                  {this.state.uploading ? <p>Uploading...</p> : <p></p>}
+                  {this.state.uploading ? <p>Uploading...</p> : <p/>}
               </Form.File>
             </div>
           </div>
@@ -138,16 +138,16 @@ class AdminResumes extends Component {
       let resume_link = URL.createObjectURL(resume_blob);
       return (
         <div>
-          <p></p>
+          <p/>
 
-          <p></p>
+          <p/>
           <a href={resume_link} download={student.first_name + "_" + student.last_name + "_resume.pdf"}>Click Here To Download Resume</a>
-          <p></p>
+          <p/>
           <div className="mb-3 resume_upload_box">
             <Form.File id="resumeInput">
             <Form.File.Label>If you would like to the update the resume, do so here:</Form.File.Label>
               <Form.File.Input required accept=".pdf,.PDF" onChange={this.updateResume.bind(this, student, stud_resume.id)}/>
-                {this.state.uploading ? <p>Uploading...</p> : <p></p>}
+                {this.state.uploading ? <p>Uploading...</p> : <p/>}
             </Form.File>
           </div>
         </div>

@@ -4,7 +4,6 @@ import '../styling/Admin.css';
 import Form from 'react-bootstrap/Form';
 import LoadingAnimation from "./LoadingAnimation";
 import update from 'react-addons-update';
-import Popup from "reactjs-popup";
 import '../App.css';
 import axios from "axios";
 
@@ -18,7 +17,6 @@ class AdminSurveys extends Component {
           intentionOptions: [],
           intentionChanges: [],
           newIntention: "",
-          interestOptions: [],
           interestOptions: [],
           newInterest: "",
           logisticQuestions: [],
@@ -71,7 +69,7 @@ class AdminSurveys extends Component {
     }
 
     async updateDB(question, api_name) {
-      if (question.name == "") {
+      if (question.name  ===  "") {
         // delete api
         await axios.delete(process.env.REACT_APP_API_URL + ''+api_name+'/'+question.id+'/',
         {
@@ -145,7 +143,7 @@ class AdminSurveys extends Component {
       //Put new intentions in db
       for (let i=intentionChanges.length; i<intentionOptions.length; i++) {
         let question = intentionOptions[i];
-        if (question.name=="")
+        if (question.name === "")
           continue;
         await this.postDB(question, "intentions")
       }
@@ -158,7 +156,7 @@ class AdminSurveys extends Component {
       }
       for (let i=interestChanges.length; i<interestOptions.length; i++) {
         let question = interestOptions[i];
-        if (question.name=="")
+        if (question.name === "")
           continue;
         await this.postDB(question, "interests")
       }
@@ -171,7 +169,7 @@ class AdminSurveys extends Component {
       }
       for (let i=logisticChanges.length; i<logisticQuestions.length; i++) {
         let question = logisticQuestions[i];
-        if (question.name=="")
+        if (question.name === "")
           continue;
         await this.postDB(question, "logistics")
       }
@@ -184,7 +182,7 @@ class AdminSurveys extends Component {
       }
       for (let i=degreeChanges.length; i<degreeOptions.length; i++) {
         let question = degreeOptions[i];
-        if (question.name=="")
+        if (question.name === "")
           continue;
         await this.postDB(question, "degrees")
       }
@@ -197,7 +195,7 @@ class AdminSurveys extends Component {
       }
       for (let i=techCourseChanges.length; i<techCourseOptions.length; i++) {
         let question = techCourseOptions[i];
-        if (question.name=="")
+        if (question.name === "")
           continue;
         await this.postDB(question, "tech-courses")
       }
@@ -210,7 +208,7 @@ class AdminSurveys extends Component {
       }
       for (let i=profCourseChanges.length; i<profCourseOptions.length; i++) {
         let question = profCourseOptions[i];
-        if (question.name=="")
+        if (question.name === "")
           continue;
         await this.postDB(question, "prof-courses")
       }
@@ -223,7 +221,7 @@ class AdminSurveys extends Component {
       }
       for (let i=techSkillChanges.length; i<techSkillOptions.length; i++) {
         let question = techSkillOptions[i];
-        if (question.name=="")
+        if (question.name === "")
           continue;
         await this.postDB(question, "tech-skills")
       }
@@ -236,7 +234,7 @@ class AdminSurveys extends Component {
       }
       for (let i=profSkillChanges.length; i<profSkillOptions.length; i++) {
         let question = profSkillOptions[i];
-        if (question.name=="")
+        if (question.name === "")
           continue;
         await this.postDB(question, "prof-skills")
       }

@@ -63,6 +63,11 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/ad
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
 
+`npm run build && npm run deploy` 
+
+Before deployment the first time - 
+Install the aws cli and run `aws configure` and type in the aws credentials that are in the csv we provided 
+
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
