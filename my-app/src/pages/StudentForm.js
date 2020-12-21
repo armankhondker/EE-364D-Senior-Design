@@ -33,10 +33,6 @@ class StudentForm extends Component {
 				"Do you need flexible work hours?", "Do you need the ability to work remotely?"],
 			logisticInputs: [],
 			logisticFlags: [],
-			techCourseOptions: [],
-			techCourseInputs: [],
-      profCourseOptions: [],
-			profCourseInputs: [],
 			degreeOptions: [],
 			degreeInputs:[],
 			degreeInput: "",
@@ -62,8 +58,6 @@ class StudentForm extends Component {
 		this.handleInterest = this.handleInterest.bind(this);
 		this.handleDegreeOption = this.handleDegreeOption.bind(this);
 		this.handleLogisticQuestions = this.handleLogisticQuestions.bind(this);
-		this.handleTechCourseInputs = this.handleTechCourseInputs.bind(this);
-		this.handleProfCourseInputs = this.handleProfCourseInputs.bind(this);
 		this.handleExperienceQuestions = this.handleExperienceQuestions.bind(this);
 		this.handleTechSkills = this.handleTechSkills.bind(this);
 		this.handleExtraSkills = this.handleExtraSkills.bind(this);
@@ -218,25 +212,6 @@ class StudentForm extends Component {
 		}));
 	}
 
-	handleTechCourseInputs(i, e) {
-		this.setState(update(this.state, {
-			techCourseInputs: {
-				[i] : {
-					$set: e.target.checked
-				}
-			}
-		}));
-	}
-
-	handleProfCourseInputs(i, e) {
-		this.setState(update(this.state, {
-			profCourseInputs: {
-				[i] : {
-					$set: e.target.checked
-				}
-			}
-		}));
-	}
 
 	handleExperienceQuestions(i, e) {
 		this.setState(update(this.state, {
@@ -339,27 +314,6 @@ class StudentForm extends Component {
 			})
 			.catch(err => console.log(err));
 
-		 axios.get(process.env.REACT_APP_API_URL + 'tech-courses')
-			.then(res => {
-				console.log(res);
-				this.setState({
-					techCourseOptions: res.data,
-					techCourseInputs: new Array(res.data.length),
-				});
-			})
-			.catch(err => console.log(err));
-
-		 axios.get(process.env.REACT_APP_API_URL + 'prof-courses')
-			.then(res => {
-				console.log(res);
-				this.setState({
-					profCourseOptions: res.data,
-					profCourseInputs: new Array(res.data.length),
-				});
-			})
-			.catch(err => console.log(err));
-
-
 		 axios.get(process.env.REACT_APP_API_URL + 'tech-skills')
 			.then(res => {
 				console.log(res);
@@ -454,15 +408,13 @@ class StudentForm extends Component {
 		let {
 			firstNameInput, lastNameInput, eidInput, phoneInput, emailInput, linkedinInput, resumeInput,
       timeCommit, intentionOptions, intentionInputs, interestOptions, interestInputs,
-			logisticInputs, techCourseOptions, techCourseInputs, profCourseOptions, profCourseInputs,
+			logisticInputs,
 			degreeOption, experienceQuestions, experienceInputs, techSkillOptions,
 			techSkillInputs, profSkillOptions, profSkillInputs, extraSkills, currentCohort
 		} = this.state;
 
 		let jsonIntentions = {};
 		let	jsonInterests = {};
-		let jsonTechCourses = {};
-		let jsonProfCourses = {};
 		let jsonExperiences = {};
 		let jsonTechSkills = {};
 		let jsonProfSkills = {};
@@ -486,18 +438,6 @@ class StudentForm extends Component {
 			let input = interestInputs[i];
 			if(input === null || input === undefined) input = false;
 			jsonInterests[interestOptions[i].name] = input;
-		}
-
-		for(let i = 0; i < techCourseOptions.length; i ++) {
-			let input = techCourseInputs[i];
-			if(input === null || input === undefined) input = false;
-			jsonTechCourses[techCourseOptions[i].name] = input;
-		}
-
-		for(let i = 0; i < profCourseOptions.length; i ++) {
-			let input = profCourseInputs[i];
-			if(input === null || input === undefined) input = false;
-			jsonProfCourses[profCourseOptions[i].name] = input;
 		}
 
 		for(let i = 0; i < experienceQuestions.length; i ++) {
@@ -530,8 +470,6 @@ class StudentForm extends Component {
 			flexible_hours: logisticInputs[3],
 			work_remotely: logisticInputs[4],
 			degree: degreeOption,
-			tech_courses: jsonTechCourses,
-			prof_courses: jsonProfCourses,
 			experience: jsonExperiences,
 			tech_skills: jsonTechSkills,
 			prof_skills: jsonProfSkills,
@@ -611,11 +549,10 @@ class StudentForm extends Component {
 
     render() {
         let hasMounted = false;
-        let {intentionOptions, interestOptions, logisticQuestions, degreeOptions, techCourseOptions,
-			profCourseOptions, techSkillOptions, profSkillOptions, enabled} = this.state;
+        let {intentionOptions, interestOptions, logisticQuestions, degreeOptions,
+			techSkillOptions, profSkillOptions, enabled} = this.state;
         if(intentionOptions.length && interestOptions.length && logisticQuestions.length && degreeOptions.length &&
-			techCourseOptions.length && profCourseOptions.length && techSkillOptions.length &&
-			profSkillOptions.length
+			techSkillOptions.length && profSkillOptions.length
 		) {
             hasMounted = true;
         }
@@ -758,49 +695,6 @@ class StudentForm extends Component {
 								})}
 							</Form.Group>
 							<br/>
-							<Form.Group controlId="CoursesTaken">
-								<Form.Label><b>Identify each of the following technical courses you have
-									taken/completed. </b></Form.Label>
-								{this.state.techCourseOptions.map((course, index) => {
-									if (index % 10 === 0 && index > 0) {
-										return (
-											<div>
-												<br/>
-												<Form.Label><b>Identify each of the following courses you have
-													taken/completed. </b></Form.Label>
-												<Form.Check label={course.name + " " + course.courseId}
-															onChange={this.handleTechCourseInputs.bind(this, index)}/>
-											</div>
-										)
-									} else
-										return (
-											<Form.Check key={index} label={course.name + ' ' + course.courseId}
-														onChange={this.handleTechCourseInputs.bind(this, index)}/>
-										)
-								})}
-							</Form.Group>
-							<br/>
-							<Form.Group controlId="CoursesTaken">
-								<Form.Label><b>Identify each of the following professional courses you have
-									taken/completed. </b></Form.Label>
-								{this.state.profCourseOptions.map((course, index) => {
-									if (index % 10 === 0 && index > 0) {
-										return (
-											<div>
-												<br/>
-												<Form.Label><b>Identify each of the following courses you have
-													taken/completed. </b></Form.Label>
-												<Form.Check label={course.name + " " + course.courseId}
-															onChange={this.handleProfCourseInputs.bind(this, index)}/>
-											</div>
-										)
-									} else
-										return (
-											<Form.Check key={index} label={course.name + ' ' + course.courseId}
-														onChange={this.handleProfCourseInputs.bind(this, index)}/>
-										)
-								})}
-							</Form.Group>
 							{/*<Form.Group controlId="experience">*/}
 							{/*	{this.state.experienceQuestions.map((question, index) => {*/}
 							{/*		return(*/}
