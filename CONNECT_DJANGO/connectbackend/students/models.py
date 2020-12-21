@@ -20,8 +20,6 @@ class Student(models.Model):
     flexible_hours = models2.BooleanField(default=False)
     work_remotely = models2.BooleanField(default=False)
     degree = models.CharField(max_length=100)
-    tech_courses = models.DictField(default={})
-    prof_courses = models.DictField(default={})
     experience = models.DictField(default={})
     tech_skills = models.DictField(default={})
     prof_skills = models.DictField(default={})

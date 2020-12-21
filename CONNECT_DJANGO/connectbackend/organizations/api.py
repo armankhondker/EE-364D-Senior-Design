@@ -1,8 +1,8 @@
-from .models import Project, Skill, TechSkill, ProfSkill, TechCourse, ProfCourse, Intention, \
+from .models import Project, Skill, TechSkill, ProfSkill, Intention, \
     Degree, Interest, Logistic, Experience
 from rest_framework import viewsets, permissions
-from .serializers import ProjectSerializer, SkillSerializer, TechSkillSerializer, ProfSkillSerializer,\
-    TechCourseSerializer, ProfCourseSerializer, IntentionSerializer, DegreeSerializer, InterestSerializer,\
+from .serializers import ProjectSerializer, SkillSerializer, TechSkillSerializer, ProfSkillSerializer, \
+    IntentionSerializer, DegreeSerializer, InterestSerializer, \
     LogisticSerializer, ExperienceSerializer
 
 
@@ -36,22 +36,6 @@ class ProfSkillViewSet(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
     serializer_class = ProfSkillSerializer
-
-
-class TechCourseViewSet(viewsets.ModelViewSet):
-    queryset = TechCourse.objects.all()
-    permission_classes = [
-        permissions.AllowAny
-    ]
-    serializer_class = TechCourseSerializer
-
-
-class ProfCourseViewSet(viewsets.ModelViewSet):
-    queryset = ProfCourse.objects.all()
-    permission_classes = [
-        permissions.AllowAny
-    ]
-    serializer_class = ProfCourseSerializer
 
 
 class IntentionViewSet(viewsets.ModelViewSet):
