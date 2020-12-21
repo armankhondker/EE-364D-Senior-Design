@@ -820,8 +820,11 @@ class StudentForm extends Component {
 									(i.e.
 									other languages spoken, coding, analytical software, professional skills, etc.)? -
 									List
-									them here!</Form.Label>
-								<Form.Control type="profList" onChange={this.handleExtraSkills}/>
+									them here! (500 Character limit)</Form.Label>
+								{/*<Form.Control type="profList" onChange={this.handleExtraSkills}/>*/}
+								<Form.Control as="textarea" value={this.state.extraSkills}
+											  onChange={this.handleExtraSkills} rows="5"/>
+								<Form.Label>Character Count: {this.state.extraSkills.length}</Form.Label>
 							</Form.Group>
 
 							<Button variant="primary" onClick={this.handleSubmit}>
