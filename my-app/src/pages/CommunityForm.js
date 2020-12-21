@@ -1,6 +1,6 @@
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import RadioButton from "../components/RadioButton";
 import LoadingAnimation from "../components/LoadingAnimation";
 import update from 'react-addons-update';
@@ -104,35 +104,35 @@ class CommunityForm extends Component {
 
 	handlePhone(e) {
 		var num = e.target.value;
-			this.setState(state => ({
+			this.setState(() => ({
 	      phoneInput: num
 	    }));
 	}
 
 		handleFirstName(e) {
 			var name = e.target.value;
-			this.setState(state => ({
+			this.setState(() => ({
 	      firstNameInput: name
 	    }));
 	}
 
 	handleEmail(e) {
 		var email = e.target.value;
-		this.setState(state => ({
+		this.setState(() => ({
 			emailInput: email
 		}));
 	}
 
 		handleLastName(e) {
 			var name = e.target.value;
-			this.setState(state => ({
+			this.setState(() => ({
 	      lastNameInput: name
 	    }));
 		}
 
 		handleTimeCommit(e) {
 			var tc = e.target.value
-			this.setState(state => ({
+			this.setState(() => ({
 	      timeCommit: tc
 	    }));
 		}
@@ -181,13 +181,14 @@ class CommunityForm extends Component {
 			}
 			// Also update actual degree option chosen
 			if (e.target.checked) {
-				this.setState(state => ({
+				this.setState(() => ({
 					degreeOption: this.state.degreeOptions[i]
 		    }));
 			}
 		}
 
 		handleLogisticQuestions(i, choice, e) {
+			this._e = e;
 			var pick=false;
 			if (choice === 0)
 				pick = true;
@@ -257,7 +258,7 @@ class CommunityForm extends Component {
 
 	handleExtraSkills(e) {
 		var writtenText = e.target.value
-		this.setState(state => ({
+		this.setState(() => ({
 			extraSkills: writtenText
 		}));
 	}
@@ -396,9 +397,9 @@ class CommunityForm extends Component {
 
 		if(alertMessage !== "") {
 			window.alert("Please fill out the following: \n" + alertMessage);
-			return(false);
+			return false;
 		} else {
-			return(true);
+			return true;
 		}
 
 	}
@@ -460,18 +461,15 @@ class CommunityForm extends Component {
 		}
 
 		for(let i = 0; i < experienceQuestions.length; i ++) {
-			let input = experienceInputs[i];
-			jsonExperiences[experienceQuestions[i].name] = input;
+			jsonExperiences[experienceQuestions[i].name] = experienceInputs[i];
 		}
 
 		for(let i = 0; i < techSkillOptions.length; i ++) {
-			let input = techSkillInputs[i];
-			jsonTechSkills[techSkillOptions[i].name] = input;
+			jsonTechSkills[techSkillOptions[i].name] = techSkillInputs[i];
 		}
 
 		for(let i = 0; i < profSkillOptions.length; i ++) {
-			let input = profSkillInputs[i];
-			jsonProfSkills[profSkillOptions[i].name] = input;
+			jsonProfSkills[profSkillOptions[i].name] = profSkillInputs[i];
 		}
 
 		//TODO figure out resume saving
@@ -621,15 +619,17 @@ render() {
 									working on your assigned
 									project? </Form.Label>
 								<Form.Control required as="select" onChange={this.handleTimeCommit}>
-									<option></option>
+									<option/>
 									<option>Less than 5 Hours Per Week</option>
 									<option>5-10 Hours Per Week</option>
+									<option>8-12 Hours Per Week</option>
+									<option>10-15 Hours Per Week</option>
 									<option>15-20 Hours Per Week</option>
 									<option>20-30 Hours Per Week</option>
 								</Form.Control>
 							</Form.Group>
 
-							<br></br>
+							<br/>
 
 							{this.state.logisticQuestions.map((question, index) => {
 								if (this.state.logisticFlags[index]) {
@@ -664,7 +664,7 @@ render() {
 									if (index % 10 === 0 && index > 0) {
 										return (
 											<div key={index}>
-												<br></br>
+												<br/>
 												<Form.Check label={`${course.name} (${course.courseId})`}
 															onChange={this.handleTechCourseInputs.bind(this, index)}/>
 											</div>
@@ -683,7 +683,7 @@ render() {
 									if (index % 10 === 0 && index > 0) {
 										return (
 											<div key={index}>
-												<br></br>
+												<br/>
 												<Form.Check label={`${course.name} (${course.courseId})`}
 															onChange={this.handleProfCourseInputs.bind(this, index)}/>
 											</div>

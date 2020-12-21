@@ -1,6 +1,6 @@
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import RadioButton from "../components/RadioButton";
 import LoadingAnimation from "../components/LoadingAnimation";
 import update from 'react-addons-update';
@@ -73,38 +73,38 @@ class StudentForm extends Component {
     }
 
 	handlePhone(e) {
-		var num = e.target.value;
-		this.setState(state => ({
+		let num = e.target.value;
+		this.setState({
 		  phoneInput: num
-		}));
+		});
 	}
 
 	handleFirstName(e) {
-		var name = e.target.value;
-		this.setState(state => ({
+		let name = e.target.value;
+		this.setState({
 		  firstNameInput: name
-		}));
+		});
 	}
 
 	handleEmail(e) {
-		var email = e.target.value;
-		this.setState(state => ({
+		let email = e.target.value;
+		this.setState({
 			emailInput: email
-		}));
+		});
 	}
 
 	handleLinkedin(e) {
-		var li = e.target.value;
-		this.setState(state => ({
+		let li = e.target.value;
+		this.setState({
 			linkedinInput: li
-		}));
+		});
 	}
 
 	handleLastName(e) {
-		var name = e.target.value;
-		this.setState(state => ({
+		let name = e.target.value;
+		this.setState({
 		  lastNameInput: name
-		}));
+		});
 	}
 
 	handleEID(e) {
@@ -133,10 +133,10 @@ class StudentForm extends Component {
 	}
 
 	handleTimeCommit(e) {
-		var tc = e.target.value
-		this.setState(state => ({
-	  timeCommit: tc
-	}));
+		let tc = e.target.value
+		this.setState({
+		  timeCommit: tc
+		});
 	}
 
 	handleIntentions(i, e) {
@@ -193,13 +193,14 @@ class StudentForm extends Component {
 		}
 		// Also update actual degree option chosen
 		if (e.target.checked) {
-			this.setState(state => ({
+			this.setState({
 				degreeOption: this.state.degreeOptions[i].name
-		}));
+			});
 		}
 	}
 
 	handleLogisticQuestions(i, choice, e) {
+		this._e = e;
 		var pick=false;
 		if (choice === 0)
 			pick = true;
@@ -269,9 +270,9 @@ class StudentForm extends Component {
 
 	handleExtraSkills(e) {
 		var writtenText = e.target.value
-		this.setState(state => ({
+		this.setState({
 			extraSkills: writtenText
-		}));
+		});
 	}
 
     async componentDidMount() {
@@ -412,9 +413,9 @@ class StudentForm extends Component {
 
 		if(alertMessage !== "") {
 			window.alert("Please fill out the following: \n" + alertMessage);
-			return(false);
+			return false;
 		} else {
-			return(true);
+			return true;
 		}
 
 	}
@@ -470,18 +471,15 @@ class StudentForm extends Component {
 		}
 
 		for(let i = 0; i < experienceQuestions.length; i ++) {
-			let input = experienceInputs[i];
-			jsonExperiences[experienceQuestions[i].name] = input;
+			jsonExperiences[experienceQuestions[i].name] = experienceInputs[i];
 		}
 
 		for(let i = 0; i < techSkillOptions.length; i ++) {
-			let input = techSkillInputs[i];
-			jsonTechSkills[techSkillOptions[i].name] = input;
+			jsonTechSkills[techSkillOptions[i].name] = techSkillInputs[i];
 		}
 
 		for(let i = 0; i < profSkillOptions.length; i ++) {
-			let input = profSkillInputs[i];
-			jsonProfSkills[profSkillOptions[i].name] = input;
+			jsonProfSkills[profSkillOptions[i].name] = profSkillInputs[i];
 		}
 
 		//TODO figure out resume saving
@@ -636,11 +634,11 @@ class StudentForm extends Component {
 								<Form.File id="resumeInput">
 									<Form.File.Label>Please upload a PDF of your resume.</Form.File.Label>
 									<Form.File.Input required accept=".pdf,.PDF" onChange={this.handleResumeUpload}/>
-									{this.state.uploading ? <p>Uploading...</p> : <p></p>}
+									{this.state.uploading ? <p>Uploading...</p> : <p/>}
 								</Form.File>
 							</div>
 
-							<br></br>
+							<br/>
 
 							<Form.Label>Why are you interested in working on a project? (Check all that
 								apply </Form.Label>
@@ -668,15 +666,17 @@ class StudentForm extends Component {
 								<Form.Label>Realistically, how much time can you commit per week to working on a
 									project? </Form.Label>
 								<Form.Control required as="select" onChange={this.handleTimeCommit}>
-									<option></option>
+									<option/>
 									<option>Less than 5 Hours Per Week</option>
 									<option>5-10 Hours Per Week</option>
+									<option>8-12 Hours Per Week</option>
+									<option>10-15 Hours Per Week</option>
 									<option>15-20 Hours Per Week</option>
 									<option>20-30 Hours Per Week</option>
 								</Form.Control>
 							</Form.Group>
 
-							<br></br>
+							<br/>
 
 							{this.state.logisticQuestions.map((question, index) => {
 								if (this.state.logisticFlags[index]) {
@@ -723,7 +723,7 @@ class StudentForm extends Component {
 									if (index % 10 === 0 && index > 0) {
 										return (
 											<div>
-												<br></br>
+												<br/>
 												<Form.Label>Identify each of the following courses you have
 													taken/completed. </Form.Label>
 												<Form.Check label={course.name + " " + course.courseId}
@@ -744,7 +744,7 @@ class StudentForm extends Component {
 									if (index % 10 === 0 && index > 0) {
 										return (
 											<div>
-												<br></br>
+												<br/>
 												<Form.Label>Identify each of the following courses you have
 													taken/completed. </Form.Label>
 												<Form.Check label={course.name + " " + course.courseId}
