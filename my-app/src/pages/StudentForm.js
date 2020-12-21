@@ -383,9 +383,39 @@ class StudentForm extends Component {
 
 	validateForm() {
 		let alertMessage = "";
-		let {logisticFlags, logisticQuestions, degreeOption, techSkillInputs, techSkillOptions, profSkillOptions,
+		let {
+			firstNameInput, lastNameInput, eidInput, phoneInput, emailInput, resumeInput, timeCommit,
+			logisticFlags, logisticQuestions, degreeOption, techSkillInputs, techSkillOptions, profSkillOptions,
 			profSkillInputs
 		} = this.state;
+		
+		if(firstNameInput === "" || firstNameInput === undefined || firstNameInput === null) {
+			alertMessage += 'First Name \n';
+		}
+		
+		if(lastNameInput === "" || lastNameInput === undefined || lastNameInput === null) {
+			alertMessage += 'Last Name \n';
+		}
+
+		if(eidInput === "" || eidInput === undefined || eidInput === null) {
+			alertMessage += 'EID \n';
+		}
+
+		if(phoneInput === "" || phoneInput === undefined || phoneInput === null) {
+			alertMessage += 'Phone Number \n';
+		}
+
+		if(emailInput === "" || emailInput === undefined || emailInput === null) {
+			alertMessage += 'Email \n';
+		}
+
+		if(resumeInput === "" || resumeInput === undefined || resumeInput === null) {
+			alertMessage += 'Resume \n';
+		}
+
+		if(timeCommit === "" || timeCommit === undefined || timeCommit === null) {
+			alertMessage += 'Time Commitment \n';
+		}
 
 		for(let i = 0; i < logisticQuestions.length; i++) {
 			if(logisticFlags[i] === null || logisticFlags[i] === undefined) {
@@ -494,7 +524,7 @@ class StudentForm extends Component {
 			intentions: jsonIntentions,
 			interests: jsonInterests,
 			time_commitment: timeCommit,
-      international: logisticInputs[0],
+			international: logisticInputs[0],
 			fin_aid: logisticInputs[1],
 			transportation: logisticInputs[2],
 			flexible_hours: logisticInputs[3],

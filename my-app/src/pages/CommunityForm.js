@@ -371,10 +371,50 @@ class CommunityForm extends Component {
 
 	validateForm() {
 		let alertMessage = "";
-		let {logisticFlags, logisticQuestions, techSkillInputs, techSkillOptions, profSkillOptions,
+		let {
+			orgNameInput, orgAddressInput,
+			firstNameInput, lastNameInput, phoneInput, emailInput, 
+			projNameInput, projDescInput, timeCommit,
+			logisticFlags, logisticQuestions, techSkillInputs, techSkillOptions, profSkillOptions,
 			profSkillInputs
 		} = this.state;
+		
+		if(orgNameInput === "" || orgNameInput === undefined || orgNameInput === null) {
+			alertMessage += 'Organization Name \n';
+		}
 
+		if(orgAddressInput === "" || orgAddressInput === undefined || orgAddressInput === null) {
+			alertMessage += 'Organization Address \n';
+		}
+
+		if(firstNameInput === "" || firstNameInput === undefined || firstNameInput === null) {
+			alertMessage += 'First Name \n';
+		}
+
+		if(lastNameInput === "" || lastNameInput === undefined || lastNameInput === null) {
+			alertMessage += 'Last Name \n';
+		}
+
+		if(phoneInput === "" || phoneInput === undefined || phoneInput === null) {
+			alertMessage += 'Phone Number\n';
+		}
+		
+
+		if(emailInput === "" || emailInput === undefined || emailInput === null) {
+			alertMessage += 'Email \n';
+		}
+
+		if(projNameInput === "" || projNameInput === undefined || projNameInput === null) {
+			alertMessage += 'Project Name \n';
+		}
+		
+		if(projDescInput === "" || projDescInput === undefined || projDescInput === null) {
+			alertMessage += 'Project Description\n';
+		}
+		
+		if(timeCommit === "" || timeCommit === undefined || timeCommit === null) {
+			alertMessage += 'Time Commitment \n';
+		}
 		for(let i = 0; i < logisticQuestions.length; i++) {
 			if(logisticFlags[i] === null || logisticFlags[i] === undefined) {
 				alertMessage += `${logisticQuestions[i]} \n`;
