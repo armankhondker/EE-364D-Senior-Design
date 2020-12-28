@@ -19,7 +19,8 @@ class Student(models.Model):
     transportation = models2.BooleanField(default=False)
     flexible_hours = models2.BooleanField(default=False)
     work_remotely = models2.BooleanField(default=False)
-    degree = models.CharField(max_length=100)
+    other_availability = models.TextField(max_length=500, blank=True)
+    school = models.CharField(max_length=100)
     experience = models.DictField(default={})
     tech_skills = models.DictField(default={})
     prof_skills = models.DictField(default={})
@@ -27,6 +28,7 @@ class Student(models.Model):
     cohort = models.CharField(max_length=100)
     unique_id = models.CharField(max_length=100, unique=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    hear = models.CharField(max_length=100)
 
 
 class Resume(models.Model):

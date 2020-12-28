@@ -10,8 +10,6 @@ class ProjectSerializer(serializers.ModelSerializer):
         if 'request' in self.context and self.context['request'].method == 'GET':
             self.fields['project_categories'] = serializers.SerializerMethodField()
             self.fields['school'] = serializers.SerializerMethodField()
-            self.fields['tech_courses'] = serializers.SerializerMethodField()
-            self.fields['prof_courses'] = serializers.SerializerMethodField()
             self.fields['experience'] = serializers.SerializerMethodField()
             self.fields['tech_skills'] = serializers.SerializerMethodField()
             self.fields['prof_skills'] = serializers.SerializerMethodField()
