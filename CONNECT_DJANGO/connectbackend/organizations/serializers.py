@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Project, Skill, TechSkill, ProfSkill, Intention, \
-    Degree, Interest, Logistic, Experience
+    School, Interest, Logistic, Experience
 
 
 # Student Serializer
@@ -9,7 +9,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         super().__init__(*args, **kwargs)
         if 'request' in self.context and self.context['request'].method == 'GET':
             self.fields['project_categories'] = serializers.SerializerMethodField()
-            self.fields['degree'] = serializers.SerializerMethodField()
+            self.fields['school'] = serializers.SerializerMethodField()
             self.fields['tech_courses'] = serializers.SerializerMethodField()
             self.fields['prof_courses'] = serializers.SerializerMethodField()
             self.fields['experience'] = serializers.SerializerMethodField()
@@ -23,8 +23,8 @@ class ProjectSerializer(serializers.ModelSerializer):
     def get_project_categories(self, obj):
         return obj.project_categories
 
-    def get_degree(self, obj):
-        return obj.degree
+    def get_school(self, obj):
+        return obj.school
 
     def get_experience(self, obj):
         return obj.experience
@@ -60,9 +60,9 @@ class IntentionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class DegreeSerializer(serializers.ModelSerializer):
+class SchoolSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Degree
+        model = School
         fields = '__all__'
 
 
