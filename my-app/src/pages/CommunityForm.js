@@ -32,10 +32,10 @@ class CommunityForm extends Component {
 			logisticQuestions: ["Does your candidate need to have their own transportation?", "Will your project permit flexible work hours?", "Will your candidate be able to work remotely?"],
 			logisticInputs: [],
 			logisticFlags: [],
-			degreeOptions: [],
-			degreeInputs:[],
-			degreeInput: "",
-			degreeOtherInput: "",
+			schoolOptions: [],
+			schoolInputs:[],
+			schoolInput: "",
+			schoolOtherInput: "",
 			experienceQuestions:[],
 			experienceInputs: [],
 			techSkillOptions: [],
@@ -45,165 +45,44 @@ class CommunityForm extends Component {
 			extraSkills: ""
 		}
 
-		this.handleOrgName = this.handleOrgName.bind(this);
-		this.handleOrgWebsite = this.handleOrgWebsite.bind(this);
-		this.handleOrgAddress = this.handleOrgAddress.bind(this);
-		this.handleProjName = this.handleProjName.bind(this);
-		this.handleProjDesc = this.handleProjDesc.bind(this);
-		this.handlePhone = this.handlePhone.bind(this);
-		this.handleFirstName = this.handleFirstName.bind(this);
-		this.handleLastName = this.handleLastName.bind(this);
-		this.handleEmail = this.handleEmail.bind(this);
-		this.handleTimeCommit = this.handleTimeCommit.bind(this);
-		this.handleInterest = this.handleInterest.bind(this);
-		this.handleDegreeOption = this.handleDegreeOption.bind(this);
 		this.handleLogisticQuestions = this.handleLogisticQuestions.bind(this);
-		this.handleExperienceQuestions = this.handleExperienceQuestions.bind(this);
 		this.handleTechSkills = this.handleTechSkills.bind(this);
-		this.handleExtraSkills = this.handleExtraSkills.bind(this);
 		this.validateForm = this.validateForm.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+
+		this.handleTextInput = this.handleTextInput.bind(this);
 	}
 
-	handleOrgName(e) {
-    	this.setState({
-			orgNameInput: e.target.value
-		});
-	}
-
-	handleOrgWebsite(e) {
+	handleTextInput(e) {
 		this.setState({
-			orgWebsiteInput: e.target.value
+			[e.target.id]: e.target.value
 		});
 	}
 
-	handleOrgAddress(e) {
-		this.setState({
-			orgAddressInput: e.target.value
-		});
-	}
-
-	handleProjName(e) {
-		this.setState({
-			projNameInput: e.target.value
-		});
-	}
-
-	handleProjDesc(e) {
-		this.setState({
-			projDescInput: e.target.value
-		});
-	}
-
-	handlePhone(e) {
-		var num = e.target.value;
-			this.setState(() => ({
-	      phoneInput: num
-	    }));
-	}
-
-		handleFirstName(e) {
-			var name = e.target.value;
-			this.setState(() => ({
-	      firstNameInput: name
-	    }));
-	}
-
-	handleEmail(e) {
-		var email = e.target.value;
-		this.setState(() => ({
-			emailInput: email
+	handleCheckInput(i, e) {
+		this.setState(update(this.state, {
+			[e.target.id]: {
+				[i] : {
+					$set: e.target.checked
+				}
+			}
 		}));
 	}
 
-		handleLastName(e) {
-			var name = e.target.value;
-			this.setState(() => ({
-	      lastNameInput: name
-	    }));
-		}
-
-		handleTimeCommit(e) {
-			var tc = e.target.value
-			this.setState(() => ({
-	      timeCommit: tc
-	    }));
-		}
-
-		handleInterest(i, e) {
-			this.setState(update(this.state, {
-				interestInputs: {
-					[i] : {
-						$set: e.target.checked
-					}
-				}
-			}));
-		}
-
-		handleDegreeOption(i, e) {
-			var formerCheck = -1;
-			if (e.target.checked) {
-				var k=0;
-				for (k; k<this.state.degreeData.length; k++) {
-					if (this.state.degreeData[k] === true && k !== i)
-						formerCheck=k;
-				}
-			}
-			// Former check is the previously checked box index
-			if (formerCheck === -1) {
-				this.setState(update(this.state, {
-					degreeData: {
-						[i] : {
-							$set: e.target.checked
-						}
-					}
-				}));
-			}
-			// If a different box was checked, uncheck it
-			else {
-				this.setState(update(this.state, {
-					degreeData: {
-						[i] : {
-							$set: e.target.checked
-						},
-						[formerCheck] : {
-							$set: false
-						}
-					}
-				}));
-			}
-			// Also update actual degree option chosen
-			if (e.target.checked) {
-				this.setState(() => ({
-					degreeOption: this.state.degreeOptions[i]
-		    }));
-			}
-		}
-
-		handleLogisticQuestions(i, choice, e) {
-			this._e = e;
-			var pick=false;
-			if (choice === 0)
-				pick = true;
-			this.setState(update(this.state, {
-				logisticInputs: {
-					[i] : {
-						$set: pick
-					}
-				},
-				logisticFlags: {
-					[i] : {
-						$set: true
-					}
-				}
-			}));
-		}
-
-	handleExperienceQuestions(i, e) {
+	handleLogisticQuestions(i, choice, e) {
+		this._e = e;
+		var pick=false;
+		if (choice === 0)
+			pick = true;
 		this.setState(update(this.state, {
-			experienceInputs: {
+			logisticInputs: {
 				[i] : {
-					$set: e.target.value
+					$set: pick
+				}
+			},
+			logisticFlags: {
+				[i] : {
+					$set: true
 				}
 			}
 		}));
@@ -226,13 +105,6 @@ class CommunityForm extends Component {
 					$set: e
 				}
 			}
-		}));
-	}
-
-	handleExtraSkills(e) {
-		var writtenText = e.target.value
-		this.setState(() => ({
-			extraSkills: writtenText
 		}));
 	}
 
@@ -280,12 +152,12 @@ class CommunityForm extends Component {
 			// })
 			// .catch(err => console.log(err));
 
-		axios.get(process.env.REACT_APP_API_URL + 'degrees')
+		axios.get(process.env.REACT_APP_API_URL + 'schools')
 			.then(res => {
 				console.log(res);
 				this.setState({
-					degreeOptions: res.data,
-					degreeInputs: new Array(res.data.length),
+					schoolOptions: res.data,
+					schoolInputs: new Array(res.data.length),
 				});
 			})
 			.catch(err => console.log(err));
@@ -403,12 +275,12 @@ class CommunityForm extends Component {
 			firstNameInput, lastNameInput, phoneInput, emailInput, timeCommit,
 			interestOptions, interestInputs,
 			logisticInputs,
-			degreeInputs, degreeOptions, experienceQuestions, experienceInputs, techSkillOptions,
+			schoolInputs, schoolOtherInput, schoolOptions, experienceQuestions, experienceInputs, techSkillOptions,
 			techSkillInputs, profSkillOptions, profSkillInputs, extraSkills, currentCohort
 		} = this.state;
 
 		let	jsonInterests = {};
-		let jsonDegrees = {};
+		let jsonSchools = {};
 		let jsonExperiences = {};
 		let jsonTechSkills = {};
 		let jsonProfSkills = {};
@@ -427,11 +299,12 @@ class CommunityForm extends Component {
 			jsonInterests[interestOptions[i].name] = input;
 		}
 
-		for(let i = 0; i < degreeOptions.length; i++) {
-			let input = degreeInputs[i];
+		for(let i = 0; i < schoolOptions.length; i++) {
+			let input = schoolInputs[i];
 			if(input === null || input === undefined) input = false;
-			jsonDegrees[degreeOptions[i].name] = input;
+			jsonSchools[schoolOptions[i].name] = input;
 		}
+		jsonSchools['Other'] = schoolOtherInput;
 
 		for(let i = 0; i < experienceQuestions.length; i ++) {
 			jsonExperiences[experienceQuestions[i].name] = experienceInputs[i];
@@ -461,7 +334,7 @@ class CommunityForm extends Component {
 			transportation: logisticInputs[0],
 			flexible_hours: logisticInputs[1],
 			work_remotely: logisticInputs[2],
-			degree: jsonDegrees,
+			school: jsonSchools,
 			experience: jsonExperiences,
 			tech_skills: jsonTechSkills,
 			prof_skills: jsonProfSkills,
@@ -506,9 +379,9 @@ class CommunityForm extends Component {
 
 render() {
 	let hasMounted = false;
-		let {interestOptions, logisticQuestions, degreeOptions,
+		let {interestOptions, logisticQuestions, schoolOptions,
 			techSkillOptions, profSkillOptions, enabled} = this.state;
-		if(interestOptions.length && logisticQuestions.length && degreeOptions.length &&
+		if(interestOptions.length && logisticQuestions.length && schoolOptions.length &&
 			techSkillOptions.length && profSkillOptions.length
 		) {
 			hasMounted = true;
@@ -526,55 +399,55 @@ render() {
 						<Form onSubmit={this.handleSubmit}>
 							<Form.Group controlId="orgInput">
 								<Form.Label><b>Organization Name </b></Form.Label>
-								<Form.Control type="text" value={this.state.orgInput} onChange={this.handleOrgName}/>
+								<Form.Control type="text" id="orgNameInput" value={this.state.orgNameInput} onChange={this.handleTextInput}/>
 							</Form.Group>
 							<br/>
 							<Form.Group controlId="orgInput">
 								<Form.Label><b>Organization Address</b></Form.Label>
-								<Form.Control type="text" value={this.state.orgAddressInput}
-											  onChange={this.handleOrgAddress}/>
+								<Form.Control type="text" id="orgAddressInput" value={this.state.orgAddressInput}
+											  onChange={this.handleTextInput}/>
 							</Form.Group>
 							<br/>
 							<Form.Group controlId="orgInput">
 								<Form.Label><b>Organization Website</b></Form.Label>
-								<Form.Control type="text" value={this.state.orgWebsiteInput}
-											  onChange={this.handleOrgWebsite}/>
+								<Form.Control type="text" value={this.state.orgWebsiteInput} id="orgWebsiteInput"
+											  onChange={this.handleTextInput}/>
 							</Form.Group>
 							<br/>
 							<Form.Group controlId="nameInput">
 								<Form.Label><b>First Name</b></Form.Label>
-								<Form.Control required value={this.state.firstNameInput} onChange={this.handleFirstName}
+								<Form.Control required value={this.state.firstNameInput} onChange={this.handleTextInput} id="firstNameInput"
 											  type="text"/>
 							</Form.Group>
 							<br/>
 							<Form.Group>
 								<Form.Label><b>Last Name</b></Form.Label>
-								<Form.Control required value={this.state.lastNameInput} onChange={this.handleLastName}
+								<Form.Control required value={this.state.lastNameInput} onChange={this.handleTextInput} id="lastNameInput"
 											  type="text"/>
 							</Form.Group>
 							<br/>
 							<Form.Group controlId="phoneInput">
 								<Form.Label><b>Phone #</b></Form.Label>
-								<Form.Control required type="tel" value={this.state.phoneInput}
-											  onChange={this.handlePhone} placeholder="5125558888"/>
+								<Form.Control required type="tel" value={this.state.phoneInput} id="phoneInput"
+											  onChange={this.handleTextInput} placeholder="5125558888"/>
 							</Form.Group>
 							<br/>
 							<Form.Group controlId="emailInput">
 								<Form.Label><b>Email</b></Form.Label>
-								<Form.Control required type="email" value={this.state.emailInput}
-											  onChange={this.handleEmail} placeholder="example@utexas.edu"/>
+								<Form.Control required type="email" value={this.state.emailInput} id="emailInput"
+											  onChange={this.handleTextInput} placeholder="example@utexas.edu"/>
 							</Form.Group>
 							<br/>
 							<Form.Group controlId="orgInput">
 								<Form.Label><b>Project Name</b></Form.Label>
-								<Form.Control type="text" value={this.state.projNameInput}
-											  onChange={this.handleProjName}/>
+								<Form.Control type="text" value={this.state.projNameInput} id="projNameInput"
+											  onChange={this.handleTextInput}/>
 							</Form.Group>
 							<br/>
 							<Form.Group controlId="projDesc">
 								<Form.Label><b>Project Description (1000 Character limit)</b></Form.Label>
-								<Form.Control as="textarea" value={this.state.projDescInput}
-											  onChange={this.handleProjDesc} rows="5"/>
+								<Form.Control as="textarea" value={this.state.projDescInput} id="projDescInput"
+											  onChange={this.handleTextInput} rows="5"/>
 								<Form.Label><b>Character Count: {this.state.projDescInput.length}</b></Form.Label>
 							</Form.Group>
 							<br/>
@@ -584,8 +457,8 @@ render() {
 							{this.state.interestOptions.map((option, index) => {
 								return (
 									<Form.Group key={index}>
-										<Form.Check label={option.name}
-													onChange={this.handleInterest.bind(this, index)}/>
+										<Form.Check label={option.name} id="interestInputs"
+													onChange={this.handleCheckInput.bind(this, index)}/>
 									</Form.Group>
 								)
 							})}
@@ -595,7 +468,7 @@ render() {
 								<Form.Label><b>Realistically, how much time do you expect your student to commit per week
 									working on your assigned
 									project? </b></Form.Label>
-								<Form.Control required as="select" onChange={this.handleTimeCommit}>
+								<Form.Control required as="select" onChange={this.handleTextInput} id="timeCommit">
 									<option/>
 									<option>Less than 5 Hours Per Week</option>
 									<option>5-10 Hours Per Week</option>
@@ -608,6 +481,23 @@ render() {
 
 							<br/>
 
+							<Form.Group controlId="school">
+								<Form.Label><b>Which UT school(s)/college(s) would you like your student to be affiliated with?</b></Form.Label>
+								{this.state.schoolOptions.map((option, index) => {
+									return (
+										<Form.Group key={index}>
+											<Form.Check type="Checkbox"
+														label={option.name}
+														id="schoolInputs"
+														checked={this.state.schoolInputs[index]}
+														onChange={this.handleCheckInput.bind(this, index)}/>
+										</Form.Group>
+									)
+								})}
+								<Form.Control value={this.state.schoolOtherInput} onChange={this.handleSchoolOther}
+											  type="text" placeholder="Other"/>
+							</Form.Group>
+							<br/>
 							{this.state.logisticQuestions.map((question, index) => {
 								if (this.state.logisticFlags[index]) {
 									return (
@@ -679,8 +569,8 @@ render() {
 							<Form.Label><b>What other relevant skills that may be helpful for your candidate to have (i.e.
 								other languages spoken, coding, analytical software, professional skills, etc.)? - List
                                 them here! (500 Character Limit)</b></Form.Label>
-							<Form.Control as="textarea" value={this.state.extraSkills}
-										  onChange={this.handleExtraSkills} rows="5"/>
+							<Form.Control as="textarea" value={this.state.extraSkills} id="extraSkills"
+										  onChange={this.handleTextInput} rows="5"/>
 							<Form.Label><b>Character Count: {this.state.extraSkills.length}</b></Form.Label>
 						</Form.Group>
 

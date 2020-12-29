@@ -337,14 +337,15 @@ class StudentForm extends Component {
 		let {
 			firstNameInput, lastNameInput, eidInput, phoneInput, emailInput, linkedinInput, resumeInput,
       timeCommit, intentionOptions, intentionInputs, hear, interestOptions, interestInputs,
-			logisticInputs,
-			schoolOption, experienceQuestions, experienceInputs, techSkillOptions,
+			logisticInputs, schoolInputs,
+			schoolOptions, schoolOtherInput, experienceQuestions, experienceInputs, techSkillOptions,
 			techSkillInputs, profSkillOptions, profSkillInputs, extraSkills, currentCohort
 		} = this.state;
 
 		let jsonIntentions = {};
 		let	jsonInterests = {};
 		let jsonExperiences = {};
+		let jsonSchools = {};
 		let jsonTechSkills = {};
 		let jsonProfSkills = {};
 
@@ -368,6 +369,13 @@ class StudentForm extends Component {
 			if(input === null || input === undefined) input = false;
 			jsonInterests[interestOptions[i].name] = input;
 		}
+
+		for(let i = 0; i < schoolOptions.length; i ++) {
+			let input = schoolInputs[i];
+			if(input === null || input === undefined) input = false;
+			jsonSchools[schoolOptions[i].name] = input;
+		}
+		jsonSchools['Other'] = schoolOtherInput;
 
 		for(let i = 0; i < experienceQuestions.length; i ++) {
 			jsonExperiences[experienceQuestions[i].name] = experienceInputs[i];
@@ -399,7 +407,7 @@ class StudentForm extends Component {
 			transportation: logisticInputs[2],
 			flexible_hours: logisticInputs[3],
 			work_remotely: logisticInputs[4],
-			school: schoolOption,
+			school: jsonSchools,
 			experience: jsonExperiences,
 			tech_skills: jsonTechSkills,
 			prof_skills: jsonProfSkills,
@@ -646,7 +654,7 @@ class StudentForm extends Component {
 									)
 								})}
 								<Form.Control value={this.state.schoolOtherInput} onChange={this.handleSchoolOther}
-											  type="text"/>
+											  type="text" placeholder="Other"/>
 							</Form.Group>
 							<br/>
 							<Form.Group controlId="program">
