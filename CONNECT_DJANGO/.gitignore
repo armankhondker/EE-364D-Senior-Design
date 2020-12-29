@@ -21,3 +21,7 @@ ENV/
 env.bak/
 venv.bak/
 *.pyc
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

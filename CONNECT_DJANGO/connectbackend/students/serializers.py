@@ -9,8 +9,6 @@ class StudentSerializer(serializers.ModelSerializer):
         if 'request' in self.context and self.context['request'].method == 'GET':
             self.fields['intentions'] = serializers.SerializerMethodField()
             self.fields['interests'] = serializers.SerializerMethodField()
-            self.fields['tech_courses'] = serializers.SerializerMethodField()
-            self.fields['prof_courses'] = serializers.SerializerMethodField()
             self.fields['experience'] = serializers.SerializerMethodField()
             self.fields['tech_skills'] = serializers.SerializerMethodField()
             self.fields['prof_skills'] = serializers.SerializerMethodField()
@@ -24,12 +22,6 @@ class StudentSerializer(serializers.ModelSerializer):
 
     def get_interests(self, obj):
         return obj.interests
-
-    def get_tech_courses(self, obj):
-        return obj.tech_courses
-
-    def get_prof_courses(self, obj):
-        return obj.prof_courses
 
     def get_experience(self, obj):
         return obj.experience
