@@ -29,9 +29,7 @@ class AdminProjects extends Component {
               transportation: null,
               flexible_hours: null,
               work_remotely: null,
-              degree: [],
-              tech_courses: [],
-              prof_courses: [],
+              school: [],
               tech_skills: [],
               prof_skills: [],
               other_skills: "",
@@ -55,8 +53,6 @@ class AdminProjects extends Component {
           this.handleFlexibleHours = this.handleFlexibleHours.bind(this);
           this.handleWorkRemotely = this.handleWorkRemotely.bind(this);
           this.handleDegree = this.handleDegree.bind(this);
-          this.handleTechCourses = this.handleTechCourses.bind(this);
-          this.handleProfCourses = this.handleProfCourses.bind(this);
           this.handleTechSkills = this.handleTechSkills.bind(this);
           this.handleProfSkills = this.handleProfSkills.bind(this);
           this.handleOtherSkills = this.handleOtherSkills.bind(this);
@@ -99,9 +95,7 @@ class AdminProjects extends Component {
           transportation: null,
           flexible_hours: null,
           work_remotely: null,
-          degree: [],
-          tech_courses: [],
-          prof_courses: [],
+          school: [],
           tech_skills: [],
           prof_skills: [],
           other_skills: "",
@@ -242,9 +236,9 @@ class AdminProjects extends Component {
       }
 
       handleDegree(project, i, e) {
-        if (this.state.degree.length === 0) {
+        if (this.state.school.length === 0) {
           this.setState(() => ({
-            degree: new Array(Object.keys(project.degree).length),
+            school: new Array(Object.keys(project.school).length),
           }));
         }
         let answer = e.target.value
@@ -256,7 +250,7 @@ class AdminProjects extends Component {
         }
 
         this.setState(update(this.state, {
-         degree: {
+         school: {
            [i] : {
              $set: answer
            }
@@ -264,51 +258,6 @@ class AdminProjects extends Component {
        }));
       }
 
-      handleTechCourses(project, i, e) {
-        if (this.state.project_categories.length === 0) {
-          this.setState(() => ({
-            tech_courses: new Array(Object.keys(project.tech_courses).length),
-          }));
-        }
-        let answer = e.target.value
-        if (answer === "") {
-          answer = null
-        }
-        else {
-          answer = (answer === "True" || answer === "true")
-        }
-
-        this.setState(update(this.state, {
-         tech_courses: {
-           [i] : {
-             $set: answer
-           }
-         }
-       }));
-      }
-
-      handleProfCourses(project, i, e) {
-        if (this.state.project_categories.length === 0) {
-          this.setState(() => ({
-            prof_courses: new Array(Object.keys(project.prof_courses).length),
-          }));
-        }
-        let answer = e.target.value
-        if (answer === "") {
-          answer = null
-        }
-        else {
-          answer = (answer === "True" || answer === "true")
-        }
-
-        this.setState(update(this.state, {
-         prof_courses: {
-           [i] : {
-             $set: answer
-           }
-         }
-       }));
-      }
 
       handleTechSkills(project, i, e) {
         if (this.state.tech_skills.length === 0) {
@@ -357,7 +306,7 @@ class AdminProjects extends Component {
     			submit_text: "Updating..."
     		}));
         let submit_dict = {};
-        // contact_first_name, contact_last_name, contact_phone, contact_email, organization_name, organization_address, organization_website, project_name, project_description, project_categories, time_commitment, transportation, flexible_hours, work_remotely, degree, tech_courses, prof_courses, experience, tech_skills, prof_skills, other_skills, cohort
+        // contact_first_name, contact_last_name, contact_phone, contact_email, organization_name, organization_address, organization_website, project_name, project_description, project_categories, time_commitment, transportation, flexible_hours, work_remotely, school, experience, tech_skills, prof_skills, other_skills, cohort
         let keys = [
           "contact_first_name",
           "contact_last_name",
@@ -373,9 +322,7 @@ class AdminProjects extends Component {
           "transportation",
           "flexible_hours",
           "work_remotely",
-          "degree",
-          "tech_courses",
-          "prof_courses",
+          "school",
           "tech_skills",
           "prof_skills",
           "other_skills"
@@ -449,7 +396,7 @@ class AdminProjects extends Component {
       }
 
       renderSurvey(project) {
-        let {contact_first_name, contact_last_name, contact_phone, contact_email, organization_name, organization_address, organization_website, project_name, project_description, project_categories, time_commitment, transportation, flexible_hours, work_remotely, degree, tech_courses, prof_courses, tech_skills, prof_skills, other_skills} = project
+        let {contact_first_name, contact_last_name, contact_phone, contact_email, organization_name, organization_address, organization_website, project_name, project_description, project_categories, time_commitment, transportation, flexible_hours, work_remotely, school, tech_skills, prof_skills, other_skills} = project
 
         return (
           <div>
@@ -503,7 +450,7 @@ class AdminProjects extends Component {
             <br/>
             {Object.keys(project_categories).map((key, index) => {
               return (
-                <div>Includes {key}: {String(project_categories[key])}
+                <div key={index}>Includes {key}: {String(project_categories[key])}
                 <Form.Group key={index}>
                     <Form.Label>Update Answer Here:</Form.Label>
                     <Form.Control type="profList" onChange={this.handleInterests.bind(this, project, index)}/>
@@ -539,10 +486,10 @@ class AdminProjects extends Component {
                 <Form.Control type="profList" onChange={this.handleWorkRemotely.bind(this)}/>
             </Form.Group>
             <br/>
-            <div><b>Relevant Degrees:</b></div>
-            {Object.keys(degree).map((key, index) => {
+            <div><b>Relevant Schools:</b></div>
+            {Object.keys(school).map((key, index) => {
               return (
-                <div>{key}: {String(degree[key])}
+                <div key={index}>{key}: {String(school[key])}
                 <Form.Group key={index}>
                     <Form.Label>Update Answer Here:</Form.Label>
                     <Form.Control type="profList" onChange={this.handleDegree.bind(this, project, index)}/>
@@ -551,31 +498,9 @@ class AdminProjects extends Component {
               )
             })}
             <br/>
-            {Object.keys(tech_courses).map((key, index) => {
-              return (
-                <div>Needs {key}: {String(tech_courses[key])}
-                <Form.Group key={index}>
-                    <Form.Label>Update Answer Here:</Form.Label>
-                    <Form.Control type="profList" onChange={this.handleTechCourses.bind(this, project, index)}/>
-                </Form.Group>
-              </div>
-              )
-            })}
-            <br/>
-            {Object.keys(prof_courses).map((key, index) => {
-              return (
-                <div>Taken {key}: {String(prof_courses[key])}
-                <Form.Group key={index}>
-                    <Form.Label>Update Answer Here:</Form.Label>
-                    <Form.Control type="profList" onChange={this.handleProfCourses.bind(this, project, index)}/>
-                </Form.Group>
-              </div>
-              )
-            })}
-            <br/>
             {Object.keys(tech_skills).map((key, index) => {
                 return(
-                  <div>Current {key}: {String(tech_skills[key])}
+                  <div key={index}>Current {key}: {String(tech_skills[key])}
                     <Form.Group key={index}>
                         <Form.Label>Update Answer Here:</Form.Label>
                         <RadioButton name={key} handleRadio={this.handleTechSkills.bind(this, project, index)}/>
@@ -586,7 +511,7 @@ class AdminProjects extends Component {
             <br/>
             {Object.keys(prof_skills).map((key, index) => {
                 return(
-                  <div>Current {key}: {String(prof_skills[key])}
+                  <div key={index}>Current {key}: {String(prof_skills[key])}
                     <Form.Group key={index}>
                         <Form.Label>Update Answer Here:</Form.Label>
                         <RadioButton name={key} handleRadio={this.handleProfSkills.bind(this, project, index)}/>

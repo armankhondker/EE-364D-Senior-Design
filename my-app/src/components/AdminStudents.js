@@ -28,9 +28,7 @@ class AdminStudents extends Component {
             transportation: null,
             flexible_hours: null,
             work_remotely: null,
-            degree: "",
-            tech_courses: [],
-            prof_courses: [],
+            school: "",
             tech_skills: [],
             prof_skills: [],
             other_skills: "",
@@ -53,9 +51,7 @@ class AdminStudents extends Component {
         this.handleTransportation = this.handleTransportation.bind(this);
         this.handleFlexibleHours = this.handleFlexibleHours.bind(this);
         this.handleWorkRemotely = this.handleWorkRemotely.bind(this);
-        this.handleDegree = this.handleDegree.bind(this);
-        this.handleTechCourses = this.handleTechCourses.bind(this);
-        this.handleProfCourses = this.handleProfCourses.bind(this);
+        this.handleSchool = this.handleSchool.bind(this);
         this.handleTechSkills = this.handleTechSkills.bind(this);
         this.handleProfSkills = this.handleProfSkills.bind(this);
         this.handleOtherSkills = this.handleOtherSkills.bind(this);
@@ -81,9 +77,7 @@ class AdminStudents extends Component {
         transportation: null,
         flexible_hours: null,
         work_remotely: null,
-        degree: "",
-        tech_courses: [],
-        prof_courses: [],
+        school: "",
         tech_skills: [],
         prof_skills: [],
         other_skills: "",
@@ -225,58 +219,13 @@ class AdminStudents extends Component {
   		}));
     }
 
-    handleDegree(e) {
+    handleSchool(e) {
       var writtenText = e.target.value
   		this.setState(() => ({
-  			degree: writtenText
+  			school: writtenText
   		}));
     }
 
-    handleTechCourses(student, i, e) {
-      if (this.state.interests.length === 0) {
-        this.setState(() => ({
-          tech_courses: new Array(Object.keys(student.tech_courses).length),
-        }));
-      }
-      let answer = e.target.value
-      if (answer === "") {
-        answer = null
-      }
-      else {
-        answer = (answer === "True" || answer === "true")
-      }
-
-      this.setState(update(this.state, {
-       tech_courses: {
-         [i] : {
-           $set: answer
-         }
-       }
-     }));
-    }
-
-    handleProfCourses(student, i, e) {
-      if (this.state.interests.length === 0) {
-        this.setState(() => ({
-          prof_courses: new Array(Object.keys(student.prof_courses).length),
-        }));
-      }
-      let answer = e.target.value
-      if (answer === "") {
-        answer = null
-      }
-      else {
-        answer = (answer === "True" || answer === "true")
-      }
-
-      this.setState(update(this.state, {
-       prof_courses: {
-         [i] : {
-           $set: answer
-         }
-       }
-     }));
-    }
 
     handleTechSkills(student, i, e) {
       if (this.state.tech_skills.length === 0) {
@@ -338,9 +287,7 @@ class AdminStudents extends Component {
         "transportation",
         "flexible_hours",
         "work_remotely",
-        "degree",
-        "tech_courses",
-        "prof_courses",
+        "school",
         "tech_skills",
         "prof_skills",
         "other_skills"
@@ -417,7 +364,7 @@ class AdminStudents extends Component {
 
 
     renderSurvey(student) {
-      let {first_name, last_name, eid, phone, email, linkedIn, intentions, interests, time_commitment, transportation, flexible_hours, work_remotely, degree, tech_courses, prof_courses, tech_skills, prof_skills, other_skills} = student
+      let {first_name, last_name, eid, phone, email, linkedIn, intentions, interests, time_commitment, transportation, flexible_hours, work_remotely, school, tech_skills, prof_skills, other_skills} = student
 
       return (
         <div>
@@ -456,7 +403,7 @@ class AdminStudents extends Component {
           <br/>
           {Object.keys(intentions).map((key, index) => {
             return (
-              <div>{key}: {String(intentions[key])}
+              <div key={index}>{key}: {String(intentions[key])}
               <Form.Group key={index}>
                   <Form.Label>Update Answer Here:</Form.Label>
                   <Form.Control type="profList" onChange={this.handleIntentions.bind(this, student, index)}/>
@@ -467,7 +414,7 @@ class AdminStudents extends Component {
           <br/>
           {Object.keys(interests).map((key, index) => {
             return (
-              <div>Interested in {key}: {String(interests[key])}
+              <div key={index}>Interested in {key}: {String(interests[key])}
               <Form.Group key={index}>
                   <Form.Label>Update Answer Here:</Form.Label>
                   <Form.Control type="profList" onChange={this.handleInterests.bind(this, student, index)}/>
@@ -502,37 +449,15 @@ class AdminStudents extends Component {
               <Form.Label>Update Answer Here:</Form.Label>
               <Form.Control type="profList" onChange={this.handleWorkRemotely.bind(this)}/>
           </Form.Group>
-          <div>Degree: {degree}</div>
-          <Form.Group controlId="Degree">
+          <div>School: {school}</div>
+          <Form.Group controlId="School">
               <Form.Label>Update Answer Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handleDegree.bind(this)}/>
+              <Form.Control type="profList" onChange={this.handleSchool.bind(this)}/>
           </Form.Group>
-          <br/>
-          {Object.keys(tech_courses).map((key, index) => {
-            return (
-              <div>Taken {key}: {String(tech_courses[key])}
-              <Form.Group key={index}>
-                  <Form.Label>Update Answer Here:</Form.Label>
-                  <Form.Control type="profList" onChange={this.handleTechCourses.bind(this, student, index)}/>
-              </Form.Group>
-            </div>
-            )
-          })}
-          <br/>
-          {Object.keys(prof_courses).map((key, index) => {
-            return (
-              <div>Taken {key}: {String(prof_courses[key])}
-              <Form.Group key={index}>
-                  <Form.Label>Update Answer Here:</Form.Label>
-                  <Form.Control type="profList" onChange={this.handleProfCourses.bind(this, student, index)}/>
-              </Form.Group>
-            </div>
-            )
-          })}
           <br/>
           {Object.keys(tech_skills).map((key, index) => {
               return(
-                <div>Current {key}: {String(tech_skills[key])}
+                <div key={index}>Current {key}: {String(tech_skills[key])}
                   <Form.Group key={index}>
                       <Form.Label>Update Answer Here:</Form.Label>
                       <RadioButton name={key} handleRadio={this.handleTechSkills.bind(this, student, index)}/>
@@ -543,7 +468,7 @@ class AdminStudents extends Component {
           <br/>
           {Object.keys(prof_skills).map((key, index) => {
               return(
-                <div>Current {key}: {String(prof_skills[key])}
+                <div key={index}>Current {key}: {String(prof_skills[key])}
                   <Form.Group key={index}>
                       <Form.Label>Update Answer Here:</Form.Label>
                       <RadioButton name={key} handleRadio={this.handleProfSkills.bind(this, student, index)}/>

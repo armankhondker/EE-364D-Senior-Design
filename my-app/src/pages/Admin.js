@@ -14,6 +14,7 @@ import AdminMatch from "../components/AdminMatch";
 import AdminResults from "../components/AdminResults";
 import AdminSettings from "../components/AdminSettings";
 import Login from "./Login";
+import LoadingAnimation from "../components/LoadingAnimation";
 
 class Admin extends Component {
 	constructor(props) {
@@ -207,7 +208,7 @@ class Admin extends Component {
 					</Row>
 				</Tab.Container>;
 			} else {
-				CurrentDisplay = <p>Loading</p>;
+				CurrentDisplay = <div><br/><LoadingAnimation/></div>;
 			}
 		}
 

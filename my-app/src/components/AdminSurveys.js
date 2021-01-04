@@ -279,7 +279,7 @@ class AdminSurveys extends Component {
         })
         .catch(err => console.log(err));
 
-       axios.get(process.env.REACT_APP_API_URL + 'degrees')
+       axios.get(process.env.REACT_APP_API_URL + 'schools')
         .then(res => {
           console.log(res);
           this.setState({
@@ -288,27 +288,6 @@ class AdminSurveys extends Component {
           });
         })
         .catch(err => console.log(err));
-
-       axios.get(process.env.REACT_APP_API_URL + 'tech-courses')
-        .then(res => {
-          console.log(res);
-          this.setState({
-            techCourseOptions: res.data,
-            techCourseChanges: new Array(res.data.length),
-          });
-        })
-        .catch(err => console.log(err));
-
-       axios.get(process.env.REACT_APP_API_URL + 'prof-courses')
-        .then(res => {
-          console.log(res);
-          this.setState({
-            profCourseOptions: res.data,
-            profCourseChanges: new Array(res.data.length),
-          });
-        })
-        .catch(err => console.log(err));
-
 
        axios.get(process.env.REACT_APP_API_URL + 'tech-skills')
         .then(res => {
