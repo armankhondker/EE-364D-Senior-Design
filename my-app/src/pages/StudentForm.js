@@ -265,7 +265,7 @@ class StudentForm extends Component {
 		let {
 			firstNameInput, lastNameInput, eidInput, phoneInput, emailInput, resumeInput, timeCommit, hear,
 			logisticFlags, logisticQuestions, schoolOption, techSkillInputs, techSkillOptions, profSkillOptions,
-			profSkillInputs
+			profSkillInputs, schoolInputs
 		} = this.state;
 		
 		if(firstNameInput === "" || firstNameInput === undefined || firstNameInput === null) {
@@ -306,8 +306,14 @@ class StudentForm extends Component {
 			}
 		}
 
-		if(schoolOption === "" || schoolOption === undefined || schoolOption === null) {
-			alertMessage += 'school \n';
+		let schoolBool = false;
+		for(let i = 0; i < schoolInputs.length; i++) {
+			if(schoolInputs[i]) {
+				schoolBool = true;
+			}
+		}
+		if(!schoolBool) {
+			alertMessage += 'School\n';
 		}
 
 		for(let i = 0; i < techSkillInputs.length; i++) {
@@ -505,7 +511,7 @@ class StudentForm extends Component {
 				CurrentDisplay =
 					<div className="form">
 						<Form>
-							<Form.Group controlId="nameInput">
+							<Form.Group>
 								<Form.Label><b>First Name</b></Form.Label>
 								<Form.Control required id="firstNameInput" value={this.state.firstNameInput} onChange={this.handleTextInput}
 											  type="text"/>
@@ -523,20 +529,20 @@ class StudentForm extends Component {
 											  type="text"/>
 							</Form.Group>
 							<br/>
-							<Form.Group controlId="phoneInput">
+							<Form.Group >
 								<Form.Label><b>Phone #</b></Form.Label>
 								<Form.Control required type="tel" value={this.state.phoneInput}
 											  id="phoneInput"
 											  onChange={this.handleTextInput} placeholder="5125558888"/>
 							</Form.Group>
 							<br/>
-							<Form.Group controlId="emailInput">
+							<Form.Group >
 								<Form.Label><b>Email</b></Form.Label>
 								<Form.Control required type="email" id="emailInput" value={this.state.emailInput}
 											  onChange={this.handleTextInput} placeholder="example@utexas.edu"/>
 							</Form.Group>
 							<br/>
-							<Form.Group controlId="linkedinInput">
+							<Form.Group>
 								<Form.Label><b>LinkedIn (preferred, but not required)</b></Form.Label>
 								<Form.Control type="text" id="linkedinInput" value={this.state.linkedinInput}
 											  onChange={this.handleTextInput}/>
@@ -563,7 +569,7 @@ class StudentForm extends Component {
 								)
 							})}
 							<br/>
-							<Form.Group controlId="timeCommit">
+							<Form.Group >
 								<Form.Label><b>How did you hear about the CONNECT program?</b></Form.Label>
 								<Form.Control required as="select" id="hear" onChange={this.handleTextInput}>
 									<option/>
@@ -586,7 +592,7 @@ class StudentForm extends Component {
 							})}
 
 							<br/>
-							<Form.Group controlId="timeCommit">
+							<Form.Group >
 								<Form.Label><b>Realistically, how much time can you commit per week to working on a
 									project? </b></Form.Label>
 								<Form.Control required as="select" id="timeCommit" onChange={this.handleTextInput}>
@@ -602,7 +608,7 @@ class StudentForm extends Component {
 
 							<br/>
 
-							<Form.Group controlId="ExtraSkills">
+							<Form.Group>
 								<Form.Label><b>Is there any additional information regarding your availability that we should know about? (500 Character limit)</b></Form.Label>
 								<Form.Control as="textarea" id="otherAvailability" value={this.state.otherAvailability}
 											  onChange={this.handleTextInput} rows="5"/>
@@ -640,7 +646,7 @@ class StudentForm extends Component {
 							})}
 
 							<br/>
-							<Form.Group controlId="school">
+							<Form.Group>
 								<Form.Label><b>Which UT school(s)/college(s) are you affiliated with?</b></Form.Label>
 								{this.state.schoolOptions.map((option, index) => {
 									return (
@@ -653,11 +659,11 @@ class StudentForm extends Component {
 										</Form.Group>
 									)
 								})}
-								<Form.Control value={this.state.schoolOtherInput} onChange={this.handleSchoolOther}
+								<Form.Control value={this.state.schoolOtherInput} id="schoolOtherInput" onChange={this.handleTextInput}
 											  type="text" placeholder="Other"/>
 							</Form.Group>
 							<br/>
-							<Form.Group controlId="program">
+							<Form.Group>
 								<Form.Label><b>Please select each of the following that applies to you</b></Form.Label>
 									{this.state.programOptions.map((option, index) => {
 										return (
@@ -672,7 +678,7 @@ class StudentForm extends Component {
 									})}
 							</Form.Group>
 							<br/>
-							<Form.Group controlId="experience">
+							<Form.Group>
 								<Form.Label><b>Over the past 5 years, approximately how much experience have you had working or directly volunteering with nonprofit organizations?</b></Form.Label>
 								<Form.Control required as="select" id="experience" onChange={this.handleTextInput}>
 									<option></option>
@@ -725,7 +731,7 @@ class StudentForm extends Component {
 									</Form.Group>
 								);
 							})}
-							<Form.Group controlId="ExtraSkills">
+							<Form.Group >
 								<Form.Label><b>Do you have other relevant skills that may be helpful for us to know about
 									(i.e.
 									other languages spoken, coding, analytical software, professional skills, etc.)? -
