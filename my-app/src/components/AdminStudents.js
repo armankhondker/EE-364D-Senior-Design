@@ -16,6 +16,7 @@ class AdminStudents extends Component {
         this.state = {
             students: props.students,
             modalShow: [],
+            deleteShow: false,
             first_name: "",
             last_name: "",
             eid: "",
@@ -28,7 +29,7 @@ class AdminStudents extends Component {
             transportation: null,
             flexible_hours: null,
             work_remotely: null,
-            school: "",
+            school: [],
             tech_skills: [],
             prof_skills: [],
             other_skills: "",
@@ -39,24 +40,16 @@ class AdminStudents extends Component {
         this.clearData = this.clearData.bind(this);
         this.handleModal = this.handleModal.bind(this);
         this.renderSurvey = this.renderSurvey.bind(this);
-        this.handleFirstName = this.handleFirstName.bind(this);
-        this.handleLastName = this.handleLastName.bind(this);
-        this.handleEID = this.handleEID.bind(this);
-        this.handlePhone = this.handlePhone.bind(this);
-        this.handleEmail = this.handleEmail.bind(this);
-        this.handleLinkedin = this.handleLinkedin.bind(this);
         this.handleIntentions = this.handleIntentions.bind(this);
         this.handleInterests = this.handleInterests.bind(this);
-        this.handleTimeCommit = this.handleTimeCommit.bind(this);
-        this.handleTransportation = this.handleTransportation.bind(this);
-        this.handleFlexibleHours = this.handleFlexibleHours.bind(this);
-        this.handleWorkRemotely = this.handleWorkRemotely.bind(this);
-        this.handleSchool = this.handleSchool.bind(this);
         this.handleTechSkills = this.handleTechSkills.bind(this);
         this.handleProfSkills = this.handleProfSkills.bind(this);
-        this.handleOtherSkills = this.handleOtherSkills.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.isDict = this.isDict.bind(this);
+
+        this.handleTextInput = this.handleTextInput.bind(this);
+        this.handleTF = this.handleTF.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
 
     }
 
@@ -85,46 +78,11 @@ class AdminStudents extends Component {
   		}));
     }
 
-    handleFirstName(e) {
-  		var writtenText = e.target.value
-  		this.setState(() => ({
-  			first_name: writtenText
-  		}));
-  	}
-
-    handleLastName(e) {
-  		var writtenText = e.target.value
-  		this.setState(() => ({
-  			last_name: writtenText
-  		}));
-  	}
-
-    handleEID(e) {
-      var writtenText = e.target.value
-  		this.setState(() => ({
-  			eid: writtenText
-  		}));
-    }
-
-    handlePhone(e) {
-      var writtenText = e.target.value
-  		this.setState(() => ({
-  			phone: writtenText
-  		}));
-    }
-
-    handleEmail(e) {
-      var writtenText = e.target.value
-  		this.setState(() => ({
-  			email: writtenText
-  		}));
-    }
-
-    handleLinkedin(e) {
-      var writtenText = e.target.value
-  		this.setState(() => ({
-  			linkedIn: writtenText
-  		}));
+    handleTextInput(e) {
+        console.log(e.target.id);
+        this.setState({
+            [e.target.id]: e.target.value
+        });
     }
 
     handleIntentions(student, i, e) {
@@ -173,59 +131,14 @@ class AdminStudents extends Component {
      }));
     }
 
-    handleTimeCommit(e) {
-  		var tc = e.target.value
-  		this.setState(() => ({
-  	     time_commitment: tc
-  	  }));
-  	}
-
-    handleTransportation(e) {
+    handleTF(e) {
       let answer = e.target.value
-      if (answer === "") {
-        answer = null
-      }
-      else {
-        answer = (answer === "True" || answer === "true")
-      }
-      this.setState(() => ({
-  			transportation: answer,
-  		}));
+      answer = (answer === "T" || answer === "t" || answer === "falset")
+      console.log(e);
+      this.setState({
+  			[e.target.id]: answer,
+        });
     }
-
-    handleFlexibleHours(e) {
-      let answer = e.target.value
-      if (answer === "") {
-        answer = null
-      }
-      else {
-        answer = (answer === "True" || answer === "true")
-      }
-      this.setState(() => ({
-  			flexible_hours: answer,
-  		}));
-    }
-
-    handleWorkRemotely(e) {
-      let answer = e.target.value
-      if (answer === "") {
-        answer = null
-      }
-      else {
-        answer = (answer === "True" || answer === "true")
-      }
-      this.setState(() => ({
-  			work_remotely: answer,
-  		}));
-    }
-
-    handleSchool(e) {
-      var writtenText = e.target.value
-  		this.setState(() => ({
-  			school: writtenText
-  		}));
-    }
-
 
     handleTechSkills(student, i, e) {
       if (this.state.tech_skills.length === 0) {
@@ -256,13 +169,6 @@ class AdminStudents extends Component {
   			}
   		}));
   	}
-
-    handleOtherSkills(e) {
-      var writtenText = e.target.value
-  		this.setState(() => ({
-  			other_skills: writtenText
-  		}));
-    }
 
     isDict(v) {
       return typeof v==='object' && v!==null && !(v instanceof Array) && !(v instanceof Date);
@@ -338,8 +244,9 @@ class AdminStudents extends Component {
         }
         submit_dict[s_key] = temp_answers;
       }
+      submit_dict['program'] = {}
       submit_dict['unique_id'] = `${submit_dict.eid}-${this.state.currentCohort}`
-
+        console.log(JSON.stringify(submit_dict));
   		await axios.put(process.env.REACT_APP_API_URL + 'students/'+student['id']+'/', JSON.stringify(submit_dict),
   			{
   				headers: {
@@ -360,8 +267,23 @@ class AdminStudents extends Component {
         this.clearData();
     }
 
-
-
+    async handleDelete(id, e) {
+        await axios.delete(process.env.REACT_APP_API_URL + 'students/'+ id +'/',
+            {
+                headers: {
+                    'content-type': 'application/json',
+                },
+            })
+            .then(res => {
+                console.log(res);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        this.setState({
+            deleteShow: false
+        });
+    }
 
     renderSurvey(student) {
       let {first_name, last_name, eid, phone, email, linkedIn, intentions, interests, time_commitment, transportation, flexible_hours, work_remotely, school, tech_skills, prof_skills, other_skills} = student
@@ -371,34 +293,34 @@ class AdminStudents extends Component {
           <div className="bold">(Leave the text entry blank for survey value to remain as is)</div>
           <p/>
           <div>Current first name: {first_name}</div>
-          <Form.Group controlId="FirstName">
+          <Form.Group controlId="first_name">
               <Form.Label>Update First Name Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handleFirstName}/>
+              <Form.Control value={this.state.first_name} type="profList" onChange={this.handleTextInput}/>
           </Form.Group>
           <div>Current last name: {last_name}</div>
-          <Form.Group controlId="LastName">
+          <Form.Group controlId="last_name">
               <Form.Label>Update Last Name Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handleLastName}/>
+              <Form.Control type="profList" value={this.state.last_name} onChange={this.handleTextInput}/>
           </Form.Group>
           <div>Current EID: {eid}</div>
-          <Form.Group controlId="EID">
+          <Form.Group controlId="eid">
               <Form.Label>Update EID Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handleEID}/>
+              <Form.Control type="profList" value={this.state.eid} onChange={this.handleTextInput}/>
           </Form.Group>
           <div>Current phone number: {phone}</div>
-          <Form.Group controlId="Phone">
+          <Form.Group controlId="phone">
               <Form.Label>Update Phone Number Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handlePhone}/>
+              <Form.Control type="profList" value={this.state.phone} onChange={this.handleTextInput}/>
           </Form.Group>
           <div>Current email: {email}</div>
-          <Form.Group controlId="Email">
+          <Form.Group controlId="email">
               <Form.Label>Update Email Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handleEmail}/>
+              <Form.Control type="profList" value={this.state.email} onChange={this.handleTextInput}/>
           </Form.Group>
           <div>Current LinkedIn: {linkedIn}</div>
           <Form.Group controlId="linkedIn">
               <Form.Label>Update LinkedIn Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handleLinkedin}/>
+              <Form.Control type="profList" value={this.state.linkedIn} onChange={this.handleTextInput}/>
           </Form.Group>
           <br/>
           {Object.keys(intentions).map((key, index) => {
@@ -424,36 +346,47 @@ class AdminStudents extends Component {
           })}
           <br/>
           <div>Current time commitment: {time_commitment}</div>
-          <Form.Group controlId="TimeCommitment">
+          <Form.Group controlId="time_commitment">
               <Form.Label>Update Time Commitment Here:</Form.Label>
-              <Form.Control required as="select" onChange={this.handleTimeCommit}>
+              <Form.Control required as="select" value={this.state.time_commitment} onChange={this.handleTextInput}>
                   <option/>
                   <option>Less than 5 Hours Per Week</option>
                   <option>5-10 Hours Per Week</option>
+                  <option>8-12 Hours Per Week</option>
+                  <option>10-15 Hours Per Week</option>
                   <option>15-20 Hours Per Week</option>
                   <option>20-30 Hours Per Week</option>
               </Form.Control>
           </Form.Group>
           <div>Transportation: {String(transportation)}</div>
-          <Form.Group controlId="Transportation">
+          <Form.Group controlId="transportation">
               <Form.Label>Update Answer Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handleTransportation.bind(this)}/>
+              <Form.Control type="profList" value={this.state.transportation} onChange={this.handleTF}/>
           </Form.Group>
+            {/*<Form.Group controlId="first_name">*/}
+            {/*    <Form.Label>Update First Name Here:</Form.Label>*/}
+            {/*    <Form.Control value={this.state.first_name} type="profList" onChange={this.handleTextInput}/>*/}
+            {/*</Form.Group>*/}
           <div>Flexible Hours: {String(flexible_hours)}</div>
-          <Form.Group controlId="FlexibleHours">
+          <Form.Group controlId="flexible_hours">
               <Form.Label>Update Answer Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handleFlexibleHours.bind(this)}/>
+              <Form.Control type="profList" value={this.state.flexible_hours} onChange={this.handleTF}/>
           </Form.Group>
           <div>Work Remotely: {String(work_remotely)}</div>
-          <Form.Group controlId="WorkRemotely">
+          <Form.Group controlId="work_remotely">
               <Form.Label>Update Answer Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handleWorkRemotely.bind(this)}/>
+              <Form.Control type="profList" value={this.state.work_remotely} onChange={this.handleTF}/>
           </Form.Group>
-          <div>School: {school}</div>
-          <Form.Group controlId="School">
-              <Form.Label>Update Answer Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handleSchool.bind(this)}/>
-          </Form.Group>
+            {Object.keys(school).map((key, index) => {
+                return(
+                    <div key={index}>Current {key}: {String(school[key])}
+                        <Form.Group controlId="school">
+                            <Form.Label>Update Answer Here:</Form.Label>
+                            <Form.Control type="profList" onChange={this.handleTextInput}/>
+                        </Form.Group>
+                    </div>
+                    )
+            })}
           <br/>
           {Object.keys(tech_skills).map((key, index) => {
               return(
@@ -478,13 +411,16 @@ class AdminStudents extends Component {
           })}
           <br/>
           <div>Other Skills: {other_skills}</div>
-          <Form.Group controlId="OtherSkills">
+          <Form.Group controlId="other_skills">
               <Form.Label>Update Answer Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handleOtherSkills.bind(this)}/>
+              <Form.Control type="profList" value={this.state.other_skills} onChange={this.handleTextInput}/>
           </Form.Group>
           <Button variant="primary" onClick={this.handleUpdate.bind(this, student)}>
               Update Student Form
           </Button>
+            <Button variant="danger" onClick={() => { this.setState({ deleteShow: true })}}>
+                Delete
+            </Button>
           <div>{this.state.submit_text}</div>
       </div>
       )
@@ -559,6 +495,27 @@ class AdminStudents extends Component {
                                              </Modal.Title>
                                            </Modal.Header>
                                            <Modal.Body>{this.renderSurvey(student)}</Modal.Body>
+                                              <Modal
+                                                  size="sm"
+                                                  show={this.state.deleteShow}
+                                                  onHide={() => (
+                                                      this.setState({
+                                                          deleteShow: false
+                                                      })
+                                                  )}
+                                                  >
+                                                  <Modal.Header closeButton>
+                                                      <Modal.Title>
+                                                          Deleting Student Entry
+                                                      </Modal.Title>
+                                                  </Modal.Header>
+                                                  <Modal.Body>
+                                                      <p>Are you sure you want to delete {student.first_name} {student.last_name}?</p>
+                                                  </Modal.Body>
+                                                  <Modal.Footer>
+                                                      <Button variant="Success" onClick={this.handleDelete.bind(this, student.id)}>Yes</Button>
+                                                  </Modal.Footer>
+                                              </Modal>
                                         </Modal>
                                       </div>
                                     </td>
