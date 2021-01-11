@@ -16,6 +16,7 @@ def run_algo(pre_matches={}, email_address=""):
     db = client
     settings = list(db.students.admins_settings.find({}))
     cohort = settings[0]['current_cohort']
+    print(cohort)
     students = list(db.students.students_student.find({
         'cohort': cohort
     }))
@@ -28,8 +29,10 @@ def run_algo(pre_matches={}, email_address=""):
     time_commitment_dict = {
         'Less than 5 Hours Per Week': 0,
         '5-10 Hours Per Week': 1,
-        '15-20 Hours Per Week': 2,
-        '20-30 Hours Per Week': 3
+        '8-12 Hours Per Week': 2,
+        '10-15 Hours Per Week': 3,
+        '15-20 Hours Per Week': 4,
+        '20-30 Hours Per Week': 5
     }
     ###### Handle pre_matches
 
@@ -272,11 +275,11 @@ def run_algo(pre_matches={}, email_address=""):
     )
 
     if (email_address == ""):
-        email_address = "jpaper01@gmail.com"
+        email_address = "rgkconnectmatching@gmail.com"
     #### Send email
     api_link = "https://api.sendinblue.com/v3/smtp/email"
     body_dict = {
-        "sender": {"name": "RGKConnect", "email": "rgkconnectmatching@gmail.com"},
+        "sender": {"name": "RGK Connect", "email": "rgkconnectmatching@gmail.com"},
         "subject": "Current matching",
         "to": [{"email": email_address}],
         "htmlContent": email,
