@@ -99,7 +99,7 @@ class AdminResults extends Component {
                     {results.map((result, index) => {
                         var localDate = new Date(result.created_at);
                         return (
-                                <Card>
+                                <Card key={index}>
                                     <Card.Header>
                                         <Accordion.Toggle as={Card.Header} variant="link" eventKey={index}>
                                             {result.cohort} {localDate.toDateString()} {localDate.toLocaleTimeString()}
