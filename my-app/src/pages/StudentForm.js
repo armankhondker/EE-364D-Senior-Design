@@ -6,6 +6,7 @@ import LoadingAnimation from "../components/LoadingAnimation";
 import update from 'react-addons-update';
 import '../App.css';
 import axios from "axios";
+import {Carousel} from "react-bootstrap";
 
 class StudentForm extends Component {
     constructor(props) {
@@ -264,7 +265,7 @@ class StudentForm extends Component {
 		let alertMessage = "";
 		let {
 			firstNameInput, lastNameInput, eidInput, phoneInput, emailInput, resumeInput, timeCommit, hear,
-			logisticFlags, logisticQuestions, schoolOption, techSkillInputs, techSkillOptions, profSkillOptions,
+			logisticFlags, logisticQuestions, techSkillInputs, techSkillOptions, profSkillOptions,
 			profSkillInputs, schoolInputs
 		} = this.state;
 		
@@ -509,250 +510,271 @@ class StudentForm extends Component {
         } else {
 			if (enabled) {
 				CurrentDisplay =
-					<div className="form">
-						<Form>
-							<Form.Group>
-								<Form.Label><b>First Name</b></Form.Label>
-								<Form.Control required id="firstNameInput" value={this.state.firstNameInput} onChange={this.handleTextInput}
-											  type="text"/>
-							</Form.Group>
-							<br/>
-							<Form.Group>
-								<Form.Label><b>Last Name</b></Form.Label>
-								<Form.Control required id="lastNameInput" value={this.state.lastNameInput} onChange={this.handleTextInput}
-											  type="text"/>
-							</Form.Group>
-							<br/>
-							<Form.Group>
-								<Form.Label><b>EID</b></Form.Label>
-								<Form.Control required id="eidInput" value={this.state.eidInput} onChange={this.handleTextInput}
-											  type="text"/>
-							</Form.Group>
-							<br/>
-							<Form.Group >
-								<Form.Label><b>Phone #</b></Form.Label>
-								<Form.Control required type="tel" value={this.state.phoneInput}
-											  id="phoneInput"
-											  onChange={this.handleTextInput} placeholder="5125558888"/>
-							</Form.Group>
-							<br/>
-							<Form.Group >
-								<Form.Label><b>Email</b></Form.Label>
-								<Form.Control required type="email" id="emailInput" value={this.state.emailInput}
-											  onChange={this.handleTextInput} placeholder="example@utexas.edu"/>
-							</Form.Group>
-							<br/>
-							<Form.Group>
-								<Form.Label><b>LinkedIn (preferred, but not required)</b></Form.Label>
-								<Form.Control type="text" id="linkedinInput" value={this.state.linkedinInput}
-											  onChange={this.handleTextInput}/>
-							</Form.Group>
-							<br/>
-							<div className="mb-3">
-								<Form.File id="resumeInput">
-									<Form.File.Label><b>Please upload a PDF of your resume.</b></Form.File.Label>
-									<Form.File.Input required accept=".pdf,.PDF" onChange={this.handleResumeUpload}/>
-									{this.state.uploading ? <p>Uploading...</p> : <p/>}
-								</Form.File>
-							</div>
-
-							<br/>
-
-							<Form.Label><b>Why are you interested in working on a project? (Check all that
-								apply </b></Form.Label>
-							{this.state.intentionOptions.map((option, index) => {
-								return (
-									<Form.Group key={index}>
-										<Form.Check label={option.name} id="intentionInputs"
-													onChange={this.handleCheckInput.bind(this, index)}/>
+					<Carousel>
+						{/*<div className="form">*/}
+							<Carousel.Item>
+								<div className="form">
+								<Form>
+									<Form.Group>
+										<Form.Label><b>First Name</b></Form.Label>
+										<Form.Control required id="firstNameInput" value={this.state.firstNameInput} onChange={this.handleTextInput}
+													  type="text"/>
 									</Form.Group>
-								)
-							})}
-							<br/>
-							<Form.Group >
-								<Form.Label><b>How did you hear about the CONNECT program?</b></Form.Label>
-								<Form.Control required as="select" id="hear" onChange={this.handleTextInput}>
-									<option/>
-									<option>I previously participated in the CONNECT program</option>
-									<option>Social media or information session</option>
-									<option>Friend or colleague</option>
-									<option>Graduate advisor/faculty/staff referral</option>
-								</Form.Control>
-							</Form.Group>
-							<br/>
-							<Form.Label><b>Identify each of the project categories you are interested in. (Check all that
-								apply)</b></Form.Label>
-							{this.state.interestOptions.map((option, index) => {
-								return (
-									<Form.Group key={index}>
-										<Form.Check label={option.name} id="interestInputs"
-													onChange={this.handleCheckInput.bind(this, index)}/>
+									<br/>
+									<Form.Group>
+										<Form.Label><b>Last Name</b></Form.Label>
+										<Form.Control required id="lastNameInput" value={this.state.lastNameInput} onChange={this.handleTextInput}
+													  type="text"/>
 									</Form.Group>
-								)
-							})}
-
-							<br/>
-							<Form.Group >
-								<Form.Label><b>Realistically, how much time can you commit per week to working on a
-									project? </b></Form.Label>
-								<Form.Control required as="select" id="timeCommit" onChange={this.handleTextInput}>
-									<option/>
-									<option>Less than 5 Hours Per Week</option>
-									<option>5-10 Hours Per Week</option>
-									<option>8-12 Hours Per Week</option>
-									<option>10-15 Hours Per Week</option>
-									<option>15-20 Hours Per Week</option>
-									<option>20-30 Hours Per Week</option>
-								</Form.Control>
-							</Form.Group>
-
-							<br/>
-
-							<Form.Group>
-								<Form.Label><b>Is there any additional information regarding your availability that we should know about? (500 Character limit)</b></Form.Label>
-								<Form.Control as="textarea" id="otherAvailability" value={this.state.otherAvailability}
-											  onChange={this.handleTextInput} rows="5"/>
-								<Form.Label><b>Character Count: {this.state.otherAvailability.length}</b></Form.Label>
-							</Form.Group>
-
-                            <br/>
-
-							{this.state.logisticQuestions.map((question, index) => {
-								if (this.state.logisticFlags[index]) {
-									return (
-										<Form.Group key={index}>
-											<Form.Label><b>{question.name}</b></Form.Label>
-											<Form.Check type="Radio" label="Yes"
-														checked={this.state.logisticInputs[index]}
-														onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
-											<Form.Check type="Radio" label="No"
-														checked={!this.state.logisticInputs[index]}
-														onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
-											<br/>
+									<br/>
+									<Form.Group>
+										<Form.Label><b>EID</b></Form.Label>
+										<Form.Control required id="eidInput" value={this.state.eidInput} onChange={this.handleTextInput}
+													  type="text"/>
+									</Form.Group>
+									<br/>
+									<Form.Group >
+										<Form.Label><b>Phone #</b></Form.Label>
+										<Form.Control required type="tel" value={this.state.phoneInput}
+													  id="phoneInput"
+													  onChange={this.handleTextInput} placeholder="5125558888"/>
+									</Form.Group>
+									<br/>
+									<Form.Group >
+										<Form.Label><b>Email</b></Form.Label>
+										<Form.Control required type="email" id="emailInput" value={this.state.emailInput}
+													  onChange={this.handleTextInput} placeholder="example@utexas.edu"/>
+									</Form.Group>
+									<br/>
+									<Form.Group>
+										<Form.Label><b>LinkedIn (preferred, but not required)</b></Form.Label>
+										<Form.Control type="text" id="linkedinInput" value={this.state.linkedinInput}
+													  onChange={this.handleTextInput}/>
+									</Form.Group>
+									<br/>
+									<div className="mb-3">
+										<Form.File id="resumeInput">
+											<Form.File.Label><b>Please upload a PDF of your resume.</b></Form.File.Label>
+											<Form.File.Input required accept=".pdf,.PDF" onChange={this.handleResumeUpload}/>
+											{this.state.uploading ? <p>Uploading...</p> : <p/>}
+										</Form.File>
+									</div>
+								</Form>
+								</div>
+							</Carousel.Item>
+							<Carousel.Item>
+								<div className="form">
+                                    <Form>
+										<Form.Label><b>Why are you interested in working on a project? (Check all that
+											apply </b></Form.Label>
+										{this.state.intentionOptions.map((option, index) => {
+											return (
+												<Form.Group key={index}>
+													<Form.Check label={option.name} id="intentionInputs"
+																onChange={this.handleCheckInput.bind(this, index)}/>
+												</Form.Group>
+											)
+										})}
+										<Form.Group >
+											<Form.Label><b>How did you hear about the CONNECT program?</b></Form.Label>
+											<Form.Control required as="select" id="hear" onChange={this.handleTextInput}>
+												<option/>
+												<option>I previously participated in the CONNECT program</option>
+												<option>Social media or information session</option>
+												<option>Friend or colleague</option>
+												<option>Graduate advisor/faculty/staff referral</option>
+											</Form.Control>
 										</Form.Group>
-									)
-								} else {
-									return (
-										<Form.Group key={index}>
-											<Form.Label><b>{question.name}</b></Form.Label>
-											<Form.Check type="Radio" label="Yes"
-														onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
-											<Form.Check type="Radio" label="No"
-														onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
-											<br/>
-										</Form.Group>
-									)
-								}
-							})}
-
-							<br/>
-							<Form.Group>
-								<Form.Label><b>Which UT school(s)/college(s) are you affiliated with?</b></Form.Label>
-								{this.state.schoolOptions.map((option, index) => {
-									return (
-										<Form.Group key={index}>
-											<Form.Check type="Checkbox"
-														label={option.name}
-														id="schoolInputs"
-														checked={this.state.schoolInputs[index]}
-														onChange={this.handleCheckInput.bind(this, index)}/>
-										</Form.Group>
-									)
-								})}
-								<Form.Control value={this.state.schoolOtherInput} id="schoolOtherInput" onChange={this.handleTextInput}
-											  type="text" placeholder="Other"/>
-							</Form.Group>
-							<br/>
-							<Form.Group>
-								<Form.Label><b>Please select each of the following that applies to you</b></Form.Label>
-									{this.state.programOptions.map((option, index) => {
-										return (
-											<Form.Check key={index}
-												type="Checkbox"
-												id="programInputs"
-                                                checked={this.state.programInputs[index]}
-												onChange={this.handleCheckInput.bind(this, index)}
-												label={option}
-											/>
-										)
-									})}
-							</Form.Group>
-							<br/>
-							<Form.Group>
-								<Form.Label><b>Over the past 5 years, approximately how much experience have you had working or directly volunteering with nonprofit organizations?</b></Form.Label>
-								<Form.Control required as="select" id="experience" onChange={this.handleTextInput}>
-									<option></option>
-									<option>No Experience (Yet!)</option>
-									<option>Less than 6 months</option>
-									<option>6-12 Months</option>
-									<option>More than 1 year</option>
-								</Form.Control>
-							</Form.Group>
-
-							<br/>
-							<Form.Label><b>Please rate your experience in the following technical skills using the scale
-								below:</b></Form.Label>
-							<br/>
-							<div>1: No Experience</div>
-							<div>2: Can Learn</div>
-							<div>3: Slightly Experienced</div>
-							<div>4: Experienced</div>
-							<div>5: Extremely Experienced</div>
-							<br/>
-							{techSkillOptions.map((skill, index) => {
-								let formattedSkill = skill.name.replace(/\s+/g, '');
-								return (
-									<Form.Group key={index}>
-										<Form.Label><b>{skill.name}</b></Form.Label>
-										<RadioButton name={formattedSkill}
-													 handleRadio={this.handleTechSkills.bind(this, index)}/>
 										<br/>
-									</Form.Group>
-								);
-							})}
+										<Form.Label><b>Identify each of the project categories you are interested in. (Check all that
+											apply)</b></Form.Label>
+										{this.state.interestOptions.map((option, index) => {
+											return (
+												<Form.Group key={index}>
+													<Form.Check label={option.name} id="interestInputs"
+																onChange={this.handleCheckInput.bind(this, index)}/>
+												</Form.Group>
+											)
+										})}
 
-							<Form.Label><b>Please rate your experience in the following professional skills using the scale
-								below:</b></Form.Label>
-							<br/>
-							<div>1: No Experience</div>
-							<div>2: Can Learn</div>
-							<div>3: Slightly Experienced</div>
-							<div>4: Experienced</div>
-							<div>5: Extremely Experienced</div>
-							<br/>
-							{this.state.profSkillOptions.map((skill, index) => {
-								let formattedSkill = skill.name.replace(/\s+/g, '');
-								return (
-									<Form.Group key={index}>
-										<Form.Label><b>{skill.name}</b></Form.Label>
-										<RadioButton name={formattedSkill}
-													 handleRadio={this.handleProfSkills.bind(this, index)}/>
 										<br/>
-									</Form.Group>
-								);
-							})}
-							<Form.Group >
-								<Form.Label><b>Do you have other relevant skills that may be helpful for us to know about
-									(i.e.
-									other languages spoken, coding, analytical software, professional skills, etc.)? -
-									List
-									them here! (500 Character limit)</b></Form.Label>
-								<Form.Control as="textarea" id="extraSkills" value={this.state.extraSkills}
-											  onChange={this.handleTextInput} rows="5"/>
-								<Form.Label><b>Character Count: {this.state.extraSkills.length}</b></Form.Label>
-							</Form.Group>
+										<Form.Group >
+											<Form.Label><b>Realistically, how much time can you commit per week to working on a
+												project? </b></Form.Label>
+											<Form.Control required as="select" id="timeCommit" onChange={this.handleTextInput}>
+												<option/>
+												<option>Less than 5 Hours Per Week</option>
+												<option>5-10 Hours Per Week</option>
+												<option>8-12 Hours Per Week</option>
+												<option>10-15 Hours Per Week</option>
+												<option>15-20 Hours Per Week</option>
+												<option>20-30 Hours Per Week</option>
+											</Form.Control>
+										</Form.Group>
 
-							<Button variant="primary" onClick={this.handleSubmit}>
-								Submit
-							</Button>
-							<div className="submit_text">{this.state.submitting ? "Submitting..." : ""}</div>
-							<div className="success_text">{this.state.submitted ? "Succesfully Submitted" : ""}</div>
-							{/*<Button variant="primary" onClick={this.handleTest}>*/}
-							{/*    Test*/}
-							{/*</Button>*/}
-						</Form>
-						<br/>
-					</div>
+										<br/>
+
+										<Form.Group>
+											<Form.Label><b>Is there any additional information regarding your availability that we should know about? (500 Character limit)</b></Form.Label>
+											<Form.Control as="textarea" id="otherAvailability" value={this.state.otherAvailability}
+														  onChange={this.handleTextInput} rows="5"/>
+											<Form.Label><b>Character Count: {this.state.otherAvailability.length}</b></Form.Label>
+										</Form.Group>
+									</Form>
+								</div>
+							</Carousel.Item>
+                            <Carousel.Item>
+								<div className="form">
+                                    <Form>
+										{this.state.logisticQuestions.map((question, index) => {
+											if (this.state.logisticFlags[index]) {
+												return (
+													<Form.Group key={index}>
+														<Form.Label><b>{question.name}</b></Form.Label>
+														<Form.Check type="Radio" label="Yes"
+																	checked={this.state.logisticInputs[index]}
+																	onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
+														<Form.Check type="Radio" label="No"
+																	checked={!this.state.logisticInputs[index]}
+																	onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
+														<br/>
+													</Form.Group>
+												)
+											} else {
+												return (
+													<Form.Group key={index}>
+														<Form.Label><b>{question.name}</b></Form.Label>
+														<Form.Check type="Radio" label="Yes"
+																	onChange={this.handleLogisticQuestions.bind(this, index, 0)}/>
+														<Form.Check type="Radio" label="No"
+																	onChange={this.handleLogisticQuestions.bind(this, index, 1)}/>
+														<br/>
+													</Form.Group>
+												)
+											}
+										})}
+									</Form>
+								</div>
+							</Carousel.Item>
+                            <Carousel.Item>
+								<div className="form">
+                                    <Form>
+										<Form.Group>
+											<Form.Label><b>Which UT school(s)/college(s) are you affiliated with?</b></Form.Label>
+											{this.state.schoolOptions.map((option, index) => {
+												return (
+													<Form.Group key={index}>
+														<Form.Check type="Checkbox"
+																	label={option.name}
+																	id="schoolInputs"
+																	checked={this.state.schoolInputs[index]}
+																	onChange={this.handleCheckInput.bind(this, index)}/>
+													</Form.Group>
+												)
+											})}
+											<Form.Control value={this.state.schoolOtherInput} id="schoolOtherInput" onChange={this.handleTextInput}
+														  type="text" placeholder="Other"/>
+										</Form.Group>
+										<br/>
+										<Form.Group>
+											<Form.Label><b>Please select each of the following that applies to you</b></Form.Label>
+											{this.state.programOptions.map((option, index) => {
+												return (
+													<Form.Check key={index}
+																type="Checkbox"
+																id="programInputs"
+																checked={this.state.programInputs[index]}
+																onChange={this.handleCheckInput.bind(this, index)}
+																label={option}
+													/>
+												)
+											})}
+										</Form.Group>
+										<br/>
+										<Form.Group>
+											<Form.Label><b>Over the past 5 years, approximately how much experience have you had working or directly volunteering with nonprofit organizations?</b></Form.Label>
+											<Form.Control required as="select" id="experience" onChange={this.handleTextInput}>
+												<option></option>
+												<option>No Experience (Yet!)</option>
+												<option>Less than 6 months</option>
+												<option>6-12 Months</option>
+												<option>More than 1 year</option>
+											</Form.Control>
+										</Form.Group>
+									</Form>
+								</div>
+							</Carousel.Item>
+							<Carousel.Item>
+								<div className="form">
+                                    <Form>
+										<Form.Label><b>Please rate your experience in the following technical skills using the scale
+											below:</b></Form.Label>
+										<br/>
+										<div>1: No Experience</div>
+										<div>2: Can Learn</div>
+										<div>3: Slightly Experienced</div>
+										<div>4: Experienced</div>
+										<div>5: Extremely Experienced</div>
+										<br/>
+										{techSkillOptions.map((skill, index) => {
+											let formattedSkill = skill.name.replace(/\s+/g, '');
+											return (
+												<Form.Group key={index}>
+													<Form.Label><b>{skill.name}</b></Form.Label>
+													<RadioButton name={formattedSkill}
+																 handleRadio={this.handleTechSkills.bind(this, index)}/>
+													<br/>
+												</Form.Group>
+											);
+										})}
+									</Form>
+								</div>
+							</Carousel.Item>
+							<Carousel.Item>
+								<div className="form">
+                                    <Form>
+										<Form.Label><b>Please rate your experience in the following professional skills using the scale
+											below:</b></Form.Label>
+										<br/>
+										<div>1: No Experience</div>
+										<div>2: Can Learn</div>
+										<div>3: Slightly Experienced</div>
+										<div>4: Experienced</div>
+										<div>5: Extremely Experienced</div>
+										<br/>
+										{this.state.profSkillOptions.map((skill, index) => {
+											let formattedSkill = skill.name.replace(/\s+/g, '');
+											return (
+												<Form.Group key={index}>
+													<Form.Label><b>{skill.name}</b></Form.Label>
+													<RadioButton name={formattedSkill}
+																 handleRadio={this.handleProfSkills.bind(this, index)}/>
+													<br/>
+												</Form.Group>
+											);
+										})}
+										<Form.Group >
+											<Form.Label><b>Do you have other relevant skills that may be helpful for us to know about
+												(i.e.
+												other languages spoken, coding, analytical software, professional skills, etc.)? -
+												List
+												them here! (500 Character limit)</b></Form.Label>
+											<Form.Control as="textarea" id="extraSkills" value={this.state.extraSkills}
+														  onChange={this.handleTextInput} rows="5"/>
+											<Form.Label><b>Character Count: {this.state.extraSkills.length}</b></Form.Label>
+										</Form.Group>
+
+										<Button variant="success" onClick={this.handleSubmit}>
+											Submit
+										</Button>
+										<div className="submit_text">{this.state.submitting ? "Submitting..." : ""}</div>
+										<div className="success_text">{this.state.submitted ? "Succesfully Submitted" : ""}</div>
+									</Form>
+								</div>
+							</Carousel.Item>
+							{/*</div>*/}
+						</Carousel>
+
 			} else {
 				CurrentDisplay =
 					<div>
