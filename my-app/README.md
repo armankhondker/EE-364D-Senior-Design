@@ -71,3 +71,17 @@ Install the aws cli and run `aws configure` and type in the aws credentials that
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+## Project Structure
+
+- node_modules: Contains node packages used in the app. Do not upload this directory to GitHub. It should be updated locally by running npm install.
+- public: Don't worry about this
+- src: source code for the app
+  - assets: Holds assets such as logos and images
+  - components: Contains React Components used throughout the pages. These are meant to be modular and reusable
+  - pages: Large components that represent an entire website page
+  - styling: Contains css for some of the components
+- .env: Contains environment variables such as URL endpoints of the backend and could also be used to store keys
+- package.json: Contains npm dependencies with versions and React scripts
+- package-lock.json: Records the exact version of each installed package. Do not modify at all.
+  
