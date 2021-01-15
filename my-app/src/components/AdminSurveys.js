@@ -4,7 +4,6 @@ import '../styling/Admin.css';
 import Form from 'react-bootstrap/Form';
 import LoadingAnimation from "./LoadingAnimation";
 import update from 'react-addons-update';
-import Popup from "reactjs-popup";
 import '../App.css';
 import axios from "axios";
 
@@ -19,20 +18,13 @@ class AdminSurveys extends Component {
           intentionChanges: [],
           newIntention: "",
           interestOptions: [],
-          interestOptions: [],
           newInterest: "",
           logisticQuestions: [],
           logisticChanges: [],
           newLogistic: "",
-          degreeOptions: [],
-          degreeChanges: [],
-          newDegree: "",
-          techCourseOptions: [],
-          techCourseChanges: [],
-          newTechCourse: "",
-          profCourseOptions: [],
-          profCourseChanges: [],
-          newProfCourse: "",
+          schoolOptions: [],
+          schoolChanges: [],
+          newSchool: "",
           techSkillOptions: [],
           techSkillChanges: [],
           newTechSkill: "",
@@ -50,18 +42,12 @@ class AdminSurveys extends Component {
         this.handleIntentionEdit = this.handleIntentionEdit.bind(this);
         this.handleNewIntention = this.handleNewIntention.bind(this);
         this.handleNewIntentionSubmit = this.handleNewIntentionSubmit.bind(this);
-        this.handleDegreeEdit = this.handleDegreeEdit.bind(this);
-        this.handleNewDegree = this.handleNewDegree.bind(this);
-        this.handleNewDegreeSubmit = this.handleNewDegreeSubmit.bind(this);
+        this.handleSchoolEdit = this.handleSchoolEdit.bind(this);
+        this.handleNewSchool = this.handleNewSchool.bind(this);
+        this.handleNewSchoolSubmit = this.handleNewSchoolSubmit.bind(this);
         this.handleLogisticEdit = this.handleLogisticEdit.bind(this);
         this.handleNewLogistic = this.handleNewLogistic.bind(this);
         this.handleNewLogisticSubmit = this.handleNewLogisticSubmit.bind(this);
-        this.handleTechCourseEdit = this.handleTechCourseEdit.bind(this);
-        this.handleNewTechCourse = this.handleNewTechCourse.bind(this);
-        this.handleNewTechCourseSubmit = this.handleNewTechCourseSubmit.bind(this);
-        this.handleProfCourseEdit = this.handleProfCourseEdit.bind(this);
-        this.handleNewProfCourse = this.handleNewProfCourse.bind(this);
-        this.handleNewProfCourseSubmit = this.handleNewProfCourseSubmit.bind(this);
         this.handleTechSkillEdit = this.handleTechSkillEdit.bind(this);
         this.handleNewTechSkill = this.handleNewTechSkill.bind(this);
         this.handleNewTechSkillSubmit = this.handleNewTechSkillSubmit.bind(this);
@@ -71,7 +57,7 @@ class AdminSurveys extends Component {
     }
 
     async updateDB(question, api_name) {
-      if (question.name == "") {
+      if (question.name  ===  "") {
         // delete api
         await axios.delete(process.env.REACT_APP_API_URL + ''+api_name+'/'+question.id+'/',
         {
@@ -124,12 +110,8 @@ class AdminSurveys extends Component {
         interestChanges,
         logisticQuestions,
         logisticChanges,
-        degreeOptions,
-        degreeChanges,
-        techCourseOptions,
-        techCourseChanges,
-        profCourseOptions,
-        profCourseChanges,
+        schoolOptions,
+        schoolChanges,
         techSkillOptions,
         techSkillChanges,
         profSkillOptions,
@@ -145,7 +127,7 @@ class AdminSurveys extends Component {
       //Put new intentions in db
       for (let i=intentionChanges.length; i<intentionOptions.length; i++) {
         let question = intentionOptions[i];
-        if (question.name=="")
+        if (question.name === "")
           continue;
         await this.postDB(question, "intentions")
       }
@@ -158,7 +140,7 @@ class AdminSurveys extends Component {
       }
       for (let i=interestChanges.length; i<interestOptions.length; i++) {
         let question = interestOptions[i];
-        if (question.name=="")
+        if (question.name === "")
           continue;
         await this.postDB(question, "interests")
       }
@@ -171,48 +153,22 @@ class AdminSurveys extends Component {
       }
       for (let i=logisticChanges.length; i<logisticQuestions.length; i++) {
         let question = logisticQuestions[i];
-        if (question.name=="")
+        if (question.name === "")
           continue;
         await this.postDB(question, "logistics")
       }
 
-      for (let i=0; i<degreeChanges.length; i++) {
-        if (!degreeChanges[i])
+      for (let i=0; i<schoolChanges.length; i++) {
+        if (!schoolChanges[i])
           continue;
-        let question = degreeOptions[i];
-        await this.updateDB(question, "degrees")
+        let question = schoolOptions[i];
+        await this.updateDB(question, "schools")
       }
-      for (let i=degreeChanges.length; i<degreeOptions.length; i++) {
-        let question = degreeOptions[i];
-        if (question.name=="")
+      for (let i=schoolChanges.length; i<schoolOptions.length; i++) {
+        let question = schoolOptions[i];
+        if (question.name === "")
           continue;
-        await this.postDB(question, "degrees")
-      }
-
-      for (let i=0; i<techCourseChanges.length; i++) {
-        if (!techCourseChanges[i])
-          continue;
-        let question = techCourseOptions[i];
-        await this.updateDB(question, "tech-courses")
-      }
-      for (let i=techCourseChanges.length; i<techCourseOptions.length; i++) {
-        let question = techCourseOptions[i];
-        if (question.name=="")
-          continue;
-        await this.postDB(question, "tech-courses")
-      }
-
-      for (let i=0; i<profCourseChanges.length; i++) {
-        if (!profCourseChanges[i])
-          continue;
-        let question = profCourseOptions[i];
-        await this.updateDB(question, "prof-courses")
-      }
-      for (let i=profCourseChanges.length; i<profCourseOptions.length; i++) {
-        let question = profCourseOptions[i];
-        if (question.name=="")
-          continue;
-        await this.postDB(question, "prof-courses")
+        await this.postDB(question, "schools")
       }
 
       for (let i=0; i<techSkillChanges.length; i++) {
@@ -223,7 +179,7 @@ class AdminSurveys extends Component {
       }
       for (let i=techSkillChanges.length; i<techSkillOptions.length; i++) {
         let question = techSkillOptions[i];
-        if (question.name=="")
+        if (question.name === "")
           continue;
         await this.postDB(question, "tech-skills")
       }
@@ -236,7 +192,7 @@ class AdminSurveys extends Component {
       }
       for (let i=profSkillChanges.length; i<profSkillOptions.length; i++) {
         let question = profSkillOptions[i];
-        if (question.name=="")
+        if (question.name === "")
           continue;
         await this.postDB(question, "prof-skills")
       }
@@ -281,36 +237,15 @@ class AdminSurveys extends Component {
         })
         .catch(err => console.log(err));
 
-       axios.get(process.env.REACT_APP_API_URL + 'degrees')
+       axios.get(process.env.REACT_APP_API_URL + 'schools')
         .then(res => {
           console.log(res);
           this.setState({
-            degreeOptions: res.data,
-            degreeChanges: new Array(res.data.length),
+            schoolOptions: res.data,
+            schoolChanges: new Array(res.data.length),
           });
         })
         .catch(err => console.log(err));
-
-       axios.get(process.env.REACT_APP_API_URL + 'tech-courses')
-        .then(res => {
-          console.log(res);
-          this.setState({
-            techCourseOptions: res.data,
-            techCourseChanges: new Array(res.data.length),
-          });
-        })
-        .catch(err => console.log(err));
-
-       axios.get(process.env.REACT_APP_API_URL + 'prof-courses')
-        .then(res => {
-          console.log(res);
-          this.setState({
-            profCourseOptions: res.data,
-            profCourseChanges: new Array(res.data.length),
-          });
-        })
-        .catch(err => console.log(err));
-
 
        axios.get(process.env.REACT_APP_API_URL + 'tech-skills')
         .then(res => {
@@ -419,25 +354,25 @@ class AdminSurveys extends Component {
       });
     }
 
-    handleDegreeEdit(i, e) {
+    handleSchoolEdit(i, e) {
       let question = e.target.value;
-      if (i<this.state.degreeChanges.length) {
+      if (i<this.state.schoolChanges.length) {
         this.setState(update(this.state, {
-         degreeChanges: {
+         schoolChanges: {
            [i] : {
              $set: true
            }
          },
-         degreeOptions: {
+         schoolOptions: {
            [i] : {
-             $set: {'name': question, 'id': this.state.degreeOptions[i].id}
+             $set: {'name': question, 'id': this.state.schoolOptions[i].id}
            }
          },
         }));
       }
       else {
         this.setState(update(this.state, {
-         degreeOptions: {
+         schoolOptions: {
            [i] : {
              $set: {'name': question}
            }
@@ -446,18 +381,18 @@ class AdminSurveys extends Component {
       }
     }
 
-    handleNewDegree(e) {
+    handleNewSchool(e) {
       let writtenText = e.target.value;
       this.setState({
-        newDegree: writtenText,
+        newSchool: writtenText,
       });
     }
 
-    handleNewDegreeSubmit() {
-      var joined = this.state.degreeOptions.concat({'name': this.state.newDegree});
+    handleNewSchoolSubmit() {
+      var joined = this.state.schoolOptions.concat({'name': this.state.newSchool});
       this.setState({
-        degreeOptions: joined,
-        newDegree: "",
+        schoolOptions: joined,
+        newSchool: "",
       });
     }
 
@@ -500,112 +435,6 @@ class AdminSurveys extends Component {
       this.setState({
         logisticQuestions: joined,
         newLogistic: "",
-      });
-    }
-
-    handleTechCourseEdit(i, e) {
-      let question = e.target.value;
-      question = question.split(",")
-      if (question.length < 2) {
-        question = ["", ""];
-      }
-
-      if (i<this.state.techCourseChanges.length) {
-        this.setState(update(this.state, {
-         techCourseChanges: {
-           [i] : {
-             $set: true
-           }
-         },
-         techCourseOptions: {
-           [i] : {
-             $set: {'name': question[0], 'courseId': question[1], 'id': this.state.techCourseOptions[i].id}
-           }
-         },
-        }));
-      }
-      else {
-        this.setState(update(this.state, {
-         techCourseOptions: {
-           [i] : {
-             $set: {'name': question[0], 'courseId': question[1]}
-           }
-         }
-        }));
-      }
-    }
-
-    handleNewTechCourse(e) {
-      let writtenText = e.target.value;
-      this.setState({
-        newTechCourse: writtenText,
-      });
-    }
-
-    handleNewTechCourseSubmit() {
-      let question = this.state.newTechCourse;
-      question = question.split(",")
-      if (question.length < 2) {
-        question = ["", ""];
-        window.alert("Please use a comma to separate the course name and id");
-      }
-      var joined = this.state.techCourseOptions.concat({'name': question[0], 'courseId': question[1]});
-      this.setState({
-        techCourseOptions: joined,
-        newTechCourse: "",
-      });
-    }
-
-    handleProfCourseEdit(i, e) {
-      let question = e.target.value;
-      question = question.split(",")
-      if (question.length < 2) {
-        question = ["", ""];
-      }
-
-      if (i<this.state.profCourseChanges.length) {
-        this.setState(update(this.state, {
-         profCourseChanges: {
-           [i] : {
-             $set: true
-           }
-         },
-         profCourseOptions: {
-           [i] : {
-             $set: {'name': question[0], 'courseId': question[1], 'id': this.state.profCourseOptions[i].id}
-           }
-         },
-        }));
-      }
-      else {
-        this.setState(update(this.state, {
-         profCourseOptions: {
-           [i] : {
-             $set: {'name': question[0], 'courseId': question[1]}
-           }
-         }
-        }));
-      }
-    }
-
-    handleNewProfCourse(e) {
-      let writtenText = e.target.value;
-      this.setState({
-        newProfCourse: writtenText,
-      });
-    }
-
-    handleNewProfCourseSubmit() {
-      let question = this.state.newProfCourse;
-      question = question.split(",")
-      if (question.length < 2) {
-        question = ["", ""];
-        window.alert("Please use a comma to separate the course name and id");
-      }
-      var joined = this.state.profCourseOptions.concat({'name': question[0], 'courseId': question[1]});
-      this.setState({
-        profCourseOptions: joined,
-        newProfCourse: "",
       });
     }
 
@@ -696,10 +525,10 @@ class AdminSurveys extends Component {
 
     render() {
       let hasMounted = false;
-      let {intentionOptions, interestOptions, degreeOptions, techCourseOptions,logisticQuestions,
-          profCourseOptions, techSkillOptions, profSkillOptions} = this.state;
+      let {intentionOptions, interestOptions, schoolOptions, logisticQuestions,
+          techSkillOptions, profSkillOptions} = this.state;
       if ( intentionOptions.length && interestOptions.length && logisticQuestions.length &&
-          degreeOptions.length && techCourseOptions.length && profCourseOptions.length &&
+          schoolOptions.length && 
           techSkillOptions.length && profSkillOptions.length )
       {
           hasMounted = true;
@@ -754,20 +583,20 @@ class AdminSurveys extends Component {
                 <br/>
                 <br/>
               </div>
-              <p><b>Degree Options:</b></p>
+              <p><b>School Options:</b></p>
               <div>
-                {this.state.degreeOptions.map((option, index) => {
+                {this.state.schoolOptions.map((option, index) => {
                   return(
                     <Form.Group key={index}>
-                        <Form.Control as="textarea" value={option.name} onChange={this.handleDegreeEdit.bind(this, index)} rows="1"/>
+                        <Form.Control as="textarea" value={option.name} onChange={this.handleSchoolEdit.bind(this, index)} rows="1"/>
                     </Form.Group>
                   )
                 })}
                 <Form.Group controlId="newInput">
                     <Form.Label>Enter new option here:</Form.Label>
-                    <Form.Control as="textarea" value={this.state.newDegree} onChange={this.handleNewDegree} rows="1"/>
+                    <Form.Control as="textarea" value={this.state.newSchool} onChange={this.handleNewSchool} rows="1"/>
                 </Form.Group>
-                <Button onClick={this.handleNewDegreeSubmit} >Confirm New Option</Button>
+                <Button onClick={this.handleNewSchoolSubmit} >Confirm New Option</Button>
                 <br/>
                 <br/>
                 <br/>
@@ -786,46 +615,6 @@ class AdminSurveys extends Component {
                     <Form.Control as="textarea" value={this.state.newLogistic} onChange={this.handleNewLogistic} rows="1"/>
                 </Form.Group>
                 <Button onClick={this.handleNewLogisticSubmit} >Confirm New Option</Button>
-                <br/>
-                <br/>
-                <br/>
-              </div>
-              <p><b>Technical Course Options:</b></p>
-              <p>(Use a comma with no spaces to separate the name and course id)</p>
-              <p>Note: When deleting a course, there will be an empty comma by itself in the textbox</p>
-              <div>
-                {this.state.techCourseOptions.map((option, index) => {
-                  return(
-                    <Form.Group key={index}>
-                        <Form.Control as="textarea" value={option.name+','+option.courseId} onChange={this.handleTechCourseEdit.bind(this, index)} rows="1"/>
-                    </Form.Group>
-                  )
-                })}
-                <Form.Group controlId="newInput">
-                    <Form.Label>Enter new option here:</Form.Label>
-                    <Form.Control as="textarea" value={this.state.newTechCourse} onChange={this.handleNewTechCourse} rows="1"/>
-                </Form.Group>
-                <Button onClick={this.handleNewTechCourseSubmit} >Confirm New Option</Button>
-                <br/>
-                <br/>
-                <br/>
-              </div>
-              <p><b>Professional Course Options:</b></p>
-              <p>(Use a comma with no spaces to separate the name and course id)</p>
-              <p>Note: When deleting a course, there will be an empty comma by itself in the textbox</p>
-              <div>
-                {this.state.profCourseOptions.map((option, index) => {
-                  return(
-                    <Form.Group key={index}>
-                        <Form.Control as="textarea" value={option.name+','+option.courseId} onChange={this.handleProfCourseEdit.bind(this, index)} rows="1"/>
-                    </Form.Group>
-                  )
-                })}
-                <Form.Group controlId="newInput">
-                    <Form.Label>Enter new option here:</Form.Label>
-                    <Form.Control as="textarea" value={this.state.newProfCourse} onChange={this.handleNewProfCourse} rows="1"/>
-                </Form.Group>
-                <Button onClick={this.handleNewProfCourseSubmit} >Confirm New Option</Button>
                 <br/>
                 <br/>
                 <br/>

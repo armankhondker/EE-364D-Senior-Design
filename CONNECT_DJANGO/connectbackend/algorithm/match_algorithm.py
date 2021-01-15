@@ -14,17 +14,25 @@ def run_algo(pre_matches={}, email_address=""):
     client = MongoClient(
         "mongodb+srv://rgkadmin:H13seniordesign@cluster0-54uuh.mongodb.net/test?retryWrites=true&w=majority")
     db = client
-    students = list(db.students.students_student.find({}))
+    settings = list(db.students.admins_settings.find({}))
+    cohort = settings[0]['current_cohort']
+    print(cohort)
+    students = list(db.students.students_student.find({
+        'cohort': cohort
+    }))
     resumes = list(db.students.students_resume.find({}))
-    orgs = list(db.students.organizations_project.find({}))
-    cohort = ""
+    orgs = list(db.students.organizations_project.find({
+        'cohort': cohort
+    }))
     student_data = []
     org_data = []
     time_commitment_dict = {
         'Less than 5 Hours Per Week': 0,
         '5-10 Hours Per Week': 1,
-        '15-20 Hours Per Week': 2,
-        '20-30 Hours Per Week': 3
+        '8-12 Hours Per Week': 2,
+        '10-15 Hours Per Week': 3,
+        '15-20 Hours Per Week': 4,
+        '20-30 Hours Per Week': 5
     }
     ###### Handle pre_matches
 
@@ -32,7 +40,6 @@ def run_algo(pre_matches={}, email_address=""):
 
     ############### Data Preprocessing
     for student in students:
-        cohort = student['cohort']  # define cohort
         resume = ""
         r = next((item for item in resumes if item["unique_id"] == student['unique_id']), "")
         # Create pdf of resume from base64, parse text, delete resume
@@ -268,11 +275,11 @@ def run_algo(pre_matches={}, email_address=""):
     )
 
     if (email_address == ""):
-        email_address = "jpaper01@gmail.com"
+        email_address = "rgkconnectmatching@gmail.com"
     #### Send email
     api_link = "https://api.sendinblue.com/v3/smtp/email"
     body_dict = {
-        "sender": {"name": "RGKConnect", "email": "rgkconnectmatching@gmail.com"},
+        "sender": {"name": "RGK Connect", "email": "rgkconnectmatching@gmail.com"},
         "subject": "Current matching",
         "to": [{"email": email_address}],
         "htmlContent": email,

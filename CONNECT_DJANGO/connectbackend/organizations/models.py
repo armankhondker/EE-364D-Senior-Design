@@ -17,9 +17,7 @@ class Project(models.Model):
     transportation = models.BooleanField(default=False)
     flexible_hours = models.BooleanField(default=False)
     work_remotely = models.BooleanField(default=False)
-    degree = models.DictField(default={})
-    tech_courses = models.DictField(default={})
-    prof_courses = models.DictField(default={})
+    school = models.DictField(default={})
     experience = models.DictField(default={})
     tech_skills = models.DictField(default={})
     prof_skills = models.DictField(default={})
@@ -41,21 +39,11 @@ class ProfSkill(models.Model):
     name = models.CharField(max_length=100, unique=True, blank=False)
 
 
-class TechCourse(models.Model):
-    name = models.CharField(max_length=100, unique=True, blank=False)
-    courseId = models.CharField(max_length=100, unique=True, blank=False)
-
-
-class ProfCourse(models.Model):
-    name = models.CharField(max_length=100, unique=True, blank=False)
-    courseId = models.CharField(max_length=100, unique=True, blank=False)
-
-
 class Intention(models.Model):
     name = models.CharField(max_length=100, unique=True, blank=False)
 
 
-class Degree(models.Model):
+class School(models.Model):
     name = models.CharField(max_length=100, unique=True, blank=False)
 
 

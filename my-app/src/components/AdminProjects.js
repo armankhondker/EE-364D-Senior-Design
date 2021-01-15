@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import Button from "react-bootstrap/Button"
 import Modal from 'react-bootstrap/Modal'
-import ModalHeader from 'react-bootstrap/Modal'
-import ModalBody from 'react-bootstrap/Modal'
 import '../styling/Admin.css';
 import Form from 'react-bootstrap/Form';
 import RadioButton from "./RadioButton";
-import LoadingAnimation from "../components/LoadingAnimation";
 import update from 'react-addons-update';
 import '../App.css';
 import axios from "axios";
@@ -16,7 +13,7 @@ class AdminProjects extends Component {
       constructor(props) {
           super(props);
           this.state = {
-              projects: null,
+              projects: props.projects,
               modalShow: [],
               contact_first_name: "",
               contact_last_name: "",
@@ -32,9 +29,7 @@ class AdminProjects extends Component {
               transportation: null,
               flexible_hours: null,
               work_remotely: null,
-              degree: [],
-              tech_courses: [],
-              prof_courses: [],
+              school: [],
               tech_skills: [],
               prof_skills: [],
               other_skills: "",
@@ -58,8 +53,6 @@ class AdminProjects extends Component {
           this.handleFlexibleHours = this.handleFlexibleHours.bind(this);
           this.handleWorkRemotely = this.handleWorkRemotely.bind(this);
           this.handleDegree = this.handleDegree.bind(this);
-          this.handleTechCourses = this.handleTechCourses.bind(this);
-          this.handleProfCourses = this.handleProfCourses.bind(this);
           this.handleTechSkills = this.handleTechSkills.bind(this);
           this.handleProfSkills = this.handleProfSkills.bind(this);
           this.handleOtherSkills = this.handleOtherSkills.bind(this);
@@ -67,13 +60,17 @@ class AdminProjects extends Component {
           this.isDict = this.isDict.bind(this);
       }
 
-      async componentDidMount() {
-          await axios.get(process.env.REACT_APP_API_URL + 'projects')
-              .then(res => {
-                  console.log(res);
-                  this.setState({projects: res.data});
-              });
+      componentDidMount() {
+          // await axios.get(process.env.REACT_APP_API_URL + 'projects')
+          //     .then(res => {
+          //         console.log(res);
+          //         this.setState({projects: res.data});
+          //     });
       }
+
+    componentWillReceiveProps(nextProps, nextContext) {
+          this.setState({ projects: nextProps.projects });
+    }
 
     componentDidUpdate(prevProps){
         // console.log("this.state.projects on projects tab");
@@ -81,7 +78,7 @@ class AdminProjects extends Component {
     }
 
     clearData() {
-        this.setState(state => ({
+        this.setState(() => ({
           projects: this.props.projects,
           modalShow: [],
           contact_first_name: "",
@@ -98,9 +95,7 @@ class AdminProjects extends Component {
           transportation: null,
           flexible_hours: null,
           work_remotely: null,
-          degree: [],
-          tech_courses: [],
-          prof_courses: [],
+          school: [],
           tech_skills: [],
           prof_skills: [],
           other_skills: "",
@@ -109,71 +104,71 @@ class AdminProjects extends Component {
       }
 
       handleFirstName(e) {
-    		var writtenText = e.target.value
-    		this.setState(state => ({
+          const writtenText = e.target.value;
+          this.setState(() => ({
     			contact_first_name: writtenText
     		}));
     	}
 
       handleLastName(e) {
-    		var writtenText = e.target.value
-    		this.setState(state => ({
+          const writtenText = e.target.value;
+          this.setState(() => ({
     			contact_last_name: writtenText
     		}));
     	}
 
       handlePhone(e) {
-        var writtenText = e.target.value
-    		this.setState(state => ({
+          const writtenText = e.target.value;
+          this.setState(() => ({
     			contact_phone: writtenText
     		}));
       }
 
       handleEmail(e) {
-        var writtenText = e.target.value
-    		this.setState(state => ({
+          const writtenText = e.target.value;
+          this.setState(() => ({
     			contact_email: writtenText
     		}));
       }
 
       handleOrganizationName(e) {
-        var writtenText = e.target.value
-    		this.setState(state => ({
+          const writtenText = e.target.value;
+          this.setState(() => ({
     			organization_name: writtenText
     		}));
       }
 
       handleOrganizationAddress(e) {
-        var writtenText = e.target.value
-    		this.setState(state => ({
+          const writtenText = e.target.value;
+          this.setState(() => ({
     			organization_address: writtenText
     		}));
       }
 
       handleOrganizationWebsite(e) {
-        var writtenText = e.target.value
-    		this.setState(state => ({
+          const writtenText = e.target.value;
+          this.setState(() => ({
     			organization_website: writtenText
     		}));
       }
 
       handleProjectName(e) {
-        var writtenText = e.target.value
-    		this.setState(state => ({
+          const writtenText = e.target.value;
+          this.setState(() => ({
     			project_name: writtenText
     		}));
       }
 
       handleProjectDescription(e) {
-        var writtenText = e.target.value
-    		this.setState(state => ({
+          const writtenText = e.target.value;
+          this.setState(() => ({
     			project_description: writtenText
     		}));
       }
 
       handleInterests(project, i, e) {
         if (this.state.project_categories.length === 0) {
-          this.setState(state => ({
+          this.setState(() => ({
             project_categories: new Array(Object.keys(project.project_categories).length),
           }));
         }
@@ -196,7 +191,7 @@ class AdminProjects extends Component {
 
       handleTimeCommit(e) {
     		var tc = e.target.value
-    		this.setState(state => ({
+    		this.setState(() => ({
     	     time_commitment: tc
     	  }));
     	}
@@ -209,7 +204,7 @@ class AdminProjects extends Component {
         else {
           answer = (answer === "True" || answer === "true")
         }
-        this.setState(state => ({
+        this.setState(() => ({
     			transportation: answer,
     		}));
       }
@@ -222,7 +217,7 @@ class AdminProjects extends Component {
         else {
           answer = (answer === "True" || answer === "true")
         }
-        this.setState(state => ({
+        this.setState(() => ({
     			flexible_hours: answer,
     		}));
       }
@@ -235,15 +230,15 @@ class AdminProjects extends Component {
         else {
           answer = (answer === "True" || answer === "true")
         }
-        this.setState(state => ({
+        this.setState(() => ({
     			work_remotely: answer,
     		}));
       }
 
       handleDegree(project, i, e) {
-        if (this.state.degree.length === 0) {
-          this.setState(state => ({
-            degree: new Array(Object.keys(project.degree).length),
+        if (this.state.school.length === 0) {
+          this.setState(() => ({
+            school: new Array(Object.keys(project.school).length),
           }));
         }
         let answer = e.target.value
@@ -255,7 +250,7 @@ class AdminProjects extends Component {
         }
 
         this.setState(update(this.state, {
-         degree: {
+         school: {
            [i] : {
              $set: answer
            }
@@ -263,55 +258,10 @@ class AdminProjects extends Component {
        }));
       }
 
-      handleTechCourses(project, i, e) {
-        if (this.state.project_categories.length === 0) {
-          this.setState(state => ({
-            tech_courses: new Array(Object.keys(project.tech_courses).length),
-          }));
-        }
-        let answer = e.target.value
-        if (answer === "") {
-          answer = null
-        }
-        else {
-          answer = (answer === "True" || answer === "true")
-        }
-
-        this.setState(update(this.state, {
-         tech_courses: {
-           [i] : {
-             $set: answer
-           }
-         }
-       }));
-      }
-
-      handleProfCourses(project, i, e) {
-        if (this.state.project_categories.length === 0) {
-          this.setState(state => ({
-            prof_courses: new Array(Object.keys(project.prof_courses).length),
-          }));
-        }
-        let answer = e.target.value
-        if (answer === "") {
-          answer = null
-        }
-        else {
-          answer = (answer === "True" || answer === "true")
-        }
-
-        this.setState(update(this.state, {
-         prof_courses: {
-           [i] : {
-             $set: answer
-           }
-         }
-       }));
-      }
 
       handleTechSkills(project, i, e) {
         if (this.state.tech_skills.length === 0) {
-          this.setState(state => ({
+          this.setState(() => ({
             tech_skills: new Array(Object.keys(project.tech_skills).length),
           }));
         }
@@ -326,7 +276,7 @@ class AdminProjects extends Component {
 
       handleProfSkills(project, i, e) {
         if (this.state.prof_skills.length === 0) {
-          this.setState(state => ({
+          this.setState(() => ({
             prof_skills: new Array(Object.keys(project.prof_skills).length),
           }));
         }
@@ -341,7 +291,7 @@ class AdminProjects extends Component {
 
       handleOtherSkills(e) {
         var writtenText = e.target.value
-    		this.setState(state => ({
+    		this.setState(() => ({
     			other_skills: writtenText
     		}));
       }
@@ -351,11 +301,12 @@ class AdminProjects extends Component {
       }
 
       async handleUpdate(project, e) {
-        this.setState(state => ({
+          this._e = e;
+          this.setState(() => ({
     			submit_text: "Updating..."
     		}));
         let submit_dict = {};
-        // contact_first_name, contact_last_name, contact_phone, contact_email, organization_name, organization_address, organization_website, project_name, project_description, project_categories, time_commitment, transportation, flexible_hours, work_remotely, degree, tech_courses, prof_courses, experience, tech_skills, prof_skills, other_skills, cohort
+        // contact_first_name, contact_last_name, contact_phone, contact_email, organization_name, organization_address, organization_website, project_name, project_description, project_categories, time_commitment, transportation, flexible_hours, work_remotely, school, experience, tech_skills, prof_skills, other_skills, cohort
         let keys = [
           "contact_first_name",
           "contact_last_name",
@@ -371,9 +322,7 @@ class AdminProjects extends Component {
           "transportation",
           "flexible_hours",
           "work_remotely",
-          "degree",
-          "tech_courses",
-          "prof_courses",
+          "school",
           "tech_skills",
           "prof_skills",
           "other_skills"
@@ -440,19 +389,19 @@ class AdminProjects extends Component {
     			})
 
 
-          this.setState(state => ({
+          this.setState(() => ({
       			submit_text: "Submitted"
       		}));
           this.clearData();
       }
 
       renderSurvey(project) {
-        let {contact_first_name, contact_last_name, contact_phone, contact_email, organization_name, organization_address, organization_website, project_name, project_description, project_categories, time_commitment, transportation, flexible_hours, work_remotely, degree, tech_courses, prof_courses, experience, tech_skills, prof_skills, other_skills, cohort} = project
+        let {contact_first_name, contact_last_name, contact_phone, contact_email, organization_name, organization_address, organization_website, project_name, project_description, project_categories, time_commitment, transportation, flexible_hours, work_remotely, school, tech_skills, prof_skills, other_skills} = project
 
         return (
           <div>
             <div className="bold">(Leave the text entry blank for survey value to remain as is)</div>
-            <p></p>
+            <p/>
             <div>Current contact's first name: {contact_first_name}</div>
             <Form.Group controlId="FirstName">
                 <Form.Label>Update First Name Here:</Form.Label>
@@ -498,10 +447,10 @@ class AdminProjects extends Component {
                 <Form.Label>Update Project Description Here:</Form.Label>
                 <Form.Control type="profList" onChange={this.handleProjectDescription}/>
             </Form.Group>
-            <br></br>
+            <br/>
             {Object.keys(project_categories).map((key, index) => {
               return (
-                <div>Includes {key}: {String(project_categories[key])}
+                <div key={index}>Includes {key}: {String(project_categories[key])}
                 <Form.Group key={index}>
                     <Form.Label>Update Answer Here:</Form.Label>
                     <Form.Control type="profList" onChange={this.handleInterests.bind(this, project, index)}/>
@@ -509,12 +458,12 @@ class AdminProjects extends Component {
               </div>
               )
             })}
-            <br></br>
+            <br/>
             <div>Current time commitment: {time_commitment}</div>
             <Form.Group controlId="TimeCommitment">
                 <Form.Label>Update Time Commitment Here:</Form.Label>
                 <Form.Control required as="select" onChange={this.handleTimeCommit}>
-                    <option></option>
+                    <option/>
                     <option>Less than 5 Hours Per Week</option>
                     <option>5-10 Hours Per Week</option>
                     <option>15-20 Hours Per Week</option>
@@ -536,11 +485,11 @@ class AdminProjects extends Component {
                 <Form.Label>Update Answer Here:</Form.Label>
                 <Form.Control type="profList" onChange={this.handleWorkRemotely.bind(this)}/>
             </Form.Group>
-            <br></br>
-            <div><b>Relevant Degrees:</b></div>
-            {Object.keys(degree).map((key, index) => {
+            <br/>
+            <div><b>Relevant Schools:</b></div>
+            {Object.keys(school).map((key, index) => {
               return (
-                <div>{key}: {String(degree[key])}
+                <div key={index}>{key}: {String(school[key])}
                 <Form.Group key={index}>
                     <Form.Label>Update Answer Here:</Form.Label>
                     <Form.Control type="profList" onChange={this.handleDegree.bind(this, project, index)}/>
@@ -548,32 +497,10 @@ class AdminProjects extends Component {
               </div>
               )
             })}
-            <br></br>
-            {Object.keys(tech_courses).map((key, index) => {
-              return (
-                <div>Needs {key}: {String(tech_courses[key])}
-                <Form.Group key={index}>
-                    <Form.Label>Update Answer Here:</Form.Label>
-                    <Form.Control type="profList" onChange={this.handleTechCourses.bind(this, project, index)}/>
-                </Form.Group>
-              </div>
-              )
-            })}
-            <br></br>
-            {Object.keys(prof_courses).map((key, index) => {
-              return (
-                <div>Taken {key}: {String(prof_courses[key])}
-                <Form.Group key={index}>
-                    <Form.Label>Update Answer Here:</Form.Label>
-                    <Form.Control type="profList" onChange={this.handleProfCourses.bind(this, project, index)}/>
-                </Form.Group>
-              </div>
-              )
-            })}
-            <br></br>
+            <br/>
             {Object.keys(tech_skills).map((key, index) => {
                 return(
-                  <div>Current {key}: {String(tech_skills[key])}
+                  <div key={index}>Current {key}: {String(tech_skills[key])}
                     <Form.Group key={index}>
                         <Form.Label>Update Answer Here:</Form.Label>
                         <RadioButton name={key} handleRadio={this.handleTechSkills.bind(this, project, index)}/>
@@ -581,10 +508,10 @@ class AdminProjects extends Component {
                   </div>
                 );
             })}
-            <br></br>
+            <br/>
             {Object.keys(prof_skills).map((key, index) => {
                 return(
-                  <div>Current {key}: {String(prof_skills[key])}
+                  <div key={index}>Current {key}: {String(prof_skills[key])}
                     <Form.Group key={index}>
                         <Form.Label>Update Answer Here:</Form.Label>
                         <RadioButton name={key} handleRadio={this.handleProfSkills.bind(this, project, index)}/>
@@ -592,13 +519,13 @@ class AdminProjects extends Component {
                   </div>
                 );
             })}
-            <br></br>
+            <br/>
             <div>Other Skills: {other_skills}</div>
             <Form.Group controlId="OtherSkills">
                 <Form.Label>Update Answer Here:</Form.Label>
                 <Form.Control type="profList" onChange={this.handleOtherSkills.bind(this)}/>
             </Form.Group>
-            <br></br>
+            <br/>
             <Button variant="primary" onClick={this.handleUpdate.bind(this, project)}>
                 Update Project Form
             </Button>
@@ -608,7 +535,8 @@ class AdminProjects extends Component {
       }
 
       handleModal(i, e) {
-        this.setState(update(this.state, {
+          this._e = e;
+          this.setState(update(this.state, {
          modalShow: {
            [i] : {
              $set: true

@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import Button from "react-bootstrap/Button"
 import Modal from 'react-bootstrap/Modal'
-import ModalHeader from 'react-bootstrap/Modal'
-import ModalBody from 'react-bootstrap/Modal'
-import NewWindowPortal from "../components/NewWindowPortal.js";
 import '../styling/Admin.css';
 import Form from 'react-bootstrap/Form';
 import RadioButton from "./RadioButton";
-import LoadingAnimation from "../components/LoadingAnimation";
 import update from 'react-addons-update';
-import Popup from "reactjs-popup";
 import '../App.css';
 import axios from "axios";
 
@@ -21,6 +16,7 @@ class AdminStudents extends Component {
         this.state = {
             students: props.students,
             modalShow: [],
+            deleteShow: false,
             first_name: "",
             last_name: "",
             eid: "",
@@ -33,9 +29,7 @@ class AdminStudents extends Component {
             transportation: null,
             flexible_hours: null,
             work_remotely: null,
-            degree: "",
-            tech_courses: [],
-            prof_courses: [],
+            school: [],
             tech_skills: [],
             prof_skills: [],
             other_skills: "",
@@ -46,31 +40,21 @@ class AdminStudents extends Component {
         this.clearData = this.clearData.bind(this);
         this.handleModal = this.handleModal.bind(this);
         this.renderSurvey = this.renderSurvey.bind(this);
-        this.handleFirstName = this.handleFirstName.bind(this);
-        this.handleLastName = this.handleLastName.bind(this);
-        this.handleEID = this.handleEID.bind(this);
-        this.handlePhone = this.handlePhone.bind(this);
-        this.handleEmail = this.handleEmail.bind(this);
-        this.handleLinkedin = this.handleLinkedin.bind(this);
         this.handleIntentions = this.handleIntentions.bind(this);
         this.handleInterests = this.handleInterests.bind(this);
-        this.handleTimeCommit = this.handleTimeCommit.bind(this);
-        this.handleTransportation = this.handleTransportation.bind(this);
-        this.handleFlexibleHours = this.handleFlexibleHours.bind(this);
-        this.handleWorkRemotely = this.handleWorkRemotely.bind(this);
-        this.handleDegree = this.handleDegree.bind(this);
-        this.handleTechCourses = this.handleTechCourses.bind(this);
-        this.handleProfCourses = this.handleProfCourses.bind(this);
         this.handleTechSkills = this.handleTechSkills.bind(this);
         this.handleProfSkills = this.handleProfSkills.bind(this);
-        this.handleOtherSkills = this.handleOtherSkills.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.isDict = this.isDict.bind(this);
+
+        this.handleTextInput = this.handleTextInput.bind(this);
+        this.handleTF = this.handleTF.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
 
     }
 
     clearData() {
-      this.setState(state => ({
+      this.setState(() => ({
         students: this.props.students,
         currentCohort: "",
         modalShow: [],
@@ -86,9 +70,7 @@ class AdminStudents extends Component {
         transportation: null,
         flexible_hours: null,
         work_remotely: null,
-        degree: "",
-        tech_courses: [],
-        prof_courses: [],
+        school: "",
         tech_skills: [],
         prof_skills: [],
         other_skills: "",
@@ -96,51 +78,16 @@ class AdminStudents extends Component {
   		}));
     }
 
-    handleFirstName(e) {
-  		var writtenText = e.target.value
-  		this.setState(state => ({
-  			first_name: writtenText
-  		}));
-  	}
-
-    handleLastName(e) {
-  		var writtenText = e.target.value
-  		this.setState(state => ({
-  			last_name: writtenText
-  		}));
-  	}
-
-    handleEID(e) {
-      var writtenText = e.target.value
-  		this.setState(state => ({
-  			eid: writtenText
-  		}));
-    }
-
-    handlePhone(e) {
-      var writtenText = e.target.value
-  		this.setState(state => ({
-  			phone: writtenText
-  		}));
-    }
-
-    handleEmail(e) {
-      var writtenText = e.target.value
-  		this.setState(state => ({
-  			email: writtenText
-  		}));
-    }
-
-    handleLinkedin(e) {
-      var writtenText = e.target.value
-  		this.setState(state => ({
-  			linkedIn: writtenText
-  		}));
+    handleTextInput(e) {
+        console.log(e.target.id);
+        this.setState({
+            [e.target.id]: e.target.value
+        });
     }
 
     handleIntentions(student, i, e) {
       if (this.state.intentions.length === 0) {
-        this.setState(state => ({
+        this.setState(() => ({
           intentions: new Array(Object.keys(student.intentions).length),
         }));
       }
@@ -163,7 +110,7 @@ class AdminStudents extends Component {
 
     handleInterests(student, i, e) {
       if (this.state.interests.length === 0) {
-        this.setState(state => ({
+        this.setState(() => ({
           interests: new Array(Object.keys(student.interests).length),
         }));
       }
@@ -184,108 +131,18 @@ class AdminStudents extends Component {
      }));
     }
 
-    handleTimeCommit(e) {
-  		var tc = e.target.value
-  		this.setState(state => ({
-  	     time_commitment: tc
-  	  }));
-  	}
-
-    handleTransportation(e) {
+    handleTF(e) {
       let answer = e.target.value
-      if (answer === "") {
-        answer = null
-      }
-      else {
-        answer = (answer === "True" || answer === "true")
-      }
-      this.setState(state => ({
-  			transportation: answer,
-  		}));
-    }
-
-    handleFlexibleHours(e) {
-      let answer = e.target.value
-      if (answer === "") {
-        answer = null
-      }
-      else {
-        answer = (answer === "True" || answer === "true")
-      }
-      this.setState(state => ({
-  			flexible_hours: answer,
-  		}));
-    }
-
-    handleWorkRemotely(e) {
-      let answer = e.target.value
-      if (answer === "") {
-        answer = null
-      }
-      else {
-        answer = (answer === "True" || answer === "true")
-      }
-      this.setState(state => ({
-  			work_remotely: answer,
-  		}));
-    }
-
-    handleDegree(e) {
-      var writtenText = e.target.value
-  		this.setState(state => ({
-  			degree: writtenText
-  		}));
-    }
-
-    handleTechCourses(student, i, e) {
-      if (this.state.interests.length === 0) {
-        this.setState(state => ({
-          tech_courses: new Array(Object.keys(student.tech_courses).length),
-        }));
-      }
-      let answer = e.target.value
-      if (answer === "") {
-        answer = null
-      }
-      else {
-        answer = (answer === "True" || answer === "true")
-      }
-
-      this.setState(update(this.state, {
-       tech_courses: {
-         [i] : {
-           $set: answer
-         }
-       }
-     }));
-    }
-
-    handleProfCourses(student, i, e) {
-      if (this.state.interests.length === 0) {
-        this.setState(state => ({
-          prof_courses: new Array(Object.keys(student.prof_courses).length),
-        }));
-      }
-      let answer = e.target.value
-      if (answer === "") {
-        answer = null
-      }
-      else {
-        answer = (answer === "True" || answer === "true")
-      }
-
-      this.setState(update(this.state, {
-       prof_courses: {
-         [i] : {
-           $set: answer
-         }
-       }
-     }));
+      answer = (answer === "T" || answer === "t" || answer === "falset")
+      console.log(e);
+      this.setState({
+  			[e.target.id]: answer,
+        });
     }
 
     handleTechSkills(student, i, e) {
       if (this.state.tech_skills.length === 0) {
-        this.setState(state => ({
+        this.setState(() => ({
           tech_skills: new Array(Object.keys(student.tech_skills).length),
         }));
       }
@@ -300,7 +157,7 @@ class AdminStudents extends Component {
 
     handleProfSkills(student, i, e) {
       if (this.state.prof_skills.length === 0) {
-        this.setState(state => ({
+        this.setState(() => ({
           prof_skills: new Array(Object.keys(student.prof_skills).length),
         }));
       }
@@ -313,19 +170,13 @@ class AdminStudents extends Component {
   		}));
   	}
 
-    handleOtherSkills(e) {
-      var writtenText = e.target.value
-  		this.setState(state => ({
-  			other_skills: writtenText
-  		}));
-    }
-
     isDict(v) {
       return typeof v==='object' && v!==null && !(v instanceof Array) && !(v instanceof Date);
     }
 
     async handleUpdate(student, e) {
-      this.setState(state => ({
+        this._e = e;
+        this.setState(() => ({
   			submit_text: "Updating..."
   		}));
       let submit_dict = {};
@@ -342,9 +193,7 @@ class AdminStudents extends Component {
         "transportation",
         "flexible_hours",
         "work_remotely",
-        "degree",
-        "tech_courses",
-        "prof_courses",
+        "school",
         "tech_skills",
         "prof_skills",
         "other_skills"
@@ -395,8 +244,9 @@ class AdminStudents extends Component {
         }
         submit_dict[s_key] = temp_answers;
       }
+      submit_dict['program'] = {}
       submit_dict['unique_id'] = `${submit_dict.eid}-${this.state.currentCohort}`
-
+        console.log(JSON.stringify(submit_dict));
   		await axios.put(process.env.REACT_APP_API_URL + 'students/'+student['id']+'/', JSON.stringify(submit_dict),
   			{
   				headers: {
@@ -411,56 +261,71 @@ class AdminStudents extends Component {
   			})
 
 
-        this.setState(state => ({
+        this.setState(() => ({
     			submit_text: "Submitted"
     		}));
         this.clearData();
     }
 
-
-
+    async handleDelete(id, e) {
+        await axios.delete(process.env.REACT_APP_API_URL + 'students/'+ id +'/',
+            {
+                headers: {
+                    'content-type': 'application/json',
+                },
+            })
+            .then(res => {
+                console.log(res);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        this.setState({
+            deleteShow: false
+        });
+    }
 
     renderSurvey(student) {
-      let {first_name, last_name, eid, phone, email, linkedIn, intentions, interests, time_commitment, transportation, flexible_hours, work_remotely, degree, tech_courses, prof_courses, experience, tech_skills, prof_skills, other_skills, cohort} = student
+      let {first_name, last_name, eid, phone, email, linkedIn, intentions, interests, time_commitment, transportation, flexible_hours, work_remotely, school, tech_skills, prof_skills, other_skills} = student
 
       return (
         <div>
           <div className="bold">(Leave the text entry blank for survey value to remain as is)</div>
-          <p></p>
+          <p/>
           <div>Current first name: {first_name}</div>
-          <Form.Group controlId="FirstName">
+          <Form.Group controlId="first_name">
               <Form.Label>Update First Name Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handleFirstName}/>
+              <Form.Control value={this.state.first_name} type="profList" onChange={this.handleTextInput}/>
           </Form.Group>
           <div>Current last name: {last_name}</div>
-          <Form.Group controlId="LastName">
+          <Form.Group controlId="last_name">
               <Form.Label>Update Last Name Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handleLastName}/>
+              <Form.Control type="profList" value={this.state.last_name} onChange={this.handleTextInput}/>
           </Form.Group>
           <div>Current EID: {eid}</div>
-          <Form.Group controlId="EID">
+          <Form.Group controlId="eid">
               <Form.Label>Update EID Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handleEID}/>
+              <Form.Control type="profList" value={this.state.eid} onChange={this.handleTextInput}/>
           </Form.Group>
           <div>Current phone number: {phone}</div>
-          <Form.Group controlId="Phone">
+          <Form.Group controlId="phone">
               <Form.Label>Update Phone Number Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handlePhone}/>
+              <Form.Control type="profList" value={this.state.phone} onChange={this.handleTextInput}/>
           </Form.Group>
           <div>Current email: {email}</div>
-          <Form.Group controlId="Email">
+          <Form.Group controlId="email">
               <Form.Label>Update Email Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handleEmail}/>
+              <Form.Control type="profList" value={this.state.email} onChange={this.handleTextInput}/>
           </Form.Group>
           <div>Current LinkedIn: {linkedIn}</div>
           <Form.Group controlId="linkedIn">
               <Form.Label>Update LinkedIn Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handleLinkedin}/>
+              <Form.Control type="profList" value={this.state.linkedIn} onChange={this.handleTextInput}/>
           </Form.Group>
-          <br></br>
+          <br/>
           {Object.keys(intentions).map((key, index) => {
             return (
-              <div>{key}: {String(intentions[key])}
+              <div key={index}>{key}: {String(intentions[key])}
               <Form.Group key={index}>
                   <Form.Label>Update Answer Here:</Form.Label>
                   <Form.Control type="profList" onChange={this.handleIntentions.bind(this, student, index)}/>
@@ -468,10 +333,10 @@ class AdminStudents extends Component {
             </div>
             )
           })}
-          <br></br>
+          <br/>
           {Object.keys(interests).map((key, index) => {
             return (
-              <div>Interested in {key}: {String(interests[key])}
+              <div key={index}>Interested in {key}: {String(interests[key])}
               <Form.Group key={index}>
                   <Form.Label>Update Answer Here:</Form.Label>
                   <Form.Control type="profList" onChange={this.handleInterests.bind(this, student, index)}/>
@@ -479,64 +344,53 @@ class AdminStudents extends Component {
             </div>
             )
           })}
-          <br></br>
+          <br/>
           <div>Current time commitment: {time_commitment}</div>
-          <Form.Group controlId="TimeCommitment">
+          <Form.Group controlId="time_commitment">
               <Form.Label>Update Time Commitment Here:</Form.Label>
-              <Form.Control required as="select" onChange={this.handleTimeCommit}>
-                  <option></option>
+              <Form.Control required as="select" value={this.state.time_commitment} onChange={this.handleTextInput}>
+                  <option/>
                   <option>Less than 5 Hours Per Week</option>
                   <option>5-10 Hours Per Week</option>
+                  <option>8-12 Hours Per Week</option>
+                  <option>10-15 Hours Per Week</option>
                   <option>15-20 Hours Per Week</option>
                   <option>20-30 Hours Per Week</option>
               </Form.Control>
           </Form.Group>
           <div>Transportation: {String(transportation)}</div>
-          <Form.Group controlId="Transportation">
+          <Form.Group controlId="transportation">
               <Form.Label>Update Answer Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handleTransportation.bind(this)}/>
+              <Form.Control type="profList" value={this.state.transportation} onChange={this.handleTF}/>
           </Form.Group>
+            {/*<Form.Group controlId="first_name">*/}
+            {/*    <Form.Label>Update First Name Here:</Form.Label>*/}
+            {/*    <Form.Control value={this.state.first_name} type="profList" onChange={this.handleTextInput}/>*/}
+            {/*</Form.Group>*/}
           <div>Flexible Hours: {String(flexible_hours)}</div>
-          <Form.Group controlId="FlexibleHours">
+          <Form.Group controlId="flexible_hours">
               <Form.Label>Update Answer Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handleFlexibleHours.bind(this)}/>
+              <Form.Control type="profList" value={this.state.flexible_hours} onChange={this.handleTF}/>
           </Form.Group>
           <div>Work Remotely: {String(work_remotely)}</div>
-          <Form.Group controlId="WorkRemotely">
+          <Form.Group controlId="work_remotely">
               <Form.Label>Update Answer Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handleWorkRemotely.bind(this)}/>
+              <Form.Control type="profList" value={this.state.work_remotely} onChange={this.handleTF}/>
           </Form.Group>
-          <div>Degree: {degree}</div>
-          <Form.Group controlId="Degree">
-              <Form.Label>Update Answer Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handleDegree.bind(this)}/>
-          </Form.Group>
-          <br></br>
-          {Object.keys(tech_courses).map((key, index) => {
-            return (
-              <div>Taken {key}: {String(tech_courses[key])}
-              <Form.Group key={index}>
-                  <Form.Label>Update Answer Here:</Form.Label>
-                  <Form.Control type="profList" onChange={this.handleTechCourses.bind(this, student, index)}/>
-              </Form.Group>
-            </div>
-            )
-          })}
-          <br></br>
-          {Object.keys(prof_courses).map((key, index) => {
-            return (
-              <div>Taken {key}: {String(prof_courses[key])}
-              <Form.Group key={index}>
-                  <Form.Label>Update Answer Here:</Form.Label>
-                  <Form.Control type="profList" onChange={this.handleProfCourses.bind(this, student, index)}/>
-              </Form.Group>
-            </div>
-            )
-          })}
-          <br></br>
+            {Object.keys(school).map((key, index) => {
+                return(
+                    <div key={index}>Current {key}: {String(school[key])}
+                        <Form.Group controlId="school">
+                            <Form.Label>Update Answer Here:</Form.Label>
+                            <Form.Control type="profList" onChange={this.handleTextInput}/>
+                        </Form.Group>
+                    </div>
+                    )
+            })}
+          <br/>
           {Object.keys(tech_skills).map((key, index) => {
               return(
-                <div>Current {key}: {String(tech_skills[key])}
+                <div key={index}>Current {key}: {String(tech_skills[key])}
                   <Form.Group key={index}>
                       <Form.Label>Update Answer Here:</Form.Label>
                       <RadioButton name={key} handleRadio={this.handleTechSkills.bind(this, student, index)}/>
@@ -544,10 +398,10 @@ class AdminStudents extends Component {
                 </div>
               );
           })}
-          <br></br>
+          <br/>
           {Object.keys(prof_skills).map((key, index) => {
               return(
-                <div>Current {key}: {String(prof_skills[key])}
+                <div key={index}>Current {key}: {String(prof_skills[key])}
                   <Form.Group key={index}>
                       <Form.Label>Update Answer Here:</Form.Label>
                       <RadioButton name={key} handleRadio={this.handleProfSkills.bind(this, student, index)}/>
@@ -555,15 +409,18 @@ class AdminStudents extends Component {
                 </div>
               );
           })}
-          <br></br>
+          <br/>
           <div>Other Skills: {other_skills}</div>
-          <Form.Group controlId="OtherSkills">
+          <Form.Group controlId="other_skills">
               <Form.Label>Update Answer Here:</Form.Label>
-              <Form.Control type="profList" onChange={this.handleOtherSkills.bind(this)}/>
+              <Form.Control type="profList" value={this.state.other_skills} onChange={this.handleTextInput}/>
           </Form.Group>
           <Button variant="primary" onClick={this.handleUpdate.bind(this, student)}>
               Update Student Form
           </Button>
+            <Button variant="danger" onClick={() => { this.setState({ deleteShow: true })}}>
+                Delete
+            </Button>
           <div>{this.state.submit_text}</div>
       </div>
       )
@@ -583,8 +440,13 @@ class AdminStudents extends Component {
             .catch(err => console.log(err));
     }
 
+    componentWillReceiveProps(nextProps, nextContext) {
+        this.setState({ students: nextProps.students, modalShow: new Array(nextProps.students.length) });
+    }
+
     handleModal(i, e) {
-      this.setState(update(this.state, {
+        this._e = e;
+        this.setState(update(this.state, {
        modalShow: {
          [i] : {
            $set: true
@@ -633,6 +495,27 @@ class AdminStudents extends Component {
                                              </Modal.Title>
                                            </Modal.Header>
                                            <Modal.Body>{this.renderSurvey(student)}</Modal.Body>
+                                              <Modal
+                                                  size="sm"
+                                                  show={this.state.deleteShow}
+                                                  onHide={() => (
+                                                      this.setState({
+                                                          deleteShow: false
+                                                      })
+                                                  )}
+                                                  >
+                                                  <Modal.Header closeButton>
+                                                      <Modal.Title>
+                                                          Deleting Student Entry
+                                                      </Modal.Title>
+                                                  </Modal.Header>
+                                                  <Modal.Body>
+                                                      <p>Are you sure you want to delete {student.first_name} {student.last_name}?</p>
+                                                  </Modal.Body>
+                                                  <Modal.Footer>
+                                                      <Button variant="Success" onClick={this.handleDelete.bind(this, student.id)}>Yes</Button>
+                                                  </Modal.Footer>
+                                              </Modal>
                                         </Modal>
                                       </div>
                                     </td>
