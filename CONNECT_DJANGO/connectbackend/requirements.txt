@@ -13,7 +13,7 @@ dataclasses==0.6
 Django==2.2.6
 django-cors-headers==3.2.1
 django-rest-knox==4.1.0
-djangorestframework==3.10.3
+djangorestframework==3.11.2
 djongo==1.2.36
 dnspython==1.16.0
 docutils==0.15.2
